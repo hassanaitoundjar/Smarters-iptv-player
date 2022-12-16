@@ -1,22 +1,21 @@
 part of '../screens.dart';
 
-class ListChannelsScreen extends StatefulWidget {
-  const ListChannelsScreen({Key? key, required this.catyId}) : super(key: key);
+class LiveChannelsScreen extends StatefulWidget {
+  const LiveChannelsScreen({Key? key, required this.catyId}) : super(key: key);
   final String catyId;
 
   @override
-  State<ListChannelsScreen> createState() => _ListChannelsScreen();
+  State<LiveChannelsScreen> createState() => _ListChannelsScreen();
 }
 
-class _ListChannelsScreen extends State<ListChannelsScreen> {
+class _ListChannelsScreen extends State<LiveChannelsScreen> {
   VlcPlayerController? _videoPlayerController;
   int? selectedVideo;
 
   @override
   void initState() {
-    context
-        .read<LiveChannelsBloc>()
-        .add(GetLiveChannelsEvent(catyId: widget.catyId));
+    context.read<LiveChannelsBloc>().add(GetLiveChannelsEvent(
+        catyId: widget.catyId, action: "get_live_streams"));
     super.initState();
   }
 

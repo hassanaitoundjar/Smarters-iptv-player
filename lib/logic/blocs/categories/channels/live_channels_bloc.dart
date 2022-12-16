@@ -13,7 +13,7 @@ class LiveChannelsBloc extends Bloc<LiveChannelsEvent, LiveChannelsState> {
     on<GetLiveChannelsEvent>((event, emit) async {
       emit(LiveChannelsLoading());
 
-      final result = await api.getLiveChannels(event.catyId);
+      final result = await api.getLiveChannels(event.catyId, event.action);
       emit(LiveChannelsSuccess(result));
     });
   }

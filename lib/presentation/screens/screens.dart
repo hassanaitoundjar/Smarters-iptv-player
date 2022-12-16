@@ -9,7 +9,6 @@ import '../../helpers/helpers.dart';
 import '../../logic/blocs/auth/auth_bloc.dart';
 import '../../logic/blocs/categories/channels/live_channels_bloc.dart';
 import '../../logic/blocs/categories/live/live_caty_bloc.dart';
-import '../../logic/blocs/iptv/iptv_bloc.dart';
 import '../../logic/cubits/video/video_cubit.dart';
 import '../widgets/widgets.dart';
 

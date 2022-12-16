@@ -39,7 +39,8 @@ class IpTvApi {
   }
 
   /// Channels Live
-  Future<List<ChannelLive>> getLiveChannels(String catyId) async {
+  Future<List<ChannelLive>> getLiveChannels(
+      String catyId, String action) async {
     try {
       final user = await LocaleApi.getUser();
 
@@ -55,7 +56,7 @@ class IpTvApi {
         queryParameters: {
           "password": user.userInfo!.password,
           "username": user.userInfo!.username,
-          "action": "get_live_streams",
+          "action": action,
           "category_id": catyId
         },
       );

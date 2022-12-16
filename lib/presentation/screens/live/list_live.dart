@@ -1,13 +1,13 @@
 part of '../screens.dart';
 
-class ListLiveScreen extends StatefulWidget {
-  const ListLiveScreen({Key? key}) : super(key: key);
+class LiveCategoriesScreen extends StatefulWidget {
+  const LiveCategoriesScreen({Key? key}) : super(key: key);
 
   @override
-  State<ListLiveScreen> createState() => _ListLiveScreenState();
+  State<LiveCategoriesScreen> createState() => _LiveCategoriesScreenState();
 }
 
-class _ListLiveScreenState extends State<ListLiveScreen> {
+class _LiveCategoriesScreenState extends State<LiveCategoriesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,7 +41,7 @@ class _ListLiveScreenState extends State<ListLiveScreen> {
                           title: categories[i].categoryName ?? "",
                           onTap: () {
                             //TODO: OPEN Channels
-                            Get.to(() => ListChannelsScreen(
+                            Get.to(() => LiveChannelsScreen(
                                 catyId: categories[i].categoryId ?? ''));
                           },
                         );
