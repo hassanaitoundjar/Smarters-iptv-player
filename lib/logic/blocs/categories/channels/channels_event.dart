@@ -5,7 +5,7 @@ abstract class ChannelsEvent {}
 
 class GetLiveChannelsEvent extends ChannelsEvent {
   final String catyId;
-  final String action;
+  final TypeCategory typeCategory;
 
-  GetLiveChannelsEvent({required this.action, required this.catyId});
+  GetLiveChannelsEvent({required this.typeCategory, required this.catyId});
 }

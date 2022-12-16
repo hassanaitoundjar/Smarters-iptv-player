@@ -5,7 +5,12 @@ abstract class ChannelsState {}
 
 class ChannelsLoading extends ChannelsState {}
 
-class ChannelsSuccess extends ChannelsState {
+class ChannelsLiveSuccess extends ChannelsState {
   final List<ChannelLive> channels;
-  ChannelsSuccess(this.channels);
+  ChannelsLiveSuccess(this.channels);
+}
+
+class ChannelsMovieSuccess extends ChannelsState {
+  final List<ChannelMovie> channels;
+  ChannelsMovieSuccess(this.channels);
 }

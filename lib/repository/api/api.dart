@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:mbark_iptv/repository/models/channel_movie.dart';
 
 import '../models/category.dart';
 import '../models/channelLive.dart';

@@ -40,8 +40,8 @@ class _MovieCategoriesScreenState extends State<MovieCategoriesScreen> {
                         return CardLiveItem(
                           title: categories[i].categoryName ?? "",
                           onTap: () {
-                            //TODO: OPEN Channels
-                            Get.to(() => LiveChannelsScreen(
+                            // OPEN Channels
+                            Get.to(() => MovieChannels(
                                 catyId: categories[i].categoryId ?? ''));
                           },
                         );
