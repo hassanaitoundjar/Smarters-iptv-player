@@ -6,4 +6,5 @@ const String screenRegister = "/register";
 const String screenSettings = "/settings";
 const String screenMovies = "/movies";
 const String screenSeries = "/series";
-const String screenLive = "/live";
+const String screenLiveCategories = "/categories-live";
+const String screenMovieCategories = "/categories-movie";

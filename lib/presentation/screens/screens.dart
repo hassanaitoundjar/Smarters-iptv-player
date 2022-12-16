@@ -8,12 +8,14 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../helpers/helpers.dart';
 import '../../logic/blocs/auth/auth_bloc.dart';
 import '../../logic/blocs/categories/channels/channels_bloc.dart';
-import '../../logic/blocs/categories/live/live_caty_bloc.dart';
+import '../../logic/blocs/categories/live_caty/live_caty_bloc.dart';
+import '../../logic/blocs/categories/movie_caty/movie_caty_bloc.dart';
 import '../../logic/cubits/video/video_cubit.dart';
 import '../widgets/widgets.dart';
 
 part 'live/live_categories.dart';
 part 'live/live_channels.dart';
+part 'movie/movie_categories.dart';
 part 'player/full_video.dart';
 part 'player/player_video.dart';
 part 'user/register.dart';

@@ -45,22 +45,35 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                               subTitle: "${state.categories.length} Channels",
                               icon: kIconLive,
                               onTap: () {
-                                Get.toNamed(screenLive);
+                                Get.toNamed(screenLiveCategories);
                               },
                             );
                           }
 
-                          return const SizedBox();
+                          return const Text('error live caty');
                         },
                       ),
                     ),
                     SizedBox(width: 2.w),
                     Expanded(
-                      child: CardWelcomeTv(
-                        title: "Movies",
-                        subTitle: "230 Movies",
-                        icon: kIconMovies,
-                        onTap: () {},
+                      child: BlocBuilder<MovieCatyBloc, MovieCatyState>(
+                        builder: (context, state) {
+                          if (state is MovieCatyLoading) {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          } else if (state is MovieCatySuccess) {
+                            return CardWelcomeTv(
+                              title: "Movies",
+                              subTitle: "${state.categories.length} Channels",
+                              icon: kIconMovies,
+                              onTap: () {
+                                Get.toNamed(screenMovieCategories);
+                              },
+                            );
+                          }
+
+                          return const Text('error movie caty');
+                        },
                       ),
                     ),
                     SizedBox(width: 2.w),

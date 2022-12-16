@@ -9,7 +9,8 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'helpers/helpers.dart';
 import 'logic/blocs/auth/auth_bloc.dart';
 import 'logic/blocs/categories/channels/channels_bloc.dart';
-import 'logic/blocs/categories/live/live_caty_bloc.dart';
+import 'logic/blocs/categories/live_caty/live_caty_bloc.dart';
+import 'logic/blocs/categories/movie_caty/movie_caty_bloc.dart';
 import 'logic/cubits/video/video_cubit.dart';
 import 'presentation/screens/screens.dart';
 
@@ -59,6 +60,9 @@ class _MyAppState extends State<MyApp> {
         BlocProvider<ChannelsBloc>(
           create: (BuildContext context) => ChannelsBloc(widget.iptv),
         ),
+        BlocProvider<MovieCatyBloc>(
+          create: (BuildContext context) => MovieCatyBloc(widget.iptv),
+        ),
         BlocProvider<VideoCubit>(
           create: (BuildContext context) => VideoCubit(),
         ),
@@ -74,8 +78,12 @@ class _MyAppState extends State<MyApp> {
               GetPage(name: screenSplash, page: () => const SplashScreen()),
               GetPage(name: screenWelcome, page: () => const WelcomeScreen()),
               GetPage(
-                  name: screenLive, page: () => const LiveCategoriesScreen()),
+                  name: screenLiveCategories,
+                  page: () => const LiveCategoriesScreen()),
               GetPage(name: screenRegister, page: () => const RegisterUser()),
+              GetPage(
+                  name: screenMovieCategories,
+                  page: () => const MovieCategoriesScreen()),
             ],
           );
         },

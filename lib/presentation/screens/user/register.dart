@@ -22,6 +22,9 @@ class _RegisterUserState extends State<RegisterUser> {
           listener: (context, state) {
             if (state is AuthSuccess) {
               context.read<LiveCatyBloc>().add(GetLiveCategories());
+              context.read<MovieCatyBloc>().add(GetMovieCategories());
+              //  context.read<MovieCatyBloc>().add(GetMovieCategories());
+
               Get.offAndToNamed(screenWelcome);
             } else if (state is AuthFailed) {
               debugPrint(state.message);

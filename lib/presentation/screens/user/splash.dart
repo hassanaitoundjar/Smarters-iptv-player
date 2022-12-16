@@ -27,6 +27,9 @@ class _SplashScreenState extends State<SplashScreen> {
         listener: (context, state) {
           if (state is AuthSuccess) {
             context.read<LiveCatyBloc>().add(GetLiveCategories());
+            context.read<MovieCatyBloc>().add(GetMovieCategories());
+            // context.read<LiveCatyBloc>().add(GetLiveCategories());
+
             goScreen(screenWelcome);
           } else if (state is AuthFailed) {
             goScreen(screenRegister);
