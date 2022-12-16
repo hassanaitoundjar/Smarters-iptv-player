@@ -14,7 +14,7 @@ class _ListChannelsScreen extends State<LiveChannelsScreen> {
 
   @override
   void initState() {
-    context.read<LiveChannelsBloc>().add(GetLiveChannelsEvent(
+    context.read<ChannelsBloc>().add(GetLiveChannelsEvent(
         catyId: widget.catyId, action: "get_live_streams"));
     super.initState();
   }
@@ -72,13 +72,12 @@ class _ListChannelsScreen extends State<LiveChannelsScreen> {
                                 return const SizedBox();
                               }
                               return Expanded(
-                                child: BlocBuilder<LiveChannelsBloc,
-                                    LiveChannelsState>(
+                                child: BlocBuilder<ChannelsBloc, ChannelsState>(
                                   builder: (context, state) {
-                                    if (state is LiveChannelsLoading) {
+                                    if (state is ChannelsLoading) {
                                       return const Center(
                                           child: CircularProgressIndicator());
-                                    } else if (state is LiveChannelsSuccess) {
+                                    } else if (state is ChannelsSuccess) {
                                       final categories = state.channels;
                                       return GridView.builder(
                                         padding: const EdgeInsets.symmetric(

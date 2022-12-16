@@ -1,9 +1,9 @@
-part of 'live_channels_bloc.dart';
+part of 'channels_bloc.dart';
 
 @immutable
-abstract class LiveChannelsEvent {}
+abstract class ChannelsEvent {}
 
-class GetLiveChannelsEvent extends LiveChannelsEvent {
+class GetLiveChannelsEvent extends ChannelsEvent {
   final String catyId;
   final String action;
 
