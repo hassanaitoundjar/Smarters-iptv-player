@@ -110,6 +110,7 @@ class _SerieContentState extends State<SerieContent> {
                                               CardInfoMovie(
                                                 icon: FontAwesomeIcons.film,
                                                 hint: 'Genre:',
+                                                isShowMore: true,
                                                 title: movie.info!.genre ?? "",
                                               ),
                                             ],

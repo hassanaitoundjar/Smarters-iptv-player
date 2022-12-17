@@ -122,7 +122,8 @@ class InfoSerie {
         lastModified = json['last_modified'].toString(),
         rating = json['rating'].toString(),
         rating5based = json['rating_5based'].toString(),
-        backdropPath = json['backdrop_path'] == null
+        backdropPath = json['backdrop_path'] == null ||
+                json['backdrop_path'].runtimeType == String
             ? []
             : (json['backdrop_path'] as List)
                 .map((dynamic e) => e.toString())
