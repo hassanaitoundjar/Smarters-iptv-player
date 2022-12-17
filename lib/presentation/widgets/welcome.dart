@@ -60,6 +60,7 @@ class AppBarWelcome extends StatelessWidget {
             ),
           ),
           IconButton(
+            focusColor: kColorFocus,
             onPressed: () {},
             icon: Icon(
               FontAwesomeIcons.solidBell,

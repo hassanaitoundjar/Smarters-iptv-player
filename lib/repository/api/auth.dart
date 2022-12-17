@@ -2,10 +2,14 @@ part of 'api.dart';
 
 class AuthApi {
   Future<UserModel?> registerUser(
-      String username, String password, String link, String name) async {
+    String username,
+    String password,
+    String link,
+    String name,
+  ) async {
     try {
-      Response<String> response =
-          await _dio.get("$link?username=$username&password=$password");
+      Response<String> response = await _dio
+          .get("$link/player_api.php?username=$username&password=$password");
 
       if (response.statusCode == 200) {
         var json = jsonDecode(response.data ?? "");

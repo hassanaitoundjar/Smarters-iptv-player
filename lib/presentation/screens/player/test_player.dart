@@ -1,14 +1,20 @@
-part of '../screens.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_vlc_player/flutter_vlc_player.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
-class FullVideoScreen extends StatefulWidget {
-  const FullVideoScreen({Key? key, required this.link}) : super(key: key);
+import '../../../helpers/helpers.dart';
+
+class TestPlayer extends StatefulWidget {
+  const TestPlayer({Key? key, required this.link}) : super(key: key);
   final String link;
 
   @override
-  State<FullVideoScreen> createState() => _FullVideoScreenState();
+  State<TestPlayer> createState() => _TestPlayerState();
 }
 
-class _FullVideoScreenState extends State<FullVideoScreen> {
+class _TestPlayerState extends State<TestPlayer> {
   late VlcPlayerController _videoPlayerController;
   bool isPlayed = true;
   bool showControllersVideo = true;

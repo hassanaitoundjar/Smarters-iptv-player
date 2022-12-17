@@ -18,7 +18,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final user = await authApi.registerUser(
         "PPMHVZ1UXR",
         "5WLFXT3KXT",
-        "http://line.ottcst.com:80/player_api.php",
+        "http://line.ottcst.com:80",
         "test",
       );
 

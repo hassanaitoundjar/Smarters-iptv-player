@@ -1,17 +1,17 @@
 class ChannelLive {
-  final int? num;
+  final String? num;
   final String? name;
   final String? streamType;
-  final int? streamId;
+  final String? streamId;
   final String? streamIcon;
   final dynamic epgChannelId;
   final String? added;
   final String? isAdult;
   final String? categoryId;
   final String? customSid;
-  final int? tvArchive;
+  final String? tvArchive;
   final String? directSource;
-  final int? tvArchiveDuration;
+  final String? tvArchiveDuration;
 
   ChannelLive({
     this.num,
@@ -30,19 +30,19 @@ class ChannelLive {
   });
 
   ChannelLive.fromJson(Map<String, dynamic> json)
-      : num = json['num'] as int?,
+      : num = json['num'].toString(),
         name = json['name'] as String?,
         streamType = json['stream_type'] as String?,
-        streamId = json['stream_id'] as int?,
+        streamId = json['stream_id'].toString(),
         streamIcon = json['stream_icon'] as String?,
         epgChannelId = json['epg_channel_id'],
         added = json['added'] as String?,
         isAdult = json['is_adult'] as String?,
         categoryId = json['category_id'] as String?,
         customSid = json['custom_sid'] as String?,
-        tvArchive = json['tv_archive'] as int?,
+        tvArchive = json['tv_archive'].toString(),
         directSource = json['direct_source'] as String?,
-        tvArchiveDuration = json['tv_archive_duration'] as int?;
+        tvArchiveDuration = json['tv_archive_duration'].toString();
 
   Map<String, dynamic> toJson() => {
         'num': num,
