@@ -34,7 +34,7 @@ class _LiveCategoriesScreenState extends State<LiveCategoriesScreen> {
                         crossAxisCount: 3,
                         crossAxisSpacing: 10,
                         mainAxisSpacing: 10,
-                        childAspectRatio: 4,
+                        childAspectRatio: 4.8,
                       ),
                       itemBuilder: (_, i) {
                         return CardLiveItem(

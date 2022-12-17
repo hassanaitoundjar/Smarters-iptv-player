@@ -30,6 +30,7 @@ dependencies:
   #M3U
   #m3u_nullsafe: ^1.0.4
   flutter_vlc_player: ^7.1.5
+  pod_player: ^0.1.0
 
 
   #Http

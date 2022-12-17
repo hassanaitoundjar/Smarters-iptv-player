@@ -102,6 +102,7 @@ class _ListChannelsScreen extends State<LiveChannelsScreen> {
 
                                           return CardLiveItem(
                                             title: model.name ?? "",
+                                            image: model.streamIcon,
                                             link: link,
                                             isSelected: selectedVideo == null
                                                 ? false
@@ -161,13 +162,23 @@ class _ListChannelsScreen extends State<LiveChannelsScreen> {
                           ),
                           if (selectedVideo != null)
                             Expanded(
-                              child: Container(
-                                height: double.infinity,
-                                decoration: const BoxDecoration(
-                                  color: kColorCardDarkness,
-                                ),
-                                child: PlayerScreen(
-                                    controller: _videoPlayerController),
+                              child: Column(
+                                children: [
+                                  Expanded(
+                                    flex: 3,
+                                    child: PlayerScreen(
+                                      controller: _videoPlayerController,
+                                    ),
+                                  ),
+                                  BlocBuilder<VideoCubit, VideoState>(
+                                    builder: (context, stateVideo) {
+                                      if (stateVideo.isFull) {
+                                        return const SizedBox();
+                                      }
+                                      return const Expanded(child: SizedBox());
+                                    },
+                                  ),
+                                ],
                               ),
                             ),
                         ],

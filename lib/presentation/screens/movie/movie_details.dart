@@ -132,17 +132,35 @@ class _MovieContentState extends State<MovieContent> {
                                           Row(
                                             children: [
                                               if (movie.info!.youtubeTrailer !=
-                                                  null)
+                                                      null &&
+                                                  movie.info!.youtubeTrailer!
+                                                      .isNotEmpty)
                                                 CardButtonWatchMovie(
                                                   title: "watch trailer",
                                                   onTap: () {
-                                                    //TODO: open youtube
-                                                    // movie.info!.youtubeTrailer
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: (builder) =>
+                                                            DialogTrailerYoutube(
+                                                                thumb: movie
+                                                                        .info!
+                                                                        .backdropPath!
+                                                                        .isNotEmpty
+                                                                    ? movie
+                                                                        .info!
+                                                                        .backdropPath!
+                                                                        .first
+                                                                    : null,
+                                                                trailer: movie
+                                                                        .info!
+                                                                        .youtubeTrailer ??
+                                                                    ""));
                                                   },
                                                 ),
                                               SizedBox(width: 3.w),
                                               CardButtonWatchMovie(
                                                 title: "watch Now",
+                                                isFocused: true,
                                                 onTap: () {
                                                   final link =
                                                       "${userAuth.serverInfo!.serverUrl}/movie/${userAuth.userInfo!.username}/${userAuth.userInfo!.password}/${movie.movieData!.streamId}.${movie.movieData!.containerExtension}";

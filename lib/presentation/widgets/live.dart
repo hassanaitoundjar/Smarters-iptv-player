@@ -137,12 +137,14 @@ class CardLiveItem extends StatelessWidget {
       required this.title,
       required this.onTap,
       this.isSelected = false,
-      this.link})
+      this.link,
+      this.image})
       : super(key: key);
   final String title;
   final Function() onTap;
   final bool isSelected;
   final String? link;
+  final String? image;
 
   @override
   Widget build(BuildContext context) {
@@ -159,11 +161,23 @@ class CardLiveItem extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Row(
           children: [
-            Icon(
-              isSelected ? FontAwesomeIcons.play : FontAwesomeIcons.tv,
-              size: isSelected ? 18.sp : 16.sp,
-              color: Colors.white,
-            ),
+            image != null && !isSelected
+                ? CachedNetworkImage(
+                    imageUrl: image ?? "",
+                    width: 9.w,
+                    errorWidget: (_, i, e) {
+                      return Icon(
+                        FontAwesomeIcons.tv,
+                        size: isSelected ? 18.sp : 16.sp,
+                        color: Colors.white,
+                      );
+                    },
+                  )
+                : Icon(
+                    isSelected ? FontAwesomeIcons.play : FontAwesomeIcons.tv,
+                    size: isSelected ? 18.sp : 16.sp,
+                    color: Colors.white,
+                  ),
             const SizedBox(width: 13),
             Expanded(
               child: Text(

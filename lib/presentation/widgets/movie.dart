@@ -60,11 +60,15 @@ class CardChannelMovieItem extends StatelessWidget {
 }
 
 class CardButtonWatchMovie extends StatefulWidget {
-  const CardButtonWatchMovie(
-      {Key? key, required this.title, required this.onTap})
-      : super(key: key);
+  const CardButtonWatchMovie({
+    Key? key,
+    required this.title,
+    required this.onTap,
+    this.isFocused = false,
+  }) : super(key: key);
   final String title;
   final Function() onTap;
+  final bool isFocused;
 
   @override
   State<CardButtonWatchMovie> createState() => _CardButtonWatchMovieState();
@@ -79,6 +83,7 @@ class _CardButtonWatchMovieState extends State<CardButtonWatchMovie> {
       color: Colors.transparent,
       child: InkWell(
         onTap: widget.onTap,
+        autofocus: widget.isFocused,
         borderRadius: BorderRadius.circular(10),
         onFocusChange: (bool value) {
           setState(() {
@@ -89,7 +94,7 @@ class _CardButtonWatchMovieState extends State<CardButtonWatchMovie> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             gradient: isFocused
-                ? LinearGradient(
+                ? const LinearGradient(
                     colors: [kColorPrimary, kColorPrimaryDark],
                   )
                 : LinearGradient(
@@ -204,7 +209,7 @@ class CardMovieImageRate extends StatelessWidget {
         ),
         const SizedBox(height: 10),
         RatingBarIndicator(
-          rating: double.parse(rate),
+          rating: double.tryParse(rate.toString()) ?? 0,
           itemBuilder: (context, index) => const Icon(
             FontAwesomeIcons.solidStar,
             color: Colors.amber,
