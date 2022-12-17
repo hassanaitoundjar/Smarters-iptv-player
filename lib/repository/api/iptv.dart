@@ -114,41 +114,6 @@ class IpTvApi {
     }
   }
 
-  /// Movie Detail
-  static Future<MovieDetail?> getMovieDetails(String movieId) async {
-    try {
-      final user = await LocaleApi.getUser();
-
-      if (user == null) {
-        debugPrint("User is Null");
-        return null;
-      }
-
-      var url = "${user.serverInfo!.serverUrl}/player_api.php";
-
-      Response<String> response = await _dio.get(
-        url,
-        queryParameters: {
-          "password": user.userInfo!.password,
-          "username": user.userInfo!.username,
-          "action": "get_vod_info",
-          "vod_id": movieId,
-        },
-      );
-
-      if (response.statusCode == 200) {
-        final json = jsonDecode(response.data ?? "[]");
-        final movie = MovieDetail.fromJson(json);
-        return movie;
-      }
-
-      return null;
-    } catch (e) {
-      debugPrint("Error Movie $movieId: $e");
-      return null;
-    }
-  }
-
   /// Channels Series
   Future<List<ChannelSerie>> getSeriesChannels(String catyId) async {
     try {
@@ -184,6 +149,76 @@ class IpTvApi {
     } catch (e) {
       debugPrint("Error Channel Series $catyId: $e");
       return [];
+    }
+  }
+
+  /// Movie Detail
+  static Future<MovieDetail?> getMovieDetails(String movieId) async {
+    try {
+      final user = await LocaleApi.getUser();
+
+      if (user == null) {
+        debugPrint("User is Null");
+        return null;
+      }
+
+      var url = "${user.serverInfo!.serverUrl}/player_api.php";
+
+      Response<String> response = await _dio.get(
+        url,
+        queryParameters: {
+          "password": user.userInfo!.password,
+          "username": user.userInfo!.username,
+          "action": "get_vod_info",
+          "vod_id": movieId,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final json = jsonDecode(response.data ?? "[]");
+        final movie = MovieDetail.fromJson(json);
+        return movie;
+      }
+
+      return null;
+    } catch (e) {
+      debugPrint("Error Movie $movieId: $e");
+      return null;
+    }
+  }
+
+  /// Serie Detail
+  static Future<SerieDetails?> getSerieDetails(String serieId) async {
+    try {
+      final user = await LocaleApi.getUser();
+
+      if (user == null) {
+        debugPrint("User is Null");
+        return null;
+      }
+
+      var url = "${user.serverInfo!.serverUrl}/player_api.php";
+
+      Response<String> response = await _dio.get(
+        url,
+        queryParameters: {
+          "password": user.userInfo!.password,
+          "username": user.userInfo!.username,
+          "action": "get_series_info",
+          "series_id": serieId,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final json = jsonDecode(response.data ?? "");
+        final serie = SerieDetails.fromJson(json);
+        return serie;
+      }
+
+      return null;
+    } catch (e) {
+      debugPrint("Error MovSerie $serieId: $e");
+      return null;
     }
   }
 }

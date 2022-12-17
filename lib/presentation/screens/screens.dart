@@ -14,6 +14,7 @@ import '../../logic/blocs/categories/series_caty/series_caty_bloc.dart';
 import '../../logic/cubits/video/video_cubit.dart';
 import '../../repository/api/api.dart';
 import '../../repository/models/movie_detail.dart';
+import '../../repository/models/serie_details.dart';
 import '../widgets/widgets.dart';
 
 part 'live/live_categories.dart';
@@ -23,6 +24,7 @@ part 'movie/movie_channels.dart';
 part 'movie/movie_details.dart';
 part 'player/full_video.dart';
 part 'player/player_video.dart';
+part 'series/serie_details.dart';
 part 'series/series_categories.dart';
 part 'series/series_channels.dart';
 part 'user/register.dart';

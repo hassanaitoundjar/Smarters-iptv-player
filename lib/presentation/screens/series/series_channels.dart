@@ -53,8 +53,8 @@ class SeriesChannelsState extends State<SeriesChannels> {
                           title: channels[i].name,
                           image: channels[i].cover,
                           onTap: () {
-                            /*Get.to(() => MovieContent(
-                                videoId: channels[i].streamId ?? ''));*/
+                            Get.to(() => SerieContent(
+                                videoId: channels[i].seriesId ?? ''));
                           },
                         );
                       },
