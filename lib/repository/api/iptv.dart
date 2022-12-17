@@ -76,7 +76,7 @@ class IpTvApi {
     }
   }
 
-  /// Channels Live
+  /// Channels Movie
   Future<List<ChannelMovie>> getMovieChannels(String catyId) async {
     try {
       final user = await LocaleApi.getUser();
@@ -111,6 +111,41 @@ class IpTvApi {
     } catch (e) {
       debugPrint("Error Channel $catyId: $e");
       return [];
+    }
+  }
+
+  /// Movie Detail
+  static Future<MovieDetail?> getMovieDetails(String movieId) async {
+    try {
+      final user = await LocaleApi.getUser();
+
+      if (user == null) {
+        debugPrint("User is Null");
+        return null;
+      }
+
+      var url = "${user.serverInfo!.serverUrl}/player_api.php";
+
+      Response<String> response = await _dio.get(
+        url,
+        queryParameters: {
+          "password": user.userInfo!.password,
+          "username": user.userInfo!.username,
+          "action": "get_vod_info",
+          "vod_id": movieId,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final json = jsonDecode(response.data ?? "[]");
+        final movie = MovieDetail.fromJson(json);
+        return movie;
+      }
+
+      return null;
+    } catch (e) {
+      debugPrint("Error Movie $movieId: $e");
+      return null;
     }
   }
 }
