@@ -27,45 +27,51 @@ class SeriesChannelsState extends State<SeriesChannels> {
         height: 100.h,
         decoration: kDecorBackground,
         padding: const EdgeInsets.only(left: 10, right: 10),
-        child: Column(
-          children: [
-            const AppBarSeries(),
-            Expanded(
-              child: BlocBuilder<ChannelsBloc, ChannelsState>(
-                builder: (context, state) {
-                  if (state is ChannelsLoading) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (state is ChannelsSeriesSuccess) {
-                    final channels = state.channels;
+        child: NestedScrollView(
+          headerSliverBuilder: (_, ch) {
+            return [
+              SliverAppBar(
+                automaticallyImplyLeading: false,
+                elevation: 0,
+                backgroundColor: Colors.transparent,
+                flexibleSpace: FlexibleSpaceBar(
+                  background: AppBarSeries(top: 3.h),
+                ),
+              ),
+            ];
+          },
+          body: BlocBuilder<ChannelsBloc, ChannelsState>(
+            builder: (context, state) {
+              if (state is ChannelsLoading) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (state is ChannelsSeriesSuccess) {
+                final channels = state.channels;
 
-                    return GridView.builder(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      itemCount: channels.length,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 5,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
-                        childAspectRatio: .7,
-                      ),
-                      itemBuilder: (_, i) {
-                        return CardChannelMovieItem(
-                          title: channels[i].name,
-                          image: channels[i].cover,
-                          onTap: () {
-                            Get.to(() => SerieContent(
-                                videoId: channels[i].seriesId ?? ''));
-                          },
-                        );
+                return GridView.builder(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  itemCount: channels.length,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 5,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    childAspectRatio: .7,
+                  ),
+                  itemBuilder: (_, i) {
+                    return CardChannelMovieItem(
+                      title: channels[i].name,
+                      image: channels[i].cover,
+                      onTap: () {
+                        Get.to(() =>
+                            SerieContent(videoId: channels[i].seriesId ?? ''));
                       },
                     );
-                  }
+                  },
+                );
+              }
 
-                  return const SizedBox();
-                },
-              ),
-            ),
-          ],
+              return const SizedBox();
+            },
+          ),
         ),
       ),
     );

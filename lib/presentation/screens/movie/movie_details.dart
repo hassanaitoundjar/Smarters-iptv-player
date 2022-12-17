@@ -50,7 +50,7 @@ class _MovieContentState extends State<MovieContent> {
                           ),
                           Padding(
                             padding: EdgeInsets.only(
-                              top: 16.h,
+                              top: 19.h,
                               left: 10,
                               right: 10,
                             ),
@@ -175,6 +175,7 @@ class _MovieContentState extends State<MovieContent> {
                   ),
                   AppBarMovie(
                     showSearch: false,
+                    top: 2.h,
                     onFavorite: () {},
                   ),
                 ],

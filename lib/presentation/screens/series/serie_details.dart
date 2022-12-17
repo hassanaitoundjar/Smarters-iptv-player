@@ -182,6 +182,7 @@ class _SerieContentState extends State<SerieContent> {
                   ),
                   AppBarSeries(
                     showSearch: false,
+                    top: 3.h,
                     onFavorite: () {},
                   ),
                 ],

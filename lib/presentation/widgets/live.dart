@@ -60,17 +60,19 @@ class AppBarLive extends StatelessWidget {
 }
 
 class AppBarMovie extends StatelessWidget {
-  const AppBarMovie({Key? key, this.showSearch = true, this.onFavorite})
+  const AppBarMovie(
+      {Key? key, this.showSearch = true, this.onFavorite, this.top})
       : super(key: key);
   final bool showSearch;
   final Function()? onFavorite;
+  final double? top;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: 100.w,
-      height: 11.h,
-      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 3.h),
+      color: Colors.transparent,
+      margin: EdgeInsets.symmetric(horizontal: 10, vertical: top ?? 2.h),
       child: Material(
         color: Colors.transparent,
         child: Row(
@@ -135,15 +137,18 @@ class AppBarMovie extends StatelessWidget {
 }
 
 class AppBarSeries extends StatelessWidget {
-  const AppBarSeries({Key? key, this.showSearch = true, this.onFavorite})
+  const AppBarSeries(
+      {Key? key, this.showSearch = true, this.onFavorite, this.top})
       : super(key: key);
   final bool showSearch;
   final Function()? onFavorite;
+  final double? top;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 4.h, left: 10, right: 10),
+      color: Colors.transparent,
+      margin: EdgeInsets.only(top: top ?? 4.h, left: 10, right: 10),
       child: Material(
         color: Colors.transparent,
         child: Row(
