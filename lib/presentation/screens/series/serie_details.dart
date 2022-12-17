@@ -49,10 +49,18 @@ class _SerieContentState extends State<SerieContent> {
 
                         final movie = snapshot.data;
 
+                        List<String> seasons = [];
+                        if (movie!.episodes != null &&
+                            movie.episodes!.isNotEmpty) {
+                          movie.episodes!.forEach((k, v) {
+                            seasons.add(k);
+                          });
+                        }
+
                         return Stack(
                           children: [
                             CardMovieImagesBackground(
-                              listImages: movie!.info!.backdropPath ?? [],
+                              listImages: movie.info!.backdropPath ?? [],
                             ),
                             Padding(
                               padding: EdgeInsets.only(
