@@ -7,6 +7,7 @@ import 'package:mbark_iptv/repository/models/channel_movie.dart';
 
 import '../models/category.dart';
 import '../models/channelLive.dart';
+import '../models/channel_serie.dart';
 import '../models/movie_detail.dart';
 import '../models/user.dart';
 

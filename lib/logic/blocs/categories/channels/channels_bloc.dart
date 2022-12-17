@@ -5,6 +5,7 @@ import 'package:meta/meta.dart';
 
 import '../../../../repository/api/api.dart';
 import '../../../../repository/models/channelLive.dart';
+import '../../../../repository/models/channel_serie.dart';
 
 part 'channels_event.dart';
 part 'channels_state.dart';
@@ -21,6 +22,9 @@ class ChannelsBloc extends Bloc<ChannelsEvent, ChannelsState> {
       } else if (event.typeCategory == TypeCategory.movies) {
         final result = await api.getMovieChannels(event.catyId);
         emit(ChannelsMovieSuccess(result));
+      } else if (event.typeCategory == TypeCategory.series) {
+        final result = await api.getSeriesChannels(event.catyId);
+        emit(ChannelsSeriesSuccess(result));
       }
     });
   }

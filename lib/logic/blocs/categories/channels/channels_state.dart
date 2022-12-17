@@ -14,3 +14,8 @@ class ChannelsMovieSuccess extends ChannelsState {
   final List<ChannelMovie> channels;
   ChannelsMovieSuccess(this.channels);
 }
+
+class ChannelsSeriesSuccess extends ChannelsState {
+  final List<ChannelSerie> channels;
+  ChannelsSeriesSuccess(this.channels);
+}

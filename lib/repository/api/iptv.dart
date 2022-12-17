@@ -148,4 +148,42 @@ class IpTvApi {
       return null;
     }
   }
+
+  /// Channels Series
+  Future<List<ChannelSerie>> getSeriesChannels(String catyId) async {
+    try {
+      final user = await LocaleApi.getUser();
+
+      if (user == null) {
+        debugPrint("User is Null");
+        return [];
+      }
+
+      var url = "${user.serverInfo!.serverUrl}/player_api.php";
+
+      Response<String> response = await _dio.get(
+        url,
+        queryParameters: {
+          "password": user.userInfo!.password,
+          "username": user.userInfo!.username,
+          "action": "get_series",
+          "category_id": catyId
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> json = jsonDecode(response.data ?? "[]");
+
+        final list = json.map((e) => ChannelSerie.fromJson(e)).toList();
+        //TODO: save list to locale
+
+        return list;
+      }
+
+      return [];
+    } catch (e) {
+      debugPrint("Error Channel Series $catyId: $e");
+      return [];
+    }
+  }
 }

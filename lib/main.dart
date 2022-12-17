@@ -11,6 +11,7 @@ import 'logic/blocs/auth/auth_bloc.dart';
 import 'logic/blocs/categories/channels/channels_bloc.dart';
 import 'logic/blocs/categories/live_caty/live_caty_bloc.dart';
 import 'logic/blocs/categories/movie_caty/movie_caty_bloc.dart';
+import 'logic/blocs/categories/series_caty/series_caty_bloc.dart';
 import 'logic/cubits/video/video_cubit.dart';
 import 'presentation/screens/screens.dart';
 
@@ -63,6 +64,9 @@ class _MyAppState extends State<MyApp> {
         BlocProvider<MovieCatyBloc>(
           create: (BuildContext context) => MovieCatyBloc(widget.iptv),
         ),
+        BlocProvider<SeriesCatyBloc>(
+          create: (BuildContext context) => SeriesCatyBloc(widget.iptv),
+        ),
         BlocProvider<VideoCubit>(
           create: (BuildContext context) => VideoCubit(),
         ),
@@ -84,6 +88,9 @@ class _MyAppState extends State<MyApp> {
               GetPage(
                   name: screenMovieCategories,
                   page: () => const MovieCategoriesScreen()),
+              GetPage(
+                  name: screenSeriesCategories,
+                  page: () => const SeriesCategoriesScreen()),
             ],
           );
         },

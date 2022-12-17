@@ -8,3 +8,4 @@ const String screenMovies = "/movies";
 const String screenSeries = "/series";
 const String screenLiveCategories = "/categories-live";
 const String screenMovieCategories = "/categories-movie";
+const String screenSeriesCategories = "/categories-series";

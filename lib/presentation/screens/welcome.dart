@@ -78,11 +78,24 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     ),
                     SizedBox(width: 2.w),
                     Expanded(
-                      child: CardWelcomeTv(
-                        title: "Series",
-                        subTitle: "1244 Channels",
-                        icon: kIconSeries,
-                        onTap: () {},
+                      child: BlocBuilder<SeriesCatyBloc, SeriesCatyState>(
+                        builder: (context, state) {
+                          if (state is SeriesCatyLoading) {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          } else if (state is SeriesCatySuccess) {
+                            return CardWelcomeTv(
+                              title: "Series",
+                              subTitle: "${state.categories.length} Channels",
+                              icon: kIconSeries,
+                              onTap: () {
+                                Get.toNamed(screenSeriesCategories);
+                              },
+                            );
+                          }
+
+                          return const Text('could not load series');
+                        },
                       ),
                     ),
                     SizedBox(width: 2.w),
