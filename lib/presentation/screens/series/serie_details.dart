@@ -26,169 +26,163 @@ class _SerieContentState extends State<SerieContent> {
           builder: (context, state) {
             if (state is AuthSuccess) {
               final userAuth = state.user;
-              return Column(
+              return Stack(
                 children: [
+                  FutureBuilder<SerieDetails?>(
+                    future: future,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else if (!snapshot.hasData) {
+                        return const Center(
+                          child: Text("Could not load data"),
+                        );
+                      }
+
+                      final movie = snapshot.data;
+
+                      List<String> seasons = [];
+                      if (movie!.episodes != null &&
+                          movie.episodes!.isNotEmpty) {
+                        movie.episodes!.forEach((k, v) {
+                          seasons.add(k);
+                        });
+                      }
+
+                      return Stack(
+                        children: [
+                          CardMovieImagesBackground(
+                            listImages: movie.info!.backdropPath ?? [],
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(
+                              top: 20.h,
+                              left: 10,
+                              right: 10,
+                            ),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                CardMovieImageRate(
+                                  image: movie.info!.cover ?? "",
+                                  rate: movie.info!.rating ?? "0",
+                                ),
+                                SizedBox(width: 3.w),
+                                Expanded(
+                                  child: SingleChildScrollView(
+                                    padding: const EdgeInsets.only(bottom: 15),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.stretch,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          movie.info!.name ?? "",
+                                          style: Get.textTheme.headline3,
+                                        ),
+                                        const SizedBox(height: 15),
+                                        Wrap(
+                                          // crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            CardInfoMovie(
+                                              icon:
+                                                  FontAwesomeIcons.clapperboard,
+                                              hint: 'Director',
+                                              title: movie.info!.director ?? "",
+                                            ),
+                                            CardInfoMovie(
+                                              icon:
+                                                  FontAwesomeIcons.calendarDay,
+                                              hint: 'Release Date',
+                                              title: movie.info!.releaseDate ??
+                                                  "N/a",
+                                            ),
+                                            CardInfoMovie(
+                                              icon: FontAwesomeIcons.users,
+                                              hint: 'Cast',
+                                              isShowMore: true,
+                                              title: movie.info!.cast ?? "",
+                                            ),
+                                            CardInfoMovie(
+                                              icon: FontAwesomeIcons.film,
+                                              hint: 'Genre:',
+                                              isShowMore: true,
+                                              title: movie.info!.genre ?? "",
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 15),
+                                        CardInfoMovie(
+                                          icon: FontAwesomeIcons
+                                              .solidClosedCaptioning,
+                                          hint: 'Plot:',
+                                          title: movie.info!.plot ?? "",
+                                          isShowMore: true,
+                                        ),
+                                        const SizedBox(height: 15),
+                                        Row(
+                                          children: [
+                                            if (movie.info!.youtubeTrailer !=
+                                                    null &&
+                                                movie.info!.youtubeTrailer!
+                                                    .isNotEmpty)
+                                              CardButtonWatchMovie(
+                                                title: "watch trailer",
+                                                onTap: () {
+                                                  showDialog(
+                                                      context: context,
+                                                      builder: (builder) =>
+                                                          DialogTrailerYoutube(
+                                                              thumb: movie
+                                                                      .info!
+                                                                      .backdropPath!
+                                                                      .isNotEmpty
+                                                                  ? movie
+                                                                      .info!
+                                                                      .backdropPath!
+                                                                      .first
+                                                                  : null,
+                                                              trailer: movie
+                                                                      .info!
+                                                                      .youtubeTrailer ??
+                                                                  ""));
+                                                },
+                                              ),
+                                            if (movie.info!.youtubeTrailer !=
+                                                    null &&
+                                                movie.info!.youtubeTrailer!
+                                                    .isNotEmpty)
+                                              SizedBox(width: 3.w),
+                                            CardButtonWatchMovie(
+                                              title: "watch Now",
+                                              isFocused: true,
+                                              onTap: () {
+                                                /*    final link =
+                                                    "${userAuth.serverInfo!.serverUrl}/movie/${userAuth.userInfo!.username}/${userAuth.userInfo!.password}/${movie.movieData!.streamId}.${movie.movieData!.containerExtension}";
+
+                                                Get.to(() => FullVideoScreen(
+                                                    link: link));*/
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
                   AppBarSeries(
                     showSearch: false,
                     onFavorite: () {},
-                  ),
-                  Expanded(
-                    child: FutureBuilder<SerieDetails?>(
-                      future: future,
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        } else if (!snapshot.hasData) {
-                          return const Center(
-                            child: Text("Could not load data"),
-                          );
-                        }
-
-                        final movie = snapshot.data;
-
-                        List<String> seasons = [];
-                        if (movie!.episodes != null &&
-                            movie.episodes!.isNotEmpty) {
-                          movie.episodes!.forEach((k, v) {
-                            seasons.add(k);
-                          });
-                        }
-
-                        return Stack(
-                          children: [
-                            CardMovieImagesBackground(
-                              listImages: movie.info!.backdropPath ?? [],
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                top: 3.h,
-                                left: 10,
-                                right: 10,
-                              ),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  CardMovieImageRate(
-                                    image: movie.info!.cover ?? "",
-                                    rate: movie.info!.rating ?? "0",
-                                  ),
-                                  SizedBox(width: 3.w),
-                                  Expanded(
-                                    child: SingleChildScrollView(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 15),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.stretch,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            movie.info!.name ?? "",
-                                            style: Get.textTheme.headline3,
-                                          ),
-                                          const SizedBox(height: 15),
-                                          Wrap(
-                                            // crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              CardInfoMovie(
-                                                icon: FontAwesomeIcons
-                                                    .clapperboard,
-                                                hint: 'Director',
-                                                title:
-                                                    movie.info!.director ?? "",
-                                              ),
-                                              CardInfoMovie(
-                                                icon: FontAwesomeIcons
-                                                    .calendarDay,
-                                                hint: 'Release Date',
-                                                title:
-                                                    movie.info!.releaseDate ??
-                                                        "N/a",
-                                              ),
-                                              CardInfoMovie(
-                                                icon: FontAwesomeIcons.users,
-                                                hint: 'Cast',
-                                                isShowMore: true,
-                                                title: movie.info!.cast ?? "",
-                                              ),
-                                              CardInfoMovie(
-                                                icon: FontAwesomeIcons.film,
-                                                hint: 'Genre:',
-                                                isShowMore: true,
-                                                title: movie.info!.genre ?? "",
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(height: 15),
-                                          CardInfoMovie(
-                                            icon: FontAwesomeIcons
-                                                .solidClosedCaptioning,
-                                            hint: 'Plot:',
-                                            title: movie.info!.plot ?? "",
-                                            isShowMore: true,
-                                          ),
-                                          const SizedBox(height: 15),
-                                          Row(
-                                            children: [
-                                              if (movie.info!.youtubeTrailer !=
-                                                      null &&
-                                                  movie.info!.youtubeTrailer!
-                                                      .isNotEmpty)
-                                                CardButtonWatchMovie(
-                                                  title: "watch trailer",
-                                                  onTap: () {
-                                                    showDialog(
-                                                        context: context,
-                                                        builder: (builder) =>
-                                                            DialogTrailerYoutube(
-                                                                thumb: movie
-                                                                        .info!
-                                                                        .backdropPath!
-                                                                        .isNotEmpty
-                                                                    ? movie
-                                                                        .info!
-                                                                        .backdropPath!
-                                                                        .first
-                                                                    : null,
-                                                                trailer: movie
-                                                                        .info!
-                                                                        .youtubeTrailer ??
-                                                                    ""));
-                                                  },
-                                                ),
-                                              if (movie.info!.youtubeTrailer !=
-                                                      null &&
-                                                  movie.info!.youtubeTrailer!
-                                                      .isNotEmpty)
-                                                SizedBox(width: 3.w),
-                                              CardButtonWatchMovie(
-                                                title: "watch Now",
-                                                isFocused: true,
-                                                onTap: () {
-                                                  /*    final link =
-                                                      "${userAuth.serverInfo!.serverUrl}/movie/${userAuth.userInfo!.username}/${userAuth.userInfo!.password}/${movie.movieData!.streamId}.${movie.movieData!.containerExtension}";
-
-                                                  Get.to(() => FullVideoScreen(
-                                                      link: link));*/
-                                                },
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        );
-                      },
-                    ),
                   ),
                 ],
               );
