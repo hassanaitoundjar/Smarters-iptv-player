@@ -341,7 +341,13 @@ class CardEpisodeItem extends StatelessWidget {
                 },
                 errorWidget: (_, i, e) {
                   return Container(
-                    color: Colors.grey,
+                    decoration: kDecorBackground,
+                    child: const Center(
+                      child: Icon(
+                        FontAwesomeIcons.image,
+                        color: Colors.white30,
+                      ),
+                    ),
                   );
                 },
               ),
