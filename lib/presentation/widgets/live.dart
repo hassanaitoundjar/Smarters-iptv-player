@@ -7,7 +7,7 @@ class AppBarLive extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 100.w,
-      height: 11.h,
+      color: Colors.transparent,
       margin: const EdgeInsets.symmetric(horizontal: 10),
       child: Row(
         children: [

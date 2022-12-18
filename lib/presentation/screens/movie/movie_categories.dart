@@ -8,14 +8,60 @@ class MovieCategoriesScreen extends StatefulWidget {
 }
 
 class _MovieCategoriesScreenState extends State<MovieCategoriesScreen> {
+  final ScrollController _hideButtonController = ScrollController();
+  bool _hideButton = true;
+
+  @override
+  void initState() {
+    _hideButtonController.addListener(() {
+      if (_hideButtonController.position.userScrollDirection ==
+          ScrollDirection.reverse) {
+        if (_hideButton == true) {
+          setState(() {
+            _hideButton = false;
+          });
+        }
+      } else {
+        if (_hideButtonController.position.userScrollDirection ==
+            ScrollDirection.forward) {
+          if (_hideButton == false) {
+            setState(() {
+              _hideButton = true;
+            });
+          }
+        }
+      }
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: Visibility(
+        visible: !_hideButton,
+        child: FloatingActionButton(
+          onPressed: () {
+            setState(() {
+              _hideButtonController.animateTo(0,
+                  duration: const Duration(milliseconds: 400),
+                  curve: Curves.ease);
+              _hideButton = true;
+            });
+          },
+          backgroundColor: kColorPrimaryDark,
+          child: const Icon(
+            FontAwesomeIcons.chevronUp,
+            color: Colors.white,
+          ),
+        ),
+      ),
       body: Ink(
         width: 100.w,
         height: 100.h,
         decoration: kDecorBackground,
         child: NestedScrollView(
+          controller: _hideButtonController,
           headerSliverBuilder: (_, ch) {
             return [
               const SliverAppBar(
