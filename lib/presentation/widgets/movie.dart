@@ -236,7 +236,7 @@ class CardMovieImagesBackground extends StatefulWidget {
 class _CardMovieImagesBackgroundState extends State<CardMovieImagesBackground> {
   late bool isNotEmpty;
   late int sizeList;
-  int indexImage = 1;
+  int indexImage = 0;
 
   _runAnimation() async {
     await Future.delayed(const Duration(seconds: 5));
@@ -275,6 +275,7 @@ class _CardMovieImagesBackgroundState extends State<CardMovieImagesBackground> {
       children: [
         AnimatedSwitcher(
           duration: const Duration(seconds: 3),
+          switchInCurve: Curves.easeIn,
           child: CachedNetworkImage(
             width: 100.w,
             height: 100.h,
@@ -340,12 +341,15 @@ class CardEpisodeItem extends StatelessWidget {
                   );
                 },
                 errorWidget: (_, i, e) {
-                  return Container(
-                    decoration: kDecorBackground,
-                    child: const Center(
-                      child: Icon(
-                        FontAwesomeIcons.image,
-                        color: Colors.white30,
+                  return Opacity(
+                    opacity: .7,
+                    child: Container(
+                      decoration: kDecorBackground,
+                      child: const Center(
+                        child: Icon(
+                          FontAwesomeIcons.image,
+                          color: Colors.white24,
+                        ),
                       ),
                     ),
                   );
