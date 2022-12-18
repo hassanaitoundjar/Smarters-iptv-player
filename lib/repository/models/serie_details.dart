@@ -155,7 +155,7 @@ class Episode {
   final String? episodeNum;
   final String? title;
   final String? containerExtension;
-  final InfoSerie? info;
+  final InfoEpisode? info;
   final String? customSid;
   final String? added;
   final String? season;
@@ -179,7 +179,7 @@ class Episode {
         title = json['title'] as String?,
         containerExtension = json['container_extension'].toString(),
         info = (json['info'] as Map<String, dynamic>?) != null
-            ? InfoSerie.fromJson(json['info'] as Map<String, dynamic>)
+            ? InfoEpisode.fromJson(json['info'] as Map<String, dynamic>)
             : null,
         customSid = json['custom_sid'].toString(),
         added = json['added'].toString(),

@@ -303,3 +303,159 @@ class _CardMovieImagesBackgroundState extends State<CardMovieImagesBackground> {
     );
   }
 }
+
+///Serie
+class CardEpisodeItem extends StatelessWidget {
+  const CardEpisodeItem(
+      {Key? key,
+      required this.episode,
+      required this.isSelected,
+      required this.onFocused,
+      required this.onTap})
+      : super(key: key);
+  final Episode? episode;
+  final bool isSelected;
+  final Function(bool) onFocused;
+  final Function() onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      child: InkWell(
+        onTap: onTap,
+        onFocusChange: onFocused,
+        child: Row(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(15),
+              child: CachedNetworkImage(
+                width: isSelected ? 26.w : 25.w,
+                height: isSelected ? 35.h : 34.h,
+                imageUrl: episode!.info!.movieImage ?? "",
+                fit: BoxFit.cover,
+                placeholder: (_, i) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                },
+                errorWidget: (_, i, e) {
+                  return Container(
+                    color: Colors.grey,
+                  );
+                },
+              ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    episode!.info!.name ?? "",
+                    maxLines: 1,
+                    style: Get.textTheme.headline4!.copyWith(
+                      fontSize: isSelected ? 18.sp : 17.sp,
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    episode!.info!.plot ?? "",
+                    maxLines: 3,
+                    style: Get.textTheme.subtitle1!.copyWith(
+                      color: Colors.grey.shade400,
+                      fontSize: 15.sp,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    children: [
+                      Icon(
+                        FontAwesomeIcons.clock,
+                        color: Colors.grey.shade400,
+                        size: 16.sp,
+                      ),
+                      const SizedBox(width: 5),
+                      Text(
+                        getDurationMovie(episode!.info!.duration),
+                        maxLines: 3,
+                        style: Get.textTheme.subtitle1!.copyWith(
+                          color: Colors.grey.shade400,
+                          fontSize: 15.sp,
+                        ),
+                      ),
+                      const Spacer(flex: 2),
+                      Icon(
+                        FontAwesomeIcons.circlePlay,
+                        color: isSelected ? Colors.white : Colors.grey.shade400,
+                        size: isSelected ? 17.sp : 16.sp,
+                      ),
+                      const SizedBox(width: 5),
+                      Text(
+                        "Play",
+                        maxLines: 3,
+                        style: Get.textTheme.subtitle1!.copyWith(
+                          color:
+                              isSelected ? Colors.white : Colors.grey.shade400,
+                          fontSize: isSelected ? 16.sp : 15.sp,
+                        ),
+                      ),
+                      const Spacer(),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class CardSeasonItem extends StatelessWidget {
+  const CardSeasonItem({
+    Key? key,
+    required this.number,
+    required this.isSelected,
+    required this.onFocused,
+    required this.onTap,
+  }) : super(key: key);
+  final String number;
+  final bool isSelected;
+  final Function(bool) onFocused;
+  final Function() onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      onFocusChange: onFocused,
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 8),
+        child: Row(
+          children: [
+            Container(
+              width: 2,
+              height: 9.h,
+              decoration: BoxDecoration(
+                color: isSelected ? kColorFocus : Colors.transparent,
+                borderRadius: BorderRadius.circular(5),
+              ),
+            ),
+            SizedBox(width: isSelected ? 15 : 10),
+            Text(
+              '$number SEASONS',
+              style: isSelected
+                  ? Get.textTheme.headline4
+                  : Get.textTheme.subtitle1!.copyWith(
+                      color: Colors.grey.shade500,
+                      fontSize: 17.sp,
+                    ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

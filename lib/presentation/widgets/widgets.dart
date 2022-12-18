@@ -11,6 +11,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../helpers/helpers.dart';
 import '../../logic/blocs/auth/auth_bloc.dart';
 import '../../logic/cubits/video/video_cubit.dart';
+import '../../repository/models/serie_details.dart';
 
 part 'dialog.dart';
 part 'live.dart';

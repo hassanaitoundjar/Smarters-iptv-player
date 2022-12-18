@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
@@ -25,6 +26,7 @@ part 'movie/movie_details.dart';
 part 'player/full_video.dart';
 part 'player/player_video.dart';
 part 'series/serie_details.dart';
+part 'series/serie_seasons.dart';
 part 'series/series_categories.dart';
 part 'series/series_channels.dart';
 part 'user/register.dart';
