@@ -15,17 +15,16 @@ class _DialogTrailerYoutubeState extends State<DialogTrailerYoutube> {
 
   @override
   void initState() {
+    super.initState();
     controller = PodPlayerController(
       playVideoFrom: PlayVideoFrom.youtube(
         'https://youtu.be/${widget.trailer}',
       ),
       podPlayerConfig: const PodPlayerConfig(
-        autoPlay: true,
+        autoPlay: false,
         isLooping: false,
       ),
     )..initialise();
-
-    super.initState();
   }
 
   @override
