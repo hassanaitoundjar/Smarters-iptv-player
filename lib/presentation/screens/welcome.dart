@@ -118,7 +118,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                           CardWelcomeSetting(
                             title: 'Settings',
                             icon: FontAwesomeIcons.gear,
-                            onTap: () {},
+                            onTap: () {
+                              Get.toNamed(screenSettings);
+                            },
                           ),
                         ],
                       ),

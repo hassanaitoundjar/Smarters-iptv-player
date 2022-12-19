@@ -30,5 +30,6 @@ part 'series/serie_seasons.dart';
 part 'series/series_categories.dart';
 part 'series/series_channels.dart';
 part 'user/register.dart';
+part 'user/settings.dart';
 part 'user/splash.dart';
 part 'welcome.dart';

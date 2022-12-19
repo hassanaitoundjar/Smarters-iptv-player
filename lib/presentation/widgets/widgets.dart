@@ -16,4 +16,5 @@ import '../../repository/models/serie_details.dart';
 part 'dialog.dart';
 part 'live.dart';
 part 'movie.dart';
+part 'user.dart';
 part 'welcome.dart';
