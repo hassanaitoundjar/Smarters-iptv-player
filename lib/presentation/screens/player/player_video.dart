@@ -69,112 +69,117 @@ class _PlayerScreenState extends State<PlayerScreen> {
         ),
       );
     }
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        VlcPlayer(
-          controller: widget.controller!,
-          aspectRatio: 16 / 9,
-          placeholder: const Center(child: CircularProgressIndicator()),
-        ),
+    return Container(
+      color: Colors.black,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          VlcPlayer(
+            controller: widget.controller!,
+            aspectRatio: 16 / 9,
+            placeholder: const Center(child: CircularProgressIndicator()),
+          ),
 
-        ///Controllers
-        BlocBuilder<VideoCubit, VideoState>(
-          builder: (context, state) {
-            if (!state.isFull) {
-              return const SizedBox();
-            }
+          ///Controllers
+          BlocBuilder<VideoCubit, VideoState>(
+            builder: (context, state) {
+              if (!state.isFull) {
+                return const SizedBox();
+              }
 
-            return AnimatedSwitcher(
-              duration: const Duration(milliseconds: 400),
-              child: !showControllersVideo
-                  ? const SizedBox()
-                  : Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 10),
-                          child: IconButton(
-                            focusColor: kColorFocus,
-                            onPressed: () {
-                              context.read<VideoCubit>().changeUrlVideo(false);
-                              //Get.back();
-                            },
-                            icon: const Icon(FontAwesomeIcons.chevronRight),
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            IconButton(
+              return AnimatedSwitcher(
+                duration: const Duration(milliseconds: 400),
+                child: !showControllersVideo
+                    ? const SizedBox()
+                    : Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            child: IconButton(
                               focusColor: kColorFocus,
                               onPressed: () {
-                                setState(() {
-                                  if (isPlayed) {
-                                    widget.controller!.pause();
-                                    isPlayed = false;
-                                  } else {
-                                    widget.controller!.play();
-                                    isPlayed = true;
-                                  }
-                                });
+                                context
+                                    .read<VideoCubit>()
+                                    .changeUrlVideo(false);
+                                //Get.back();
                               },
-                              icon: Icon(
-                                isPlayed
-                                    ? FontAwesomeIcons.pause
-                                    : FontAwesomeIcons.play,
-                                size: 20.sp,
-                              ),
+                              icon: const Icon(FontAwesomeIcons.chevronRight),
                             ),
-                            Expanded(
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Text(
-                                    position,
-                                    style: Get.textTheme.subtitle2!.copyWith(
-                                      fontSize: 15.sp,
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Slider(
-                                      activeColor: Colors.redAccent,
-                                      inactiveColor: Colors.white70,
-                                      value: sliderValue,
-                                      min: 0.0,
-                                      max: (!validPosition &&
-                                              widget.controller!.value
-                                                      .duration ==
-                                                  null)
-                                          ? 1.0
-                                          : widget.controller!.value.duration
-                                              .inSeconds
-                                              .toDouble(),
-                                      onChanged: validPosition
-                                          ? _onSliderPositionChanged
-                                          : null,
-                                    ),
-                                  ),
-                                  Text(
-                                    duration,
-                                    style: Get.textTheme.subtitle2!.copyWith(
-                                      fontSize: 15.sp,
-                                    ),
-                                  ),
-                                ],
+                          ),
+                          Row(
+                            children: [
+                              IconButton(
+                                focusColor: kColorFocus,
+                                onPressed: () {
+                                  setState(() {
+                                    if (isPlayed) {
+                                      widget.controller!.pause();
+                                      isPlayed = false;
+                                    } else {
+                                      widget.controller!.play();
+                                      isPlayed = true;
+                                    }
+                                  });
+                                },
+                                icon: Icon(
+                                  isPlayed
+                                      ? FontAwesomeIcons.pause
+                                      : FontAwesomeIcons.play,
+                                  size: 20.sp,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-            );
-          },
-        ),
-      ],
+                              Expanded(
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Text(
+                                      position,
+                                      style: Get.textTheme.subtitle2!.copyWith(
+                                        fontSize: 15.sp,
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Slider(
+                                        activeColor: Colors.redAccent,
+                                        inactiveColor: Colors.white70,
+                                        value: sliderValue,
+                                        min: 0.0,
+                                        max: (!validPosition &&
+                                                widget.controller!.value
+                                                        .duration ==
+                                                    null)
+                                            ? 1.0
+                                            : widget.controller!.value.duration
+                                                .inSeconds
+                                                .toDouble(),
+                                        onChanged: validPosition
+                                            ? _onSliderPositionChanged
+                                            : null,
+                                      ),
+                                    ),
+                                    Text(
+                                      duration,
+                                      style: Get.textTheme.subtitle2!.copyWith(
+                                        fontSize: 15.sp,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 }

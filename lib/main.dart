@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:mbark_iptv/repository/api/api.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 import 'helpers/helpers.dart';
 import 'logic/blocs/auth/auth_bloc.dart';
@@ -18,10 +19,19 @@ import 'presentation/screens/screens.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
-  runApp(MyApp(
-    iptv: IpTvApi(),
-    authApi: AuthApi(),
-  ));
+  await SentryFlutter.init(
+    (options) {
+      options.dsn =
+          'https://c02f199280584f7fac1c049965f25427@o4504351469404160.ingest.sentry.io/4504351471435776';
+      // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
+      // We recommend adjusting this value in production.
+      options.tracesSampleRate = 1.0;
+    },
+    appRunner: () => runApp(MyApp(
+      iptv: IpTvApi(),
+      authApi: AuthApi(),
+    )),
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -36,16 +46,10 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   void initState() {
+    super.initState();
     //Enable FullScreen
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
     /*SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values); to disable full screen mode*/
-    //change portrait mobile
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight,
-    ]);
-
-    super.initState();
   }
 
   @override

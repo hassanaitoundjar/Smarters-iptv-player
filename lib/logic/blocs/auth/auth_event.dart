@@ -4,9 +4,11 @@ part of 'auth_bloc.dart';
 abstract class AuthEvent {}
 
 class AuthRegister extends AuthEvent {
-  //user parms
+  final String username;
+  final String password;
+  final String domain;
+
+  AuthRegister(this.username, this.password, this.domain);
 }
 
-class AuthGetUser extends AuthEvent {
-  //user parms
-}
+class AuthGetUser extends AuthEvent {}
