@@ -15,20 +15,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthRegister>((event, emit) async {
       emit(AuthLoading());
 
-      debugPrint("register user");
-      final user = await authApi.registerUser(
+      /*   final user = await authApi.registerUser(
         event.username,
         event.password,
         event.domain,
         "test",
-      );
-
-      /* final user = await authApi.registerUser(
-        "PPMHVZ1UXR",
-        "5WLFXT3KXT",
-        "http://line.ottcst.com:80",
-        "test",
       );*/
+
+      final user = await authApi.registerUser(
+        "137d8e0a0c",
+        "eaf35bc652",
+        "http://line.ottcdn.net:80",
+        "test",
+      );
 
       if (user != null) {
         changeDeviceOrient();
