@@ -53,7 +53,7 @@ class _DialogTrailerYoutubeState extends State<DialogTrailerYoutube> {
                   circleHandlerColor: kColorPrimary,
                   playingBarColor: kColorPrimary,
                 ),
-                videoThumbnail: widget.thumb == null && widget.thumb!.isEmpty
+                videoThumbnail: widget.thumb == null
                     ? null
                     : DecorationImage(
                         image: NetworkImage(widget.thumb ?? ""),

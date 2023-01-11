@@ -175,7 +175,9 @@ class IpTvApi {
       );
 
       if (response.statusCode == 200) {
+        // log(response.data.toString());
         final json = jsonDecode(response.data ?? "[]");
+
         final movie = MovieDetail.fromJson(json);
         return movie;
       }
