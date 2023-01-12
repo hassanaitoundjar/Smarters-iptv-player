@@ -65,7 +65,7 @@ class _LiveCategoriesScreenState extends State<LiveCategoriesScreen> {
           controller: _hideButtonController,
           headerSliverBuilder: (_, ch) {
             return [
-              SliverAppBar(
+              const SliverAppBar(
                 automaticallyImplyLeading: false,
                 elevation: 0,
                 backgroundColor: Colors.transparent,

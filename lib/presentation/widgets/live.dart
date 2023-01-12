@@ -1,7 +1,21 @@
 part of 'widgets.dart';
 
-class AppBarLive extends StatelessWidget {
+class AppBarLive extends StatefulWidget {
   const AppBarLive({Key? key}) : super(key: key);
+
+  @override
+  State<AppBarLive> createState() => _AppBarLiveState();
+}
+
+class _AppBarLiveState extends State<AppBarLive> {
+  bool showSearch = false;
+  final _search = TextEditingController();
+
+  @override
+  void dispose() {
+    _search.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,15 +47,46 @@ class AppBarLive extends StatelessWidget {
             color: kColorHint,
           ),
           Image(height: 9.h, image: const AssetImage(kIconLive)),
-          const Spacer(),
-          IconButton(
-            focusColor: kColorFocus,
-            onPressed: () {},
-            icon: const Icon(
-              FontAwesomeIcons.magnifyingGlass,
-              color: Colors.white,
-            ),
-          ),
+          const Spacer()
+          /*  showSearch
+              ? Expanded(
+                  child: Container(
+                    margin: const EdgeInsets.only(left: 15),
+                    child: TextField(
+                      controller: _search,
+                      onChanged: widget.onSearch,
+                      decoration: InputDecoration(
+                          hintText: "Search...",
+                          suffixIcon: IconButton(
+                            icon: const Icon(
+                              FontAwesomeIcons.xmark,
+                              color: Colors.white,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                showSearch = false;
+                                _search.clear();
+                              });
+                            },
+                          )),
+                    ),
+                  ),
+                )
+              : const Spacer(),
+          if (!showSearch)
+            IconButton(
+              focusColor: kColorFocus,
+              onPressed: () {
+                setState(() {
+                  showSearch = true;
+                });
+              },
+              icon: const Icon(
+                FontAwesomeIcons.magnifyingGlass,
+                color: Colors.white,
+              ),
+            ),*/
+          ,
           IconButton(
             focusColor: kColorFocus,
             onPressed: () {
@@ -100,7 +145,7 @@ class AppBarMovie extends StatelessWidget {
             ),
             Image(height: 9.h, image: const AssetImage(kIconMovies)),
             const Spacer(),
-            if (showSearch)
+            /*   if (showSearch)
               IconButton(
                 focusColor: kColorFocus,
                 onPressed: () {},
@@ -108,7 +153,7 @@ class AppBarMovie extends StatelessWidget {
                   FontAwesomeIcons.magnifyingGlass,
                   color: Colors.white,
                 ),
-              ),
+              ),*/
             if (onFavorite != null)
               IconButton(
                 focusColor: kColorFocus,
@@ -176,7 +221,7 @@ class AppBarSeries extends StatelessWidget {
             ),
             Image(height: 9.h, image: const AssetImage(kIconSeries)),
             const Spacer(),
-            if (showSearch)
+            /*if (showSearch)
               IconButton(
                 focusColor: kColorFocus,
                 onPressed: () {},
@@ -184,7 +229,7 @@ class AppBarSeries extends StatelessWidget {
                   FontAwesomeIcons.magnifyingGlass,
                   color: Colors.white,
                 ),
-              ),
+              ),*/
             if (onFavorite != null)
               IconButton(
                 focusColor: kColorFocus,
