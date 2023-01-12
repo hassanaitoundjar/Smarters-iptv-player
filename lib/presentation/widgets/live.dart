@@ -212,6 +212,60 @@ class AppBarSeries extends StatelessWidget {
   }
 }
 
+class AppBarSettings extends StatelessWidget {
+  const AppBarSettings({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 100.w,
+      color: Colors.transparent,
+      //  margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      child: Row(
+        children: [
+          Container(
+            width: 7.w,
+            height: 7.w,
+            decoration: kDecorIconCircle,
+            child: Icon(
+              FontAwesomeIcons.video,
+              color: Colors.white,
+              size: 18.sp,
+            ),
+          ),
+          const SizedBox(width: 5),
+          Text(
+            kAppName,
+            style: Get.textTheme.headline4,
+          ),
+          Container(
+            width: 1,
+            height: 8.h,
+            margin: const EdgeInsets.symmetric(horizontal: 13),
+            color: kColorHint,
+          ),
+          Icon(
+            FontAwesomeIcons.gear,
+            size: 22.sp,
+            color: Colors.white,
+          ),
+          const Spacer(),
+          IconButton(
+            focusColor: kColorFocus,
+            onPressed: () {
+              Get.back();
+            },
+            icon: const Icon(
+              FontAwesomeIcons.chevronRight,
+              color: Colors.white,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class CardLiveItem extends StatelessWidget {
   const CardLiveItem(
       {Key? key,

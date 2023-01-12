@@ -50,6 +50,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(AuthFailed("could not login!!"));
       }
     });
+
+    on<AuthLogOut>((event, emit) async {
+      await LocaleApi.logOut();
+      changeDeviceOrientBack();
+      emit(AuthFailed("LogOut"));
+    });
   }
 
   void changeDeviceOrient() {
@@ -57,6 +63,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight,
+    ]);
+  }
+
+  void changeDeviceOrientBack() {
+    //change portrait mobile
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.portraitUp,
     ]);
   }
 }

@@ -104,14 +104,16 @@ class _CardButtonWatchMovieState extends State<CardButtonWatchMovie> {
                     ],
                   ),
           ),
-          padding: EdgeInsets.symmetric(
+          padding: const EdgeInsets.symmetric(
             horizontal: 15,
             vertical: 8,
           ),
-          child: Text(
-            widget.title.toUpperCase(),
-            style:
-                isFocused ? Get.textTheme.headline4 : Get.textTheme.headline5,
+          child: Center(
+            child: Text(
+              widget.title.toUpperCase(),
+              style:
+                  isFocused ? Get.textTheme.headline4 : Get.textTheme.headline5,
+            ),
           ),
         ),
       ),

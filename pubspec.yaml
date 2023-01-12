@@ -26,12 +26,13 @@ dependencies:
   get: ^4.6.5
   intl: ^0.17.0
   get_storage: ^2.0.3
+  url_launcher: ^6.1.7
 
   #M3U
   #m3u_nullsafe: ^1.0.4
-  flutter_vlc_player: ^7.1.5
+  flutter_vlc_player: ^7.2.0
   pod_player: ^0.1.0
-  sentry_flutter: ^6.18.1
+  sentry_flutter: ^6.18.2
 
 
   #Http

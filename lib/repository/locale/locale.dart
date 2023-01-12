@@ -24,4 +24,15 @@ class LocaleApi {
       return null;
     }
   }
+
+  static Future<bool> logOut() async {
+    try {
+      await locale.remove("user");
+
+      return true;
+    } catch (e) {
+      debugPrint("Error LogOut User: $e");
+      return false;
+    }
+  }
 }
