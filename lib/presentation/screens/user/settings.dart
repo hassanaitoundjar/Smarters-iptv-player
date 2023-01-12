@@ -99,33 +99,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   ),
                                 ),
                               ),
-                              const SizedBox(height: 10),
-                              Row(
-                                children: [
-                                  Text(
-                                    'CreatedBy:',
-                                    style: Get.textTheme.subtitle2!.copyWith(
-                                      fontSize: 12.sp,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                  InkWell(
-                                    onTap: () async {
-                                      await launchUrlString(
-                                        "https://mouadzizi.me",
-                                        mode: LaunchMode.externalApplication,
-                                      );
-                                    },
-                                    child: Text(
-                                      ' @Azul Mouad',
-                                      style: Get.textTheme.subtitle2!.copyWith(
-                                        fontSize: 12.sp,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
                             ],
                           ),
                         ),
@@ -160,6 +133,34 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ),
                       ],
                     ),
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'CreatedBy:',
+                        style: Get.textTheme.subtitle2!.copyWith(
+                          fontSize: 12.sp,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () async {
+                          await launchUrlString(
+                            "https://mouadzizi.me",
+                            mode: LaunchMode.externalApplication,
+                          );
+                        },
+                        child: Text(
+                          ' @Azul Mouad',
+                          style: Get.textTheme.subtitle2!.copyWith(
+                            fontSize: 12.sp,
+                            color: Colors.blue,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               );
