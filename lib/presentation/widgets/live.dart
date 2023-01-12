@@ -25,15 +25,10 @@ class _AppBarLiveState extends State<AppBarLive> {
       margin: const EdgeInsets.symmetric(horizontal: 10),
       child: Row(
         children: [
-          Container(
-            width: 7.w,
-            height: 7.w,
-            decoration: kDecorIconCircle,
-            child: Icon(
-              FontAwesomeIcons.video,
-              color: Colors.white,
-              size: 18.sp,
-            ),
+          Image(
+            width: 0.3.dp,
+            height: 0.3.dp,
+            image: const AssetImage(kIconSplash),
           ),
           const SizedBox(width: 5),
           Text(
@@ -122,15 +117,10 @@ class AppBarMovie extends StatelessWidget {
         color: Colors.transparent,
         child: Row(
           children: [
-            Container(
-              width: 7.w,
-              height: 7.w,
-              decoration: kDecorIconCircle,
-              child: Icon(
-                FontAwesomeIcons.video,
-                color: Colors.white,
-                size: 18.sp,
-              ),
+            Image(
+              width: 0.3.dp,
+              height: 0.3.dp,
+              image: const AssetImage(kIconSplash),
             ),
             const SizedBox(width: 5),
             Text(
@@ -198,15 +188,10 @@ class AppBarSeries extends StatelessWidget {
         color: Colors.transparent,
         child: Row(
           children: [
-            Container(
-              width: 6.w,
-              height: 6.w,
-              decoration: kDecorIconCircle,
-              child: Icon(
-                FontAwesomeIcons.video,
-                color: Colors.white,
-                size: 18.sp,
-              ),
+            Image(
+              width: 0.3.dp,
+              height: 0.3.dp,
+              image: const AssetImage(kIconSplash),
             ),
             const SizedBox(width: 5),
             Text(
@@ -268,19 +253,14 @@ class AppBarSettings extends StatelessWidget {
       //  margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: Row(
         children: [
-          Container(
-            width: 7.w,
-            height: 7.w,
-            decoration: kDecorIconCircle,
-            child: Icon(
-              FontAwesomeIcons.video,
-              color: Colors.white,
-              size: 18.sp,
-            ),
+          Image(
+            width: 0.3.dp,
+            height: 0.3.dp,
+            image: const AssetImage(kIconSplash),
           ),
           const SizedBox(width: 5),
           Text(
-            kAppName,
+            "Settings",
             style: Get.textTheme.headline4,
           ),
           Container(
@@ -291,7 +271,7 @@ class AppBarSettings extends StatelessWidget {
           ),
           Icon(
             FontAwesomeIcons.gear,
-            size: 22.sp,
+            size: 20.sp,
             color: Colors.white,
           ),
           const Spacer(),

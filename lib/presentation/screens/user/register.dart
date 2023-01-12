@@ -52,6 +52,11 @@ class _RegisterUserState extends State<RegisterUser> {
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                Image(
+                  width: 0.55.dp,
+                  height: 0.55.dp,
+                  image: const AssetImage(kIconSplash),
+                ),
                 Center(
                   child: Container(
                     width: 90.w,
@@ -147,7 +152,10 @@ class _RegisterUserState extends State<RegisterUser> {
                       ),
                     ),
                     InkWell(
-                      onTap: () {},
+                      onTap: () async {
+                        await launchUrlString(kContact,
+                            mode: LaunchMode.externalApplication);
+                      },
                       child: Text(
                         'contact us',
                         style: Get.textTheme.headline5!.copyWith(

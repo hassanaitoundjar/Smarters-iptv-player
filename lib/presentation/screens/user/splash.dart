@@ -41,15 +41,10 @@ class _SplashScreenState extends State<SplashScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                width: 10.w,
-                height: 10.w,
-                decoration: kDecorIconCircle,
-                child: Icon(
-                  FontAwesomeIcons.video,
-                  color: Colors.white,
-                  size: 20.sp,
-                ),
+              Image(
+                width: 0.6.dp,
+                height: 0.6.dp,
+                image: const AssetImage(kIconSplash),
               ),
               const SizedBox(height: 10),
               Text(

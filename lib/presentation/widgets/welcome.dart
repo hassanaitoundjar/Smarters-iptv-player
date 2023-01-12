@@ -11,15 +11,10 @@ class AppBarWelcome extends StatelessWidget {
       // margin: EdgeInsets.symmetric(vertical: 7.h, horizontal: 15),
       child: Row(
         children: [
-          Container(
-            width: 7.w,
-            height: 7.w,
-            decoration: kDecorIconCircle,
-            child: Icon(
-              FontAwesomeIcons.video,
-              color: Colors.white,
-              size: 18.sp,
-            ),
+          Image(
+            width: 0.3.dp,
+            height: 0.3.dp,
+            image: const AssetImage(kIconSplash),
           ),
           const SizedBox(width: 5),
           Text(
