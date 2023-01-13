@@ -15,17 +15,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthRegister>((event, emit) async {
       emit(AuthLoading());
 
-      /*   final user = await authApi.registerUser(
+      final user = await authApi.registerUser(
         event.username,
         event.password,
         event.domain,
-        "test",
-      );*/
-
-      final user = await authApi.registerUser(
-        "137d8e0a0c",
-        "eaf35bc652",
-        "http://line.ottcdn.net:80",
         "test",
       );
 
