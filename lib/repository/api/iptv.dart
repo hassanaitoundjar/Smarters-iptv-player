@@ -212,6 +212,7 @@ class IpTvApi {
       );
 
       if (response.statusCode == 200) {
+        //log(response.data.toString());
         final json = jsonDecode(response.data ?? "");
         final serie = SerieDetails.fromJson(json);
         return serie;

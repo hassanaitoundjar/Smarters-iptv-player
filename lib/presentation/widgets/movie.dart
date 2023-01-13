@@ -314,10 +314,12 @@ class CardEpisodeItem extends StatelessWidget {
       required this.episode,
       required this.isSelected,
       required this.onFocused,
-      required this.onTap})
+      required this.onTap,
+      required this.index})
       : super(key: key);
   final Episode? episode;
   final bool isSelected;
+  final int index;
   final Function(bool) onFocused;
   final Function() onTap;
 
@@ -364,7 +366,7 @@ class CardEpisodeItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    episode!.info!.name ?? "",
+                    episode!.info!.name ?? "Episode $index",
                     maxLines: 1,
                     style: Get.textTheme.headline4!.copyWith(
                       fontSize: isSelected ? 18.sp : 17.sp,

@@ -176,11 +176,13 @@ class Episode {
   Episode.fromJson(Map<String, dynamic> json)
       : id = json['id'].toString(),
         episodeNum = json['episode_num'].toString(),
-        title = json['title'] as String?,
+        title = json['title'] == null ? null : json['title'].toString(),
         containerExtension = json['container_extension'].toString(),
-        info = (json['info'] as Map<String, dynamic>?) != null
-            ? InfoEpisode.fromJson(json['info'] as Map<String, dynamic>)
-            : null,
+        info = json['info'] != null && json['info'].runtimeType == List
+            ? null
+            : (json['info'] as Map<String, dynamic>?) != null
+                ? InfoEpisode.fromJson(json['info'] as Map<String, dynamic>)
+                : null,
         customSid = json['custom_sid'].toString(),
         added = json['added'].toString(),
         season = json['season'].toString(),
@@ -223,10 +225,10 @@ class InfoEpisode {
 
   InfoEpisode.fromJson(Map<String, dynamic> json)
       : movieImage = json['movie_image'].toString(),
-        plot = json['plot'].toString(),
+        plot = json['plot'] == null ? "" : json['plot'].toString(),
         releasedate = json['releasedate'].toString(),
         rating = json['rating'].toString(),
-        name = json['name'].toString(),
+        name = json['name'] == null ? null : json['name'].toString(),
         durationSecs = json['duration_secs'].toString(),
         duration = json['duration'].toString(),
         bitrate = json['bitrate'].toString();

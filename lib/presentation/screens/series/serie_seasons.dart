@@ -81,6 +81,7 @@ class _SerieSeasonsState extends State<SerieSeasons> {
 
                               return CardEpisodeItem(
                                 isSelected: selectedEpisode == i,
+                                index: i + 1,
                                 episode: model,
                                 onTap: () {
                                   setState(() {
