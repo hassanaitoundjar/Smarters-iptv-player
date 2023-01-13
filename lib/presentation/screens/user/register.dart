@@ -86,7 +86,7 @@ class _RegisterUserState extends State<RegisterUser> {
                                 Uri url = Uri.parse(txt);
                                 var parameters = url.queryParameters;
                                 var origin = url.origin;
-                                var host = url.host;
+                                // var host = url.host;
                                 var port = url.port;
 
                                 _username.text =

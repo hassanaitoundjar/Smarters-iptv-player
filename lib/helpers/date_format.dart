@@ -19,7 +19,7 @@ String getDurationMovie(String? time) {
       return "";
     }
 
-    List<String> list = time.split(":");
+    //  List<String> list = time.split(":");
     //debugPrint("time! $list");
 
     var date = DateTime.parse("2022-12-21 $time");

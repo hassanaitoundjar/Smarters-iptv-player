@@ -25,7 +25,7 @@ class _SerieContentState extends State<SerieContent> {
         child: BlocBuilder<AuthBloc, AuthState>(
           builder: (context, state) {
             if (state is AuthSuccess) {
-              final userAuth = state.user;
+              //  final userAuth = state.user;
               return Stack(
                 children: [
                   FutureBuilder<SerieDetails?>(

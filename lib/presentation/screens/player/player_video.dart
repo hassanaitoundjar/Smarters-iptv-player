@@ -149,14 +149,12 @@ class _PlayerScreenState extends State<PlayerScreen> {
                                         inactiveColor: Colors.white70,
                                         value: sliderValue,
                                         min: 0.0,
-                                        max: (!validPosition &&
-                                                widget.controller!.value
-                                                        .duration ==
-                                                    null)
-                                            ? 1.0
-                                            : widget.controller!.value.duration
-                                                .inSeconds
-                                                .toDouble(),
+                                        max:
+                                            (!validPosition) //&& widget.controller!.value.duration == null
+                                                ? 1.0
+                                                : widget.controller!.value
+                                                    .duration.inSeconds
+                                                    .toDouble(),
                                         onChanged: validPosition
                                             ? _onSliderPositionChanged
                                             : null,

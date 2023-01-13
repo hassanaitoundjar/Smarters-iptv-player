@@ -186,14 +186,12 @@ class _TestPlayerState extends State<TestPlayer> {
                                           inactiveColor: Colors.white70,
                                           value: sliderValue,
                                           min: 0.0,
-                                          max: (!validPosition &&
-                                                  _videoPlayerController
-                                                          .value.duration ==
-                                                      null)
-                                              ? 1.0
-                                              : _videoPlayerController
-                                                  .value.duration.inSeconds
-                                                  .toDouble(),
+                                          max:
+                                              (!validPosition) //&& widget.controller!.value.duration == null
+                                                  ? 1.0
+                                                  : _videoPlayerController
+                                                      .value.duration.inSeconds
+                                                      .toDouble(),
                                           onChanged: validPosition
                                               ? _onSliderPositionChanged
                                               : null,

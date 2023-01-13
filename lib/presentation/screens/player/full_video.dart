@@ -194,14 +194,14 @@ class _FullVideoScreenState extends State<FullVideoScreen> {
                                             inactiveColor: Colors.white70,
                                             value: sliderValue,
                                             min: 0.0,
-                                            max: (!validPosition &&
-                                                    _videoPlayerController
-                                                            .value.duration ==
-                                                        null)
-                                                ? 1.0
-                                                : _videoPlayerController
-                                                    .value.duration.inSeconds
-                                                    .toDouble(),
+                                            max:
+                                                (!validPosition) //&& _videoPlayerController.value.duration == null
+                                                    ? 1.0
+                                                    : _videoPlayerController
+                                                        .value
+                                                        .duration
+                                                        .inSeconds
+                                                        .toDouble(),
                                             onChanged: validPosition
                                                 ? _onSliderPositionChanged
                                                 : null,
