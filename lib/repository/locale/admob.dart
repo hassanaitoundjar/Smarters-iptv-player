@@ -5,11 +5,32 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 String kBanner = Platform.isAndroid
-    ? "ca-app-pub-3940256099942544/6300978111"
-    : "ca-app-pub-3940256099942544/2934735716";
+    ? "ca-app-pub-3940256099942544/6300978111" //TODO: Banner Android
+    : "ca-app-pub-3940256099942544/2934735716";//TODO: Banner IOS
 String kInterstitial = Platform.isAndroid
-    ? "ca-app-pub-3940256099942544/1033173712"
-    : "ca-app-pub-3940256099942544/4411468910";
+    ? "ca-app-pub-3940256099942544/1033173712" //TODO: Interstitial Android
+    : "ca-app-pub-3940256099942544/4411468910";//TODO: Interstitial IOS
+
+
+///
+///
+///
+///
+///
+///
+///
+///
+///
+///
+///
+///
+///
+///
+///
+///
+///
+
+
 
 class AdmobWidget {
   static getBanner() {
