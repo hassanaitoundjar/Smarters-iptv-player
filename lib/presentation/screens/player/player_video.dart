@@ -1,14 +1,15 @@
 part of '../screens.dart';
 
-class PlayerScreen extends StatefulWidget {
-  const PlayerScreen({Key? key, required this.controller}) : super(key: key);
+class StreamPlayerPage extends StatefulWidget {
+  const StreamPlayerPage({Key? key, required this.controller})
+      : super(key: key);
   final VlcPlayerController? controller;
 
   @override
-  State<PlayerScreen> createState() => _PlayerScreenState();
+  State<StreamPlayerPage> createState() => _StreamPlayerPageState();
 }
 
-class _PlayerScreenState extends State<PlayerScreen> {
+class _StreamPlayerPageState extends State<StreamPlayerPage> {
   // VlcPlayerController? _videoPlayerController;
   bool isPlayed = true;
   String position = '';
@@ -47,16 +48,20 @@ class _PlayerScreenState extends State<PlayerScreen> {
       }
       validPosition = oDuration.compareTo(oPosition) >= 0;
       sliderValue = validPosition ? oPosition.inSeconds.toDouble() : 0;
-      setState(() {});
+      if (!mounted) {
+        setState(() {});
+      }
     }
   }
 
   void _onSliderPositionChanged(double progress) {
-    setState(() {
-      sliderValue = progress.floor().toDouble();
-    });
-    //convert to Milliseconds since VLC requires MS to set time
-    widget.controller!.setTime(sliderValue.toInt() * 1000);
+    if (!mounted) {
+      setState(() {
+        sliderValue = progress.floor().toDouble();
+      });
+      //convert to Milliseconds since VLC requires MS to set time
+      widget.controller!.setTime(sliderValue.toInt() * 1000);
+    }
   }
 
   @override

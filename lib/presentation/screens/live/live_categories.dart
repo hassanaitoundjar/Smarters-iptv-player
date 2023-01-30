@@ -10,9 +10,27 @@ class LiveCategoriesScreen extends StatefulWidget {
 class _LiveCategoriesScreenState extends State<LiveCategoriesScreen> {
   final ScrollController _hideButtonController = ScrollController();
   bool _hideButton = true;
+  String keySearch = "";
+
+  late InterstitialAd _interstitialAd;
+  _loadIntel() async {
+    InterstitialAd.load(
+        adUnitId: kInterstitial,
+        request: const AdRequest(),
+        adLoadCallback: InterstitialAdLoadCallback(
+          onAdLoaded: (InterstitialAd ad) {
+            debugPrint("Ads is Loaded");
+            _interstitialAd = ad;
+          },
+          onAdFailedToLoad: (LoadAdError error) {
+            debugPrint('InterstitialAd failed to load: $error');
+          },
+        ));
+  }
 
   @override
   void initState() {
+    _loadIntel();
     _hideButtonController.addListener(() {
       if (_hideButtonController.position.userScrollDirection ==
           ScrollDirection.reverse) {
@@ -56,60 +74,81 @@ class _LiveCategoriesScreenState extends State<LiveCategoriesScreen> {
           ),
         ),
       ),
-      body: Ink(
-        width: 100.w,
-        height: 100.h,
-        decoration: kDecorBackground,
-        // padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10),
-        child: NestedScrollView(
-          controller: _hideButtonController,
-          headerSliverBuilder: (_, ch) {
-            return [
-              const SliverAppBar(
-                automaticallyImplyLeading: false,
-                elevation: 0,
-                backgroundColor: Colors.transparent,
-                flexibleSpace: FlexibleSpaceBar(
-                  background: AppBarLive(),
-                ),
-              ),
-            ];
-          },
-          body: BlocBuilder<LiveCatyBloc, LiveCatyState>(
-            builder: (context, state) {
-              if (state is LiveCatyLoading) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (state is LiveCatySuccess) {
-                final categories = state.categories;
-                return GridView.builder(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                  itemCount: categories.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                    childAspectRatio: 4.8,
+      body: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          Ink(
+            width: 100.w,
+            height: 100.h,
+            decoration: kDecorBackground,
+            // padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10),
+            child: NestedScrollView(
+              controller: _hideButtonController,
+              headerSliverBuilder: (_, ch) {
+                return [
+                  SliverAppBar(
+                    automaticallyImplyLeading: false,
+                    elevation: 0,
+                    backgroundColor: Colors.transparent,
+                    flexibleSpace: FlexibleSpaceBar(
+                      background: AppBarLive(
+                        onSearch: (String value) {
+                          setState(() {
+                            keySearch = value.toLowerCase();
+                          });
+                        },
+                      ),
+                    ),
                   ),
-                  itemBuilder: (_, i) {
-                    return CardLiveItem(
-                      title: categories[i].categoryName ?? "",
-                      onTap: () {
-                        //TODO: OPEN Channels
-                        Get.to(() => LiveChannelsScreen(
-                            catyId: categories[i].categoryId ?? ''));
+                ];
+              },
+              body: BlocBuilder<LiveCatyBloc, LiveCatyState>(
+                builder: (context, state) {
+                  if (state is LiveCatyLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (state is LiveCatySuccess) {
+                    final categories = state.categories;
+                    return GridView.builder(
+                      padding: const EdgeInsets.only(
+                        left: 10,
+                        right: 10,
+                        top: 10,
+                        bottom: 80,
+                      ),
+                      itemCount: categories.length,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 10,
+                        childAspectRatio: 4.8,
+                      ),
+                      itemBuilder: (_, i) {
+                        return CardLiveItem(
+                          title: categories[i].categoryName ?? "",
+                          onTap: () {
+                            /// OPEN Channels
+                            Get.to(() => LiveChannelsScreen(
+                                    catyId: categories[i].categoryId ?? ''))!
+                                .then((value) async {
+                              await _interstitialAd.show();
+                              await _loadIntel();
+                            });
+                          },
+                        );
                       },
                     );
-                  },
-                );
-              }
+                  }
 
-              return const Center(
-                child: Text("Failed to load data..."),
-              );
-            },
+                  return const Center(
+                    child: Text("Failed to load data..."),
+                  );
+                },
+              ),
+            ),
           ),
-        ),
+          AdmobWidget.getBanner(),
+        ],
       ),
     );
   }

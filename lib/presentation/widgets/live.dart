@@ -1,7 +1,8 @@
 part of 'widgets.dart';
 
 class AppBarLive extends StatefulWidget {
-  const AppBarLive({Key? key}) : super(key: key);
+  const AppBarLive({Key? key, this.onSearch}) : super(key: key);
+  final Function(String)? onSearch;
 
   @override
   State<AppBarLive> createState() => _AppBarLiveState();
@@ -42,8 +43,8 @@ class _AppBarLiveState extends State<AppBarLive> {
             color: kColorHint,
           ),
           Image(height: 9.h, image: const AssetImage(kIconLive)),
-          const Spacer()
-          /*  showSearch
+          const Spacer(),
+          /* showSearch
               ? Expanded(
                   child: Container(
                     margin: const EdgeInsets.only(left: 15),
@@ -81,7 +82,7 @@ class _AppBarLiveState extends State<AppBarLive> {
                 color: Colors.white,
               ),
             ),*/
-          ,
+
           IconButton(
             focusColor: kColorFocus,
             onPressed: () {

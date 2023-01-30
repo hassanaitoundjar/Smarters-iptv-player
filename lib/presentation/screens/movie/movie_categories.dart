@@ -11,8 +11,25 @@ class _MovieCategoriesScreenState extends State<MovieCategoriesScreen> {
   final ScrollController _hideButtonController = ScrollController();
   bool _hideButton = true;
 
+  late InterstitialAd _interstitialAd;
+  _loadIntel() async {
+    InterstitialAd.load(
+        adUnitId: kInterstitial,
+        request: const AdRequest(),
+        adLoadCallback: InterstitialAdLoadCallback(
+          onAdLoaded: (InterstitialAd ad) {
+            debugPrint("Ads is Loaded");
+            _interstitialAd = ad;
+          },
+          onAdFailedToLoad: (LoadAdError error) {
+            debugPrint('InterstitialAd failed to load: $error');
+          },
+        ));
+  }
+
   @override
   void initState() {
+    _loadIntel();
     _hideButtonController.addListener(() {
       if (_hideButtonController.position.userScrollDirection ==
           ScrollDirection.reverse) {
@@ -56,58 +73,74 @@ class _MovieCategoriesScreenState extends State<MovieCategoriesScreen> {
           ),
         ),
       ),
-      body: Ink(
-        width: 100.w,
-        height: 100.h,
-        decoration: kDecorBackground,
-        child: NestedScrollView(
-          controller: _hideButtonController,
-          headerSliverBuilder: (_, ch) {
-            return [
-              const SliverAppBar(
-                automaticallyImplyLeading: false,
-                elevation: 0,
-                backgroundColor: Colors.transparent,
-                flexibleSpace: FlexibleSpaceBar(
-                  background: AppBarMovie(),
-                ),
-              ),
-            ];
-          },
-          body: BlocBuilder<MovieCatyBloc, MovieCatyState>(
-            builder: (context, state) {
-              if (state is MovieCatyLoading) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (state is MovieCatySuccess) {
-                final categories = state.categories;
-                return GridView.builder(
-                  itemCount: categories.length,
-                  padding: const EdgeInsets.only(left: 10, right: 10, top: 15),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                    childAspectRatio: 5,
+      body: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          Ink(
+            width: 100.w,
+            height: 100.h,
+            decoration: kDecorBackground,
+            child: NestedScrollView(
+              controller: _hideButtonController,
+              headerSliverBuilder: (_, ch) {
+                return [
+                  const SliverAppBar(
+                    automaticallyImplyLeading: false,
+                    elevation: 0,
+                    backgroundColor: Colors.transparent,
+                    flexibleSpace: FlexibleSpaceBar(
+                      background: AppBarMovie(),
+                    ),
                   ),
-                  itemBuilder: (_, i) {
-                    return CardLiveItem(
-                      title: categories[i].categoryName ?? "",
-                      onTap: () {
-                        // OPEN Channels
-                        Get.to(() => MovieChannels(
-                            catyId: categories[i].categoryId ?? ''));
+                ];
+              },
+              body: BlocBuilder<MovieCatyBloc, MovieCatyState>(
+                builder: (context, state) {
+                  if (state is MovieCatyLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (state is MovieCatySuccess) {
+                    final categories = state.categories;
+                    return GridView.builder(
+                      itemCount: categories.length,
+                      padding: const EdgeInsets.only(
+                        left: 10,
+                        right: 10,
+                        top: 15,
+                        bottom: 70,
+                      ),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 10,
+                        childAspectRatio: 5,
+                      ),
+                      itemBuilder: (_, i) {
+                        return CardLiveItem(
+                          title: categories[i].categoryName ?? "",
+                          onTap: () {
+                            // OPEN Channels
+                            Get.to(() => MovieChannels(
+                                    catyId: categories[i].categoryId ?? ''))!
+                                .then((value) async {
+                              _interstitialAd.show();
+                              _loadIntel();
+                            });
+                          },
+                        );
                       },
                     );
-                  },
-                );
-              }
+                  }
 
-              return const Center(
-                child: Text("Failed to load data..."),
-              );
-            },
+                  return const Center(
+                    child: Text("Failed to load data..."),
+                  );
+                },
+              ),
+            ),
           ),
-        ),
+          AdmobWidget.getBanner(),
+        ],
       ),
     );
   }

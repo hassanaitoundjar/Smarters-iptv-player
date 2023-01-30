@@ -8,9 +8,25 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
+  late InterstitialAd _interstitialAd;
+  _loadIntel() async {
+    InterstitialAd.load(
+        adUnitId: kInterstitial,
+        request: const AdRequest(),
+        adLoadCallback: InterstitialAdLoadCallback(
+          onAdLoaded: (InterstitialAd ad) {
+            debugPrint("Ads is Loaded");
+            _interstitialAd = ad;
+          },
+          onAdFailedToLoad: (LoadAdError error) {
+            debugPrint('InterstitialAd failed to load: $error');
+          },
+        ));
+  }
+
   @override
   void initState() {
-    // TODO: implement initState
+    _loadIntel();
     super.initState();
   }
 
@@ -21,7 +37,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         width: 100.w,
         height: 100.h,
         decoration: kDecorBackground,
-        padding: EdgeInsets.symmetric(vertical: 4.h, horizontal: 10),
+        padding: EdgeInsets.only(left: 10, right: 10, top: 3.h),
         child: Column(
           children: [
             const AppBarWelcome(),
@@ -45,7 +61,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                               subTitle: "${state.categories.length} Channels",
                               icon: kIconLive,
                               onTap: () {
-                                Get.toNamed(screenLiveCategories);
+                                Get.toNamed(screenLiveCategories)!
+                                    .then((value) async {
+                                  debugPrint("show interstitial");
+                                  _interstitialAd.show();
+                                  await _loadIntel();
+                                });
                               },
                             );
                           }
@@ -67,7 +88,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                               subTitle: "${state.categories.length} Channels",
                               icon: kIconMovies,
                               onTap: () {
-                                Get.toNamed(screenMovieCategories);
+                                Get.toNamed(screenMovieCategories)!
+                                    .then((value) async {
+                                  await _interstitialAd.show();
+                                  await _loadIntel();
+                                });
                               },
                             );
                           }
@@ -89,7 +114,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                               subTitle: "${state.categories.length} Channels",
                               icon: kIconSeries,
                               onTap: () {
-                                Get.toNamed(screenSeriesCategories);
+                                Get.toNamed(screenSeriesCategories)!
+                                    .then((value) async {
+                                  await _interstitialAd.show();
+                                  await _loadIntel();
+                                });
                               },
                             );
                           }
@@ -98,7 +127,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         },
                       ),
                     ),
-                    SizedBox(width: 2.w),
+                    /*  SizedBox(width: 2.w),
                     SizedBox(
                       width: 20.w,
                       child: Column(
@@ -124,7 +153,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                           ),
                         ],
                       ),
-                    ),
+                    ),*/
                   ],
                 ),
               ),
@@ -153,6 +182,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 ),
               ],
             ),
+            AdmobWidget.getBanner(),
           ],
         ),
       ),

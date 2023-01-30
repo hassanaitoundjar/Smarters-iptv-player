@@ -6,7 +6,7 @@ import FlutterMacOS
 import Foundation
 
 import package_info_plus
-import path_provider_macos
+import path_provider_foundation
 import sentry_flutter
 import sqflite
 import url_launcher_macos
