@@ -1,3 +1,4 @@
+import 'package:azul_envato_checker/azul_envato_checker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,6 +15,7 @@ import '../../logic/blocs/categories/channels/channels_bloc.dart';
 import '../../logic/blocs/categories/live_caty/live_caty_bloc.dart';
 import '../../logic/blocs/categories/movie_caty/movie_caty_bloc.dart';
 import '../../logic/blocs/categories/series_caty/series_caty_bloc.dart';
+import '../../logic/cubits/settings/settings_cubit.dart';
 import '../../logic/cubits/video/video_cubit.dart';
 import '../../repository/api/api.dart';
 import '../../repository/locale/admob.dart';
