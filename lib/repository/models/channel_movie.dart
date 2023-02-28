@@ -31,21 +31,21 @@ class ChannelMovie {
 
   ChannelMovie.fromJson(Map<String, dynamic> json)
       : num = json['num'] == null ? null : json['num'].toString(),
-        name = json['name'] as String?,
-        streamType = json['stream_type'] as String?,
+        name = json['name'].toString(),
+        streamType = json['stream_type'].toString(),
         streamId =
             json['stream_id'] == null ? null : json['stream_id'].toString(),
-        streamIcon = json['stream_icon'] as String?,
-        rating = json['rating'] as String?,
+        streamIcon = json['stream_icon'].toString(),
+        rating = json['rating'].toString(),
         rating5based = json['rating_5based'] == null
             ? null
             : json['rating_5based'].toString(),
-        added = json['added'] as String?,
-        isAdult = json['is_adult'] as String?,
-        categoryId = json['category_id'] as String?,
-        containerExtension = json['container_extension'] as String?,
-        customSid = json['custom_sid'] as String?,
-        directSource = json['direct_source'] as String?;
+        added = json['added'].toString(),
+        isAdult = json['is_adult'].toString(),
+        categoryId = json['category_id'].toString(),
+        containerExtension = json['container_extension'].toString(),
+        customSid = json['custom_sid'].toString(),
+        directSource = json['direct_source'].toString();
 
   Map<String, dynamic> toJson() => {
         'num': num,
