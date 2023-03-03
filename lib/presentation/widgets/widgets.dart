@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:pod_player/pod_player.dart';
 import 'package:readmore/readmore.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import '../../helpers/helpers.dart';
 import '../../logic/blocs/auth/auth_bloc.dart';

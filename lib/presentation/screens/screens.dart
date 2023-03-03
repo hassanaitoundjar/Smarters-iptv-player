@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:azul_envato_checker/azul_envato_checker.dart';
 import 'package:filling_slider/filling_slider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,6 +13,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:perfect_volume_control/perfect_volume_control.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:screen_brightness/screen_brightness.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:wakelock/wakelock.dart';
 
@@ -45,4 +47,5 @@ part 'user/demo.dart';
 part 'user/register.dart';
 part 'user/settings.dart';
 part 'user/splash.dart';
+part 'user/intro.dart';
 part 'welcome.dart';

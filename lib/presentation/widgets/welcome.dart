@@ -161,3 +161,50 @@ class CardWelcomeTv extends StatelessWidget {
     );
   }
 }
+
+class CardTallButton extends StatelessWidget {
+  const CardTallButton(
+      {Key? key,
+      required this.label,
+      required this.onTap,
+      this.radius = 5,
+      this.isLoading = false})
+      : super(key: key);
+  final String label;
+  final Function() onTap;
+  final double radius;
+  final bool isLoading;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: AnimatedContainer(
+        width: 100.w,
+        height: 55,
+        duration: const Duration(milliseconds: 300),
+        child: ElevatedButton(
+          onPressed: onTap,
+          style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(kColorPrimary),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(radius),
+              ))),
+          child: isLoading
+              ? LoadingAnimationWidget.staggeredDotsWave(
+                  color: Colors.white,
+                  size: 40,
+                )
+              : Text(
+                  label,
+                  style: Get.textTheme.headlineLarge!.copyWith(
+                    color: Colors.white,
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+        ),
+      ),
+    );
+  }
+}

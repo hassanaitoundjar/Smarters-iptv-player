@@ -2,6 +2,7 @@ part of 'helpers.dart';
 
 const String screenSplash = "/";
 const String screenWelcome = "/welcome";
+const String screenIntro = "/intro";
 const String screenRegister = "/register";
 const String screenSettings = "/settings";
 const String screenMovies = "/movies";

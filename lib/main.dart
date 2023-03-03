@@ -93,10 +93,11 @@ class _MyAppState extends State<MyApp> {
             getPages: [
               GetPage(name: screenSplash, page: () => const SplashScreen()),
               GetPage(name: screenWelcome, page: () => const WelcomeScreen()),
+              GetPage(name: screenIntro, page: () => const IntroScreen()),
               GetPage(
                   name: screenLiveCategories,
                   page: () => const LiveCategoriesScreen()),
-              GetPage(name: screenRegister, page: () => const RegisterUser()),
+              GetPage(name: screenRegister, page: () => const RegisterScreen()),
               GetPage(
                   name: screenMovieCategories,
                   page: () => const MovieCategoriesScreen()),
