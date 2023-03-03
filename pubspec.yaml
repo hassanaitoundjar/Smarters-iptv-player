@@ -13,31 +13,35 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.5
-  font_awesome_flutter: ^10.3.0
+  font_awesome_flutter: ^10.4.0
   cached_network_image: ^3.2.3
   responsive_sizer: ^3.1.1
-  google_fonts: ^4.0.1
+  google_fonts: ^4.0.3
   flutter_rating_bar: ^4.0.1
   readmore: ^2.2.0
+  filling_slider: ^0.0.3
 
 
   #Logic
-  azul_envato_checker: ^0.0.1+11
-  flutter_bloc: ^8.1.1
+  azul_envato_checker: ^0.0.1+12
+  flutter_bloc: ^8.1.2
   get: ^4.6.5
   intl: ^0.17.0
-  get_storage: ^2.0.3
-  url_launcher: ^6.1.8
+  get_storage: ^2.1.1
+  url_launcher: ^6.1.10
+  wakelock: ^0.6.2
+  perfect_volume_control: ^1.0.5
+  screen_brightness: ^0.2.2
 
   #M3U
   #m3u_nullsafe: ^1.0.4
   flutter_vlc_player: ^7.2.0
   pod_player: ^0.1.0
-  sentry_flutter: ^6.19.0
+  sentry_flutter: ^6.21.0
 
 
   #Http
-  dio: ^4.0.6
+  dio: ^5.0.1
   google_mobile_ads: ^2.3.0
 
 

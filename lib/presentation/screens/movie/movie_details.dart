@@ -157,7 +157,11 @@ class _MovieContentState extends State<MovieContent> {
                                                     "${userAuth.serverInfo!.serverUrl}/movie/${userAuth.userInfo!.username}/${userAuth.userInfo!.password}/${movie.movieData!.streamId}.${movie.movieData!.containerExtension}";
 
                                                 Get.to(() => FullVideoScreen(
-                                                    link: link));
+                                                      link: link,
+                                                      title: movie.movieData!
+                                                              .name ??
+                                                          "",
+                                                    ));
                                               },
                                             ),
                                           ],

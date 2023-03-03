@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:azul_envato_checker/azul_envato_checker.dart';
+import 'package:filling_slider/filling_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,8 +9,11 @@ import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:perfect_volume_control/perfect_volume_control.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:screen_brightness/screen_brightness.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import 'package:wakelock/wakelock.dart';
 
 import '../../helpers/helpers.dart';
 import '../../logic/blocs/auth/auth_bloc.dart';
@@ -19,6 +25,7 @@ import '../../logic/cubits/settings/settings_cubit.dart';
 import '../../logic/cubits/video/video_cubit.dart';
 import '../../repository/api/api.dart';
 import '../../repository/locale/admob.dart';
+import '../../repository/models/epg.dart';
 import '../../repository/models/movie_detail.dart';
 import '../../repository/models/serie_details.dart';
 import '../widgets/widgets.dart';

@@ -224,4 +224,42 @@ class IpTvApi {
       return null;
     }
   }
+
+  /// EPG LIVE
+  static Future<List<EpgModel>> getEPGbyStreamId(String streamId) async {
+    try {
+      final user = await LocaleApi.getUser();
+
+      if (user == null) {
+        debugPrint("User is Null");
+        return [];
+      }
+
+      var url = "${user.serverInfo!.serverUrl}/player_api.php";
+
+      Response<String> response = await _dio.get(
+        url,
+        queryParameters: {
+          "password": user.userInfo!.password,
+          "username": user.userInfo!.username,
+          "action": "get_short_epg",
+          "stream_id": streamId,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> json =
+            jsonDecode(response.data ?? "")['epg_listings'];
+        debugPrint("EPG length: ${json.length}");
+
+        final list = json.map((e) => EpgModel.fromJson(e)).toList();
+        return list;
+      }
+
+      return [];
+    } catch (e) {
+      debugPrint("Error EPG Series $streamId: $e");
+      return [];
+    }
+  }
 }

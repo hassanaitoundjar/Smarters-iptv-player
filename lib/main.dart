@@ -8,6 +8,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:mbark_iptv/repository/api/api.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:wakelock/wakelock.dart';
 
 import 'helpers/helpers.dart';
 import 'logic/blocs/auth/auth_bloc.dart';
@@ -21,6 +22,7 @@ import 'presentation/screens/screens.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Wakelock.enable();
   await GetStorage.init();
   MobileAds.instance.initialize();
   await SentryFlutter.init(

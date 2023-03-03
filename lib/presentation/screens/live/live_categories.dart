@@ -30,6 +30,7 @@ class _LiveCategoriesScreenState extends State<LiveCategoriesScreen> {
 
   @override
   void initState() {
+    Wakelock.enable();
     _loadIntel();
     _hideButtonController.addListener(() {
       if (_hideButtonController.position.userScrollDirection ==

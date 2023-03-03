@@ -1,8 +1,15 @@
 part of '../screens.dart';
 
 class FullVideoScreen extends StatefulWidget {
-  const FullVideoScreen({Key? key, required this.link}) : super(key: key);
+  const FullVideoScreen({
+    Key? key,
+    required this.link,
+    required this.title,
+    this.isLive = false,
+  }) : super(key: key);
   final String link;
+  final String title;
+  final bool isLive;
 
   @override
   State<FullVideoScreen> createState() => _FullVideoScreenState();
@@ -17,6 +24,20 @@ class _FullVideoScreenState extends State<FullVideoScreen> {
   String duration = '';
   double sliderValue = 0.0;
   bool validPosition = false;
+  double _currentVolume = 0.0;
+  double _currentBright = 0.0;
+
+  _settingPage() async {
+    try {
+      ///default volume is half
+      _currentBright = await ScreenBrightness().current;
+      _currentVolume = await PerfectVolumeControl.volume;
+
+      setState(() {});
+    } catch (e) {
+      debugPrint("Error: setting: $e");
+    }
+  }
 
   @override
   void initState() {
@@ -27,8 +48,10 @@ class _FullVideoScreenState extends State<FullVideoScreen> {
       autoInitialize: true,
       options: VlcPlayerOptions(),
     );
+
     super.initState();
     _videoPlayerController.addListener(listener);
+    _settingPage();
   }
 
   void listener() async {
@@ -79,6 +102,7 @@ class _FullVideoScreenState extends State<FullVideoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [
@@ -93,17 +117,12 @@ class _FullVideoScreenState extends State<FullVideoScreen> {
               placeholder: const SizedBox(),
             ),
           ),
+
           if (progress)
             const Center(
                 child: CircularProgressIndicator(
-              color: Colors.yellow,
+              color: kColorPrimary,
             )),
-
-          // Container(
-          //   width: 100.w,
-          //   height: 100.h,
-          //   color: Colors.black,
-          // ),
 
           ///Controllers
           GestureDetector(
@@ -120,103 +139,81 @@ class _FullVideoScreenState extends State<FullVideoScreen> {
                 duration: const Duration(milliseconds: 200),
                 child: !showControllersVideo
                     ? const SizedBox()
-                    : Material(
-                        color: Colors.transparent,
+                    : SafeArea(
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            IconButton(
-                              focusColor: kColorFocus,
-                              onPressed: () => Get.back(),
-                              icon: Icon(
-                                FontAwesomeIcons.chevronRight,
-                                size: 20.sp,
-                              ),
-                            ),
-                            if (!progress)
-                              Center(
-                                child: IconButton(
+                            ///Back & Title
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                IconButton(
                                   focusColor: kColorFocus,
-                                  autofocus: true,
-                                  onPressed: () {
-                                    setState(() {
-                                      if (isPlayed) {
-                                        _videoPlayerController.pause();
-                                        isPlayed = false;
-                                      } else {
-                                        _videoPlayerController.play();
-                                        isPlayed = true;
-                                      }
+                                  onPressed: () async {
+                                    await Future.delayed(
+                                            const Duration(milliseconds: 1000))
+                                        .then((value) {
+                                      Get.back(
+                                          result: progress
+                                              ? null
+                                              : [
+                                                  sliderValue,
+                                                  _videoPlayerController
+                                                      .value.duration.inSeconds
+                                                      .toDouble()
+                                                ]);
                                     });
                                   },
                                   icon: Icon(
-                                    isPlayed
-                                        ? FontAwesomeIcons.pause
-                                        : FontAwesomeIcons.play,
-                                    size: 25.sp,
+                                    FontAwesomeIcons.chevronLeft,
+                                    size: 19.sp,
                                   ),
                                 ),
-                              ),
+                                const SizedBox(width: 5),
+                                Expanded(
+                                  child: Text(
+                                    widget.title,
+                                    maxLines: 1,
+                                    style: Get.textTheme.labelLarge!.copyWith(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18.sp,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
 
-                            ///Controllers
-                            if (!progress)
+                            ///Slider & Play/Pause
+                            if (!progress && !widget.isLive)
                               Align(
                                 alignment: Alignment.bottomCenter,
-                                child: Container(
-                                  width: 60.w,
-                                  decoration: BoxDecoration(
-                                    color: Colors.black,
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 15,
-                                    vertical: 5,
-                                  ),
-                                  margin: const EdgeInsets.all(5),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Text(
-                                        position,
-                                        style:
-                                            Get.textTheme.subtitle2!.copyWith(
-                                          fontSize: 15.sp,
-                                          color: Colors.white,
-                                        ),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Slider(
+                                        activeColor: kColorPrimary,
+                                        inactiveColor: Colors.white,
+                                        value: sliderValue,
+                                        min: 0.0,
+                                        max: (!validPosition)
+                                            ? 1.0
+                                            : _videoPlayerController
+                                                .value.duration.inSeconds
+                                                .toDouble(),
+                                        onChanged: validPosition
+                                            ? _onSliderPositionChanged
+                                            : null,
                                       ),
-                                      Expanded(
-                                        child: IgnorePointer(
-                                          child: Slider(
-                                            activeColor: Colors.redAccent,
-                                            inactiveColor: Colors.white70,
-                                            value: sliderValue,
-                                            min: 0.0,
-                                            max:
-                                                (!validPosition) //&& _videoPlayerController.value.duration == null
-                                                    ? 1.0
-                                                    : _videoPlayerController
-                                                        .value
-                                                        .duration
-                                                        .inSeconds
-                                                        .toDouble(),
-                                            onChanged: validPosition
-                                                ? _onSliderPositionChanged
-                                                : null,
-                                          ),
-                                        ),
+                                    ),
+                                    Text(
+                                      "$position / $duration",
+                                      style: Get.textTheme.subtitle2!.copyWith(
+                                        fontSize: 15.sp,
                                       ),
-                                      Text(
-                                        duration,
-                                        style:
-                                            Get.textTheme.subtitle2!.copyWith(
-                                          fontSize: 15.sp,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ),
                           ],
@@ -225,6 +222,79 @@ class _FullVideoScreenState extends State<FullVideoScreen> {
               ),
             ),
           ),
+
+          if (!progress && showControllersVideo)
+
+            ///Controllers Light, Lock...
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                FillingSlider(
+                  direction: FillingSliderDirection.vertical,
+                  initialValue: _currentVolume,
+                  onFinish: (value) async {
+                    PerfectVolumeControl.hideUI = true;
+                    await PerfectVolumeControl.setVolume(value);
+                    setState(() {
+                      _currentVolume = value;
+                    });
+                  },
+                  fillColor: Colors.white54,
+                  height: 40.h,
+                  width: 30,
+                  child: Icon(
+                    _currentVolume < .1
+                        ? FontAwesomeIcons.volumeXmark
+                        : _currentVolume < .7
+                            ? FontAwesomeIcons.volumeLow
+                            : FontAwesomeIcons.volumeHigh,
+                    color: Colors.black,
+                    size: 13,
+                  ),
+                ),
+                Center(
+                  child: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        if (isPlayed) {
+                          _videoPlayerController.pause();
+                          isPlayed = false;
+                        } else {
+                          _videoPlayerController.play();
+                          isPlayed = true;
+                        }
+                      });
+                    },
+                    icon: Icon(
+                      isPlayed ? FontAwesomeIcons.pause : FontAwesomeIcons.play,
+                      size: 24.sp,
+                    ),
+                  ),
+                ),
+                FillingSlider(
+                  initialValue: _currentBright,
+                  direction: FillingSliderDirection.vertical,
+                  fillColor: Colors.white54,
+                  height: 40.h,
+                  width: 30,
+                  onFinish: (value) async {
+                    await ScreenBrightness().setScreenBrightness(value);
+                    setState(() {
+                      _currentBright = value;
+                    });
+                  },
+                  child: Icon(
+                    _currentBright < .1
+                        ? FontAwesomeIcons.moon
+                        : _currentVolume < .7
+                            ? FontAwesomeIcons.sun
+                            : FontAwesomeIcons.solidSun,
+                    color: Colors.black,
+                    size: 13,
+                  ),
+                ),
+              ],
+            ),
         ],
       ),
     );

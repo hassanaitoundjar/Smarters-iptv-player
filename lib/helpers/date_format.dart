@@ -37,3 +37,33 @@ String getDurationMovie(String? time) {
 
 String dateNowWelcome() =>
     DateFormat("MMM dd, yyy - hh:mm aa").format(DateTime.now());
+
+String getTimeFromDate(String date) {
+  try {
+    var format = DateFormat("HH:mm aa").format(DateTime.parse(date));
+
+    return format;
+  } catch (e) {
+    debugPrint('Error: $e');
+    return "";
+  }
+}
+
+bool checkEpgTimeIsNow(String start, String end) {
+  try {
+    var startTimeE = DateTime.parse(start);
+    var endTimeE = DateTime.parse(end);
+    var now = DateTime.now();
+
+    if (now.isAfter(startTimeE) && now.isBefore(endTimeE)) {
+      // print('The time is between ${startTime.format(context)} and ${endTime.format(context)}.');
+      return true;
+    } else {
+      // print('The time is not between ${startTime.format(context)} and ${endTime.format(context)}.');
+      return false;
+    }
+  } catch (e) {
+    debugPrint('Error: $e');
+    return false;
+  }
+}

@@ -91,7 +91,10 @@ class _SerieSeasonsState extends State<SerieSeasons> {
                                       "${userAuth.serverInfo!.serverUrl}/series/${userAuth.userInfo!.username}/${userAuth.userInfo!.password}/${model!.id}.${model.containerExtension}";
 
                                   debugPrint("Link: $link");
-                                  Get.to(() => FullVideoScreen(link: link));
+                                  Get.to(() => FullVideoScreen(
+                                        link: link,
+                                        title: model.title ?? "",
+                                      ));
                                 },
                                 onFocused: (val) {
                                   setState(() {
