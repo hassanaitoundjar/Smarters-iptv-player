@@ -139,15 +139,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     FontAwesomeIcons.chevronLeft,
                                     color: Colors.white,
                                   )),
-                              IconButton(
-                                  onPressed: () {
-                                    _convertM3utoXtreme(style);
-                                  },
-                                  icon: const Icon(
-                                    FontAwesomeIcons.link,
+                              TextButton.icon(
+                                icon: const Icon(
+                                  FontAwesomeIcons.link,
+                                  color: Colors.white,
+                                  size: 18,
+                                ),
+                                onPressed: () {
+                                  _convertM3utoXtreme(style);
+                                },
+                                label: Text(
+                                  'ADD M3U',
+                                  style:
+                                      Get.theme.textTheme.bodyMedium!.copyWith(
                                     color: Colors.white,
-                                    size: 18,
-                                  )),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                           Expanded(
