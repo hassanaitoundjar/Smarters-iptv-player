@@ -98,6 +98,7 @@ class _MyAppState extends State<MyApp> {
                   name: screenLiveCategories,
                   page: () => const LiveCategoriesScreen()),
               GetPage(name: screenRegister, page: () => const RegisterScreen()),
+              GetPage(name: screenRegisterTv, page: () => const RegisterUserTv()),
               GetPage(
                   name: screenMovieCategories,
                   page: () => const MovieCategoriesScreen()),

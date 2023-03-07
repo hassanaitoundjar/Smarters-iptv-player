@@ -45,6 +45,7 @@ part 'series/series_categories.dart';
 part 'series/series_channels.dart';
 part 'user/demo.dart';
 part 'user/register.dart';
+part 'user/register_tv.dart';
 part 'user/settings.dart';
 part 'user/splash.dart';
 part 'user/intro.dart';

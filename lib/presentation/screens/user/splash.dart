@@ -32,7 +32,11 @@ class _SplashScreenState extends State<SplashScreen> {
             context.read<SeriesCatyBloc>().add(GetSeriesCategories());
             goScreen(screenWelcome);
           } else if (state is AuthFailed) {
-            goScreen(screenIntro);
+            if (MediaQuery.of(context).size.width > 600) {
+              goScreen(screenRegisterTv);
+            } else {
+              goScreen(screenIntro);
+            }
           }
         },
         child: const LoadingWidgt(),
