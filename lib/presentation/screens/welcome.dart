@@ -26,6 +26,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
   @override
   void initState() {
+    context.read<FavoritesCubit>().initialData();
+    context.read<WatchingCubit>().initialData();
     _loadIntel();
     super.initState();
   }
@@ -127,7 +129,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         },
                       ),
                     ),
-                    /*  SizedBox(width: 2.w),
+                    SizedBox(width: 2.w),
                     SizedBox(
                       width: 20.w,
                       child: Column(
@@ -137,12 +139,16 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                           CardWelcomeSetting(
                             title: 'Catch up',
                             icon: FontAwesomeIcons.rotate,
-                            onTap: () {},
+                            onTap: () {
+                              Get.toNamed(screenCatchUp);
+                            },
                           ),
                           CardWelcomeSetting(
-                            title: 'Multi-Screen',
-                            icon: FontAwesomeIcons.layerGroup,
-                            onTap: () {},
+                            title: 'Favourites',
+                            icon: FontAwesomeIcons.heart,
+                            onTap: () {
+                              Get.toNamed(screenFavourite);
+                            },
                           ),
                           CardWelcomeSetting(
                             title: 'Settings',
@@ -153,7 +159,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                           ),
                         ],
                       ),
-                    ),*/
+                    ),
                   ],
                 ),
               ),

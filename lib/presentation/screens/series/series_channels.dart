@@ -130,6 +130,7 @@ class SeriesChannelsState extends State<SeriesChannels> {
                           image: channels[i].cover,
                           onTap: () {
                             Get.to(() => SerieContent(
+                                    channelSerie: channels[i],
                                     videoId: channels[i].seriesId ?? ''))!
                                 .then((value) async {
                               _interstitialAd.show();

@@ -101,6 +101,8 @@ class _FullVideoScreenState extends State<FullVideoScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isTv = MediaQuery.of(context).size.width > 600;
+
     return Scaffold(
       backgroundColor: Colors.black,
       body: Stack(
@@ -229,29 +231,30 @@ class _FullVideoScreenState extends State<FullVideoScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                FillingSlider(
-                  direction: FillingSliderDirection.vertical,
-                  initialValue: _currentVolume,
-                  onFinish: (value) async {
-                    PerfectVolumeControl.hideUI = true;
-                    await PerfectVolumeControl.setVolume(value);
-                    setState(() {
-                      _currentVolume = value;
-                    });
-                  },
-                  fillColor: Colors.white54,
-                  height: 40.h,
-                  width: 30,
-                  child: Icon(
-                    _currentVolume < .1
-                        ? FontAwesomeIcons.volumeXmark
-                        : _currentVolume < .7
-                            ? FontAwesomeIcons.volumeLow
-                            : FontAwesomeIcons.volumeHigh,
-                    color: Colors.black,
-                    size: 13,
+                if (!isTv)
+                  FillingSlider(
+                    direction: FillingSliderDirection.vertical,
+                    initialValue: _currentVolume,
+                    onFinish: (value) async {
+                      PerfectVolumeControl.hideUI = true;
+                      await PerfectVolumeControl.setVolume(value);
+                      setState(() {
+                        _currentVolume = value;
+                      });
+                    },
+                    fillColor: Colors.white54,
+                    height: 40.h,
+                    width: 30,
+                    child: Icon(
+                      _currentVolume < .1
+                          ? FontAwesomeIcons.volumeXmark
+                          : _currentVolume < .7
+                              ? FontAwesomeIcons.volumeLow
+                              : FontAwesomeIcons.volumeHigh,
+                      color: Colors.black,
+                      size: 13,
+                    ),
                   ),
-                ),
                 Center(
                   child: IconButton(
                     onPressed: () {
@@ -271,28 +274,29 @@ class _FullVideoScreenState extends State<FullVideoScreen> {
                     ),
                   ),
                 ),
-                FillingSlider(
-                  initialValue: _currentBright,
-                  direction: FillingSliderDirection.vertical,
-                  fillColor: Colors.white54,
-                  height: 40.h,
-                  width: 30,
-                  onFinish: (value) async {
-                    await ScreenBrightness().setScreenBrightness(value);
-                    setState(() {
-                      _currentBright = value;
-                    });
-                  },
-                  child: Icon(
-                    _currentBright < .1
-                        ? FontAwesomeIcons.moon
-                        : _currentVolume < .7
-                            ? FontAwesomeIcons.sun
-                            : FontAwesomeIcons.solidSun,
-                    color: Colors.black,
-                    size: 13,
+                if (!isTv)
+                  FillingSlider(
+                    initialValue: _currentBright,
+                    direction: FillingSliderDirection.vertical,
+                    fillColor: Colors.white54,
+                    height: 40.h,
+                    width: 30,
+                    onFinish: (value) async {
+                      await ScreenBrightness().setScreenBrightness(value);
+                      setState(() {
+                        _currentBright = value;
+                      });
+                    },
+                    child: Icon(
+                      _currentBright < .1
+                          ? FontAwesomeIcons.moon
+                          : _currentVolume < .7
+                              ? FontAwesomeIcons.sun
+                              : FontAwesomeIcons.solidSun,
+                      color: Colors.black,
+                      size: 13,
+                    ),
                   ),
-                ),
               ],
             ),
         ],

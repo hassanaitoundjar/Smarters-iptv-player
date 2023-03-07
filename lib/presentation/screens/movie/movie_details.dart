@@ -1,8 +1,11 @@
 part of '../screens.dart';
 
 class MovieContent extends StatefulWidget {
-  const MovieContent({Key? key, required this.videoId}) : super(key: key);
+  const MovieContent(
+      {Key? key, required this.videoId, required this.channelMovie})
+      : super(key: key);
   final String videoId;
+  final ChannelMovie channelMovie;
 
   @override
   State<MovieContent> createState() => _MovieContentState();
@@ -157,11 +160,35 @@ class _MovieContentState extends State<MovieContent> {
                                                     "${userAuth.serverInfo!.serverUrl}/movie/${userAuth.userInfo!.username}/${userAuth.userInfo!.password}/${movie.movieData!.streamId}.${movie.movieData!.containerExtension}";
 
                                                 Get.to(() => FullVideoScreen(
-                                                      link: link,
-                                                      title: movie.movieData!
+                                                          link: link,
+                                                          title: movie
+                                                                  .movieData!
+                                                                  .name ??
+                                                              "",
+                                                        ))!
+                                                    .then((slider) {
+                                                  debugPrint("DATA: $slider");
+                                                  if (slider != null) {
+                                                    var model = WatchingModel(
+                                                      sliderValue: slider[0],
+                                                      durationStrm: slider[1],
+                                                      stream: link,
+                                                      title: widget.channelMovie
                                                               .name ??
                                                           "",
-                                                    ));
+                                                      image: widget.channelMovie
+                                                              .streamIcon ??
+                                                          "",
+                                                      streamId: widget
+                                                          .channelMovie!
+                                                          .streamId
+                                                          .toString(),
+                                                    );
+                                                    context
+                                                        .read<WatchingCubit>()
+                                                        .addMovie(model);
+                                                  }
+                                                });
                                               },
                                             ),
                                           ],
@@ -177,10 +204,23 @@ class _MovieContentState extends State<MovieContent> {
                       );
                     },
                   ),
-                  AppBarMovie(
-                    showSearch: false,
-                    top: 2.h,
-                    onFavorite: () {},
+                  BlocBuilder<FavoritesCubit, FavoritesState>(
+                    builder: (context, state) {
+                      final isLiked = state.movies
+                          .where((movie) =>
+                              movie.streamId == widget.channelMovie.streamId)
+                          .isNotEmpty;
+                      return AppBarMovie(
+                        showSearch: false,
+                        isLiked: isLiked,
+                        top: 2.h,
+                        onFavorite: () {
+                          context
+                              .read<FavoritesCubit>()
+                              .addMovie(widget.channelMovie, isAdd: !isLiked);
+                        },
+                      );
+                    },
                   ),
                 ],
               );

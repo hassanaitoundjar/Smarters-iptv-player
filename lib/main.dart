@@ -16,26 +16,29 @@ import 'logic/blocs/categories/channels/channels_bloc.dart';
 import 'logic/blocs/categories/live_caty/live_caty_bloc.dart';
 import 'logic/blocs/categories/movie_caty/movie_caty_bloc.dart';
 import 'logic/blocs/categories/series_caty/series_caty_bloc.dart';
+import 'logic/cubits/favorites/favorites_cubit.dart';
 import 'logic/cubits/settings/settings_cubit.dart';
 import 'logic/cubits/video/video_cubit.dart';
+import 'logic/cubits/watch/watching_cubit.dart';
 import 'presentation/screens/screens.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Wakelock.enable();
   await GetStorage.init();
+  await GetStorage.init("favorites");
   MobileAds.instance.initialize();
   await SentryFlutter.init(
     (options) {
       options.dsn =
           'https://c02f199280584f7fac1c049965f25427@o4504351469404160.ingest.sentry.io/4504351471435776';
-      // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
-      // We recommend adjusting this value in production.
       options.tracesSampleRate = 1.0;
     },
     appRunner: () => runApp(MyApp(
       iptv: IpTvApi(),
       authApi: AuthApi(),
+      watchingLocale: WatchingLocale(),
+      favoriteLocale: FavoriteLocale(),
     )),
   );
 }
@@ -43,7 +46,14 @@ void main() async {
 class MyApp extends StatefulWidget {
   final IpTvApi iptv;
   final AuthApi authApi;
-  const MyApp({super.key, required this.iptv, required this.authApi});
+  final WatchingLocale watchingLocale;
+  final FavoriteLocale favoriteLocale;
+  const MyApp(
+      {super.key,
+      required this.iptv,
+      required this.authApi,
+      required this.watchingLocale,
+      required this.favoriteLocale});
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -82,6 +92,14 @@ class _MyAppState extends State<MyApp> {
         BlocProvider<SettingsCubit>(
           create: (BuildContext context) => SettingsCubit(),
         ),
+        BlocProvider<WatchingCubit>(
+          create: (BuildContext context) =>
+              WatchingCubit(widget.watchingLocale),
+        ),
+        BlocProvider<FavoritesCubit>(
+          create: (BuildContext context) =>
+              FavoritesCubit(widget.favoriteLocale),
+        ),
       ],
       child: ResponsiveSizer(
         builder: (context, orient, type) {
@@ -99,12 +117,17 @@ class _MyAppState extends State<MyApp> {
                   page: () => const LiveCategoriesScreen()),
               GetPage(name: screenRegister, page: () => const RegisterScreen()),
               GetPage(
+                  name: screenRegisterTv, page: () => const RegisterUserTv()),
+              GetPage(
                   name: screenMovieCategories,
                   page: () => const MovieCategoriesScreen()),
               GetPage(
                   name: screenSeriesCategories,
                   page: () => const SeriesCategoriesScreen()),
               GetPage(name: screenSettings, page: () => const SettingsScreen()),
+              GetPage(
+                  name: screenFavourite, page: () => const FavouriteScreen()),
+              GetPage(name: screenCatchUp, page: () => const CatchUpScreen()),
             ],
           );
         },

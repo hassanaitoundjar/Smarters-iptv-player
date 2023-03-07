@@ -1,8 +1,11 @@
 part of 'widgets.dart';
 
 class AppBarLive extends StatefulWidget {
-  const AppBarLive({Key? key, this.onSearch}) : super(key: key);
+  const AppBarLive({Key? key, this.onSearch, this.isLiked = false, this.onLike})
+      : super(key: key);
   final Function(String)? onSearch;
+  final bool isLiked;
+  final Function()? onLike;
 
   @override
   State<AppBarLive> createState() => _AppBarLiveState();
@@ -83,6 +86,17 @@ class _AppBarLiveState extends State<AppBarLive> {
               ),
             ),*/
 
+          if (widget.onLike != null)
+            IconButton(
+              focusColor: kColorFocus,
+              onPressed: widget.onLike,
+              icon: Icon(
+                widget.isLiked
+                    ? FontAwesomeIcons.solidHeart
+                    : FontAwesomeIcons.heart,
+                color: Colors.white,
+              ),
+            ),
           IconButton(
             focusColor: kColorFocus,
             onPressed: () {
@@ -102,11 +116,16 @@ class _AppBarLiveState extends State<AppBarLive> {
 
 class AppBarMovie extends StatelessWidget {
   const AppBarMovie(
-      {Key? key, this.showSearch = true, this.onFavorite, this.top})
+      {Key? key,
+      this.showSearch = true,
+      this.onFavorite,
+      this.top,
+      this.isLiked = false})
       : super(key: key);
   final bool showSearch;
   final Function()? onFavorite;
   final double? top;
+  final bool isLiked;
 
   @override
   Widget build(BuildContext context) {
@@ -149,8 +168,10 @@ class AppBarMovie extends StatelessWidget {
               IconButton(
                 focusColor: kColorFocus,
                 onPressed: onFavorite,
-                icon: const Icon(
-                  FontAwesomeIcons.heart,
+                icon: Icon(
+                  isLiked
+                      ? FontAwesomeIcons.solidHeart
+                      : FontAwesomeIcons.heart,
                   color: Colors.white,
                 ),
               ),
@@ -174,11 +195,16 @@ class AppBarMovie extends StatelessWidget {
 
 class AppBarSeries extends StatelessWidget {
   const AppBarSeries(
-      {Key? key, this.showSearch = true, this.onFavorite, this.top})
+      {Key? key,
+      this.showSearch = true,
+      this.onFavorite,
+      this.top,
+      this.isLiked = false})
       : super(key: key);
   final bool showSearch;
   final Function()? onFavorite;
   final double? top;
+  final bool isLiked;
 
   @override
   Widget build(BuildContext context) {
@@ -220,8 +246,10 @@ class AppBarSeries extends StatelessWidget {
               IconButton(
                 focusColor: kColorFocus,
                 onPressed: onFavorite,
-                icon: const Icon(
-                  FontAwesomeIcons.heart,
+                icon: Icon(
+                  isLiked
+                      ? FontAwesomeIcons.solidHeart
+                      : FontAwesomeIcons.heart,
                   color: Colors.white,
                 ),
               ),
@@ -361,6 +389,114 @@ class CardLiveItem extends StatelessWidget {
               ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class AppBarFav extends StatelessWidget {
+  const AppBarFav({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 100.w,
+      color: Colors.transparent,
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      child: Row(
+        children: [
+          Image(
+            width: 0.3.dp,
+            height: 0.3.dp,
+            image: const AssetImage(kIconSplash),
+          ),
+          const SizedBox(width: 5),
+          Text(
+            "Favourites",
+            style: Get.textTheme.headline4,
+          ),
+          Container(
+            width: 1,
+            height: 8.h,
+            margin: const EdgeInsets.symmetric(horizontal: 13),
+            color: kColorHint,
+          ),
+          Icon(
+            FontAwesomeIcons.solidHeart,
+            size: 20.sp,
+            color: Colors.white,
+          ),
+          const Spacer(),
+          IconButton(
+            focusColor: kColorFocus,
+            onPressed: () {
+              Get.back();
+            },
+            icon: const Icon(
+              FontAwesomeIcons.chevronRight,
+              color: Colors.white,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class AppBarCatchUp extends StatelessWidget {
+  const AppBarCatchUp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 100.w,
+      color: Colors.transparent,
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      child: Row(
+        children: [
+          Image(
+            width: 0.3.dp,
+            height: 0.3.dp,
+            image: const AssetImage(kIconSplash),
+          ),
+          const SizedBox(width: 5),
+          Text(
+            "Catch Up",
+            style: Get.textTheme.headline4,
+          ),
+          Container(
+            width: 1,
+            height: 8.h,
+            margin: const EdgeInsets.symmetric(horizontal: 13),
+            color: kColorHint,
+          ),
+          Icon(
+            FontAwesomeIcons.rotate,
+            size: 20.sp,
+            color: Colors.white,
+          ),
+          const Spacer(),
+          IconButton(
+            focusColor: kColorFocus,
+            onPressed: () {
+              context.read<WatchingCubit>().clearData();
+            },
+            icon: const Icon(
+              FontAwesomeIcons.broom,
+              color: Colors.white,
+            ),
+          ),
+          IconButton(
+            focusColor: kColorFocus,
+            onPressed: () {
+              Get.back();
+            },
+            icon: const Icon(
+              FontAwesomeIcons.chevronRight,
+              color: Colors.white,
+            ),
+          ),
+        ],
       ),
     );
   }

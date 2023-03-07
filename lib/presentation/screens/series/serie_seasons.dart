@@ -92,9 +92,27 @@ class _SerieSeasonsState extends State<SerieSeasons> {
 
                                   debugPrint("Link: $link");
                                   Get.to(() => FullVideoScreen(
-                                        link: link,
+                                            link: link,
+                                            title: model.title ?? "",
+                                          ))!
+                                      .then((slider) {
+                                    debugPrint("DATA: $slider");
+                                    if (slider != null) {
+                                      var modell = WatchingModel(
+                                        sliderValue: slider[0],
+                                        durationStrm: slider[1],
+                                        stream: link,
                                         title: model.title ?? "",
-                                      ));
+                                        image: model.info!.movieImage ??
+                                            widget.serieDetails.info!.cover ??
+                                            "",
+                                        streamId: model.id.toString(),
+                                      );
+                                      context
+                                          .read<WatchingCubit>()
+                                          .addSerie(modell);
+                                    }
+                                  });
                                 },
                                 onFocused: (val) {
                                   setState(() {

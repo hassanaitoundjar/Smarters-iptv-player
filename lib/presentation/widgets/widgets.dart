@@ -14,10 +14,14 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../../helpers/helpers.dart';
 import '../../logic/blocs/auth/auth_bloc.dart';
 import '../../logic/cubits/video/video_cubit.dart';
+import '../../logic/cubits/watch/watching_cubit.dart';
 import '../../repository/models/serie_details.dart';
+import '../../repository/models/watching.dart';
+import '../screens/screens.dart';
 
 part 'dialog.dart';
 part 'live.dart';
 part 'movie.dart';
 part 'user.dart';
 part 'welcome.dart';
+part 'watching.dart';

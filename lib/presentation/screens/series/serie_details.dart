@@ -1,8 +1,11 @@
 part of '../screens.dart';
 
 class SerieContent extends StatefulWidget {
-  const SerieContent({Key? key, required this.videoId}) : super(key: key);
+  const SerieContent(
+      {Key? key, required this.videoId, required this.channelSerie})
+      : super(key: key);
   final String videoId;
+  final ChannelSerie channelSerie;
 
   @override
   State<SerieContent> createState() => _SerieContentState();
@@ -169,10 +172,23 @@ class _SerieContentState extends State<SerieContent> {
                       );
                     },
                   ),
-                  AppBarSeries(
-                    showSearch: false,
-                    top: 3.h,
-                    onFavorite: () {},
+                  BlocBuilder<FavoritesCubit, FavoritesState>(
+                    builder: (context, state) {
+                      final isLiked = state.series
+                          .where((movie) =>
+                              movie.seriesId == widget.channelSerie.seriesId)
+                          .isNotEmpty;
+                      return AppBarSeries(
+                        isLiked: isLiked,
+                        showSearch: false,
+                        top: 3.h,
+                        onFavorite: () {
+                          context
+                              .read<FavoritesCubit>()
+                              .addSerie(widget.channelSerie, isAdd: !isLiked);
+                        },
+                      );
+                    },
                   ),
                 ],
               );

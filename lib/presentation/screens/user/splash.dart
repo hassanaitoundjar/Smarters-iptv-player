@@ -23,6 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint("width: ${MediaQuery.of(context).size.width}");
     return Scaffold(
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
@@ -32,7 +33,11 @@ class _SplashScreenState extends State<SplashScreen> {
             context.read<SeriesCatyBloc>().add(GetSeriesCategories());
             goScreen(screenWelcome);
           } else if (state is AuthFailed) {
-            goScreen(screenIntro);
+            if (MediaQuery.of(context).size.width > 600) {
+              goScreen(screenRegisterTv);
+            } else {
+              goScreen(screenIntro);
+            }
           }
         },
         child: const LoadingWidgt(),
