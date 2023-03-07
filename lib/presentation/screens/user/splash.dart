@@ -23,6 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint("width: ${MediaQuery.of(context).size.width}");
     return Scaffold(
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {

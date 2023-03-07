@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:azul_envato_checker/azul_envato_checker.dart';
 import 'package:filling_slider/filling_slider.dart';
@@ -23,13 +24,19 @@ import '../../logic/blocs/categories/channels/channels_bloc.dart';
 import '../../logic/blocs/categories/live_caty/live_caty_bloc.dart';
 import '../../logic/blocs/categories/movie_caty/movie_caty_bloc.dart';
 import '../../logic/blocs/categories/series_caty/series_caty_bloc.dart';
+import '../../logic/cubits/favorites/favorites_cubit.dart';
 import '../../logic/cubits/settings/settings_cubit.dart';
 import '../../logic/cubits/video/video_cubit.dart';
+import '../../logic/cubits/watch/watching_cubit.dart';
 import '../../repository/api/api.dart';
 import '../../repository/locale/admob.dart';
+import '../../repository/models/channelLive.dart';
+import '../../repository/models/channel_movie.dart';
+import '../../repository/models/channel_serie.dart';
 import '../../repository/models/epg.dart';
 import '../../repository/models/movie_detail.dart';
 import '../../repository/models/serie_details.dart';
+import '../../repository/models/watching.dart';
 import '../widgets/widgets.dart';
 
 part 'live/live_categories.dart';
@@ -49,4 +56,6 @@ part 'user/register_tv.dart';
 part 'user/settings.dart';
 part 'user/splash.dart';
 part 'user/intro.dart';
+part 'user/favourites.dart';
 part 'welcome.dart';
+part 'user/catch_up.dart';

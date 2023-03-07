@@ -65,10 +65,18 @@ class CardButtonWatchMovie extends StatefulWidget {
     required this.title,
     required this.onTap,
     this.isFocused = false,
+    this.hideBorder = false,
+    this.isSelected = false,
+    this.index,
+    this.onFocusChanged,
   }) : super(key: key);
   final String title;
   final Function() onTap;
   final bool isFocused;
+  final bool hideBorder;
+  final bool isSelected;
+  final int? index;
+  final Function(int?)? onFocusChanged;
 
   @override
   State<CardButtonWatchMovie> createState() => _CardButtonWatchMovieState();
@@ -86,14 +94,18 @@ class _CardButtonWatchMovieState extends State<CardButtonWatchMovie> {
         autofocus: widget.isFocused,
         borderRadius: BorderRadius.circular(10),
         onFocusChange: (bool value) {
+          if (widget.onFocusChanged != null) {
+            widget.onFocusChanged!(widget.index);
+          }
+
           setState(() {
             isFocused = value;
           });
         },
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            gradient: isFocused
+            borderRadius: widget.hideBorder ? null : BorderRadius.circular(10),
+            gradient: isFocused || widget.isSelected
                 ? const LinearGradient(
                     colors: [kColorPrimary, kColorPrimaryDark],
                   )

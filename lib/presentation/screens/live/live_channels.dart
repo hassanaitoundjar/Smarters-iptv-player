@@ -12,6 +12,7 @@ class _ListChannelsScreen extends State<LiveChannelsScreen> {
   VlcPlayerController? _videoPlayerController;
   int? selectedVideo;
   String? selectedStreamId;
+  ChannelLive? channelLive;
   double lastPosition = 0.0;
 
   @override
@@ -63,7 +64,26 @@ class _ListChannelsScreen extends State<LiveChannelsScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 SizedBox(height: 3.h),
-                                const AppBarLive(),
+                                BlocBuilder<FavoritesCubit, FavoritesState>(
+                                  builder: (context, state) {
+                                    final isLiked = state.lives
+                                        .where((live) =>
+                                            live.streamId ==
+                                            channelLive!.streamId)
+                                        .isNotEmpty;
+                                    return AppBarLive(
+                                      isLiked: isLiked,
+                                      onLike: channelLive == null
+                                          ? null
+                                          : () {
+                                              context
+                                                  .read<FavoritesCubit>()
+                                                  .addLive(channelLive,
+                                                      isAdd: !isLiked);
+                                            },
+                                    );
+                                  },
+                                ),
                                 const SizedBox(height: 15),
                               ],
                             );
@@ -170,6 +190,7 @@ class _ListChannelsScreen extends State<LiveChannelsScreen> {
                                                         );
                                                         if (mounted) {
                                                           setState(() {
+                                                            channelLive = model;
                                                             selectedStreamId =
                                                                 model.streamId;
                                                           });
@@ -184,6 +205,7 @@ class _ListChannelsScreen extends State<LiveChannelsScreen> {
                                                     _videoPlayerController =
                                                         null;
                                                     setState(() {
+                                                      channelLive = model;
                                                       selectedStreamId =
                                                           model.streamId;
                                                     });

@@ -128,6 +128,7 @@ class _MovieChannelsState extends State<MovieChannels> {
                           image: channels[i].streamIcon,
                           onTap: () {
                             Get.to(() => MovieContent(
+                                    channelMovie: channels[i],
                                     videoId: channels[i].streamId ?? ''))!
                                 .then((value) async {
                               _interstitialAd.show();

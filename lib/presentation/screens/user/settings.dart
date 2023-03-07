@@ -110,6 +110,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 width: 30.w,
                                 child: CardButtonWatchMovie(
                                   isFocused: true,
+                                  title: "Refresh all data",
+                                  onTap: () {
+                                    context
+                                        .read<LiveCatyBloc>()
+                                        .add(GetLiveCategories());
+                                    context
+                                        .read<MovieCatyBloc>()
+                                        .add(GetMovieCategories());
+                                    context
+                                        .read<SeriesCatyBloc>()
+                                        .add(GetSeriesCategories());
+                                    Get.back();
+                                  },
+                                ),
+                              ),
+                              SizedBox(height: 5.h),
+                              SizedBox(
+                                width: 30.w,
+                                child: CardButtonWatchMovie(
                                   title: "Add New User",
                                   onTap: () {
                                     context.read<AuthBloc>().add(AuthLogOut());
