@@ -24,19 +24,21 @@ class CardInputLogin extends StatefulWidget {
 class _CardInputLoginState extends State<CardInputLogin> {
   bool isFocused = false;
 
-  final FocusNode focusNode = FocusNode();
-
-  @override
-  void dispose() {
-    //focusNode.dispose();
-    super.dispose();
-  }
+  final FocusNode node = FocusNode();
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        // node.requestFocus();
+        setState(() {
+          isFocused = true;
+        });
+      },
       onFocusChange: (value) {
+        if (value) {
+          node.requestFocus();
+        }
         setState(() {
           isFocused = value;
         });
@@ -52,6 +54,7 @@ class _CardInputLoginState extends State<CardInputLogin> {
         ),
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: TextField(
+          focusNode: node,
           autofocus: widget.autofocus,
           onSubmitted: widget.onSubmitted,
           controller: widget.controller,

@@ -36,8 +36,8 @@ class _SplashScreenState extends State<SplashScreen> {
             if (MediaQuery.of(context).size.width > sizeTablet) {
               goScreen(screenRegisterTv);
             } else {
-              goScreen(screenRegisterTv);
-              //goScreen(screenIntro);
+              //goScreen(screenRegisterTv);
+              goScreen(screenIntro);
             }
           }
         },
