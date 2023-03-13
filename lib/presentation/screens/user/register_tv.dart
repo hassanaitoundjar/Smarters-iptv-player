@@ -8,17 +8,19 @@ class RegisterUserTv extends StatefulWidget {
 }
 
 class _RegisterUserTvState extends State<RegisterUserTv> {
-  final _fullUrl = TextEditingController();
   final _username = TextEditingController();
   final _password = TextEditingController();
   final _domain = TextEditingController();
 
+  final FocusNode _focusNode1 = FocusNode();
+  final FocusNode _focusNode2 = FocusNode();
+
   @override
   void dispose() {
-    _fullUrl.dispose();
+    _domain.dispose();
     _username.dispose();
     _password.dispose();
-    _domain.dispose();
+
     super.dispose();
   }
 
@@ -64,7 +66,7 @@ class _RegisterUserTvState extends State<RegisterUserTv> {
                             image: const AssetImage(kIconSplash),
                           ),
                           Center(
-                            child: Container(
+                            child: Ink(
                               width: 90.w,
                               // height: 70.h,
                               decoration: BoxDecoration(
@@ -84,52 +86,27 @@ class _RegisterUserTvState extends State<RegisterUserTv> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   CardInputLogin(
-                                    controller: _fullUrl,
-                                    hint: 'full domain access',
-                                    onChange: (String txt) {
-                                      if (Uri.tryParse(txt)?.hasAbsolutePath ??
-                                          false) {
-                                        Uri url = Uri.parse(txt);
-                                        var parameters = url.queryParameters;
-                                        var origin = url.origin;
-                                        //  var host = url.host;
-                                        var port = url.port;
-
-                                        _username.text =
-                                            parameters['username'].toString();
-                                        _password.text =
-                                            parameters['password'].toString();
-
-                                        debugPrint(
-                                            "${url.scheme}://${url.host}:${url.port}");
-
-                                        _domain.text =
-                                            "${url.scheme}://${url.host}:${url.port}";
-                                      } else {
-                                        debugPrint("this text is not url!!");
-                                        Get.snackbar("Error",
-                                            "This data is not correct??");
-                                      }
-                                    },
-                                  ),
-                                  const SizedBox(height: 15),
-                                  CardInputLogin(
+                                    textInputAction: TextInputAction.next,
+                                    autofocus: true,
                                     controller: _username,
                                     hint: 'username',
+                                    onSubmitted: (_) {},
                                   ),
                                   const SizedBox(height: 15),
                                   CardInputLogin(
+                                    textInputAction: TextInputAction.next,
                                     controller: _password,
                                     hint: 'password',
+                                    onSubmitted: (_) {},
                                   ),
                                   const SizedBox(height: 15),
                                   CardInputLogin(
+                                    textInputAction: TextInputAction.send,
                                     controller: _domain,
                                     hint: 'http://domain:port',
-                                  ),
-                                  const SizedBox(height: 10),
-                                  ElevatedButton(
-                                    onPressed: () {
+                                    onSubmitted: (_) {
+                                      print("domain: $_");
+                                      FocusScope.of(context).unfocus();
                                       if (_username.text.isNotEmpty &&
                                           _password.text.isNotEmpty &&
                                           _domain.text.isNotEmpty) {
@@ -142,14 +119,43 @@ class _RegisterUserTvState extends State<RegisterUserTv> {
                                             ));
                                       }
                                     },
-                                    style: ButtonStyle(
-                                      backgroundColor:
-                                          MaterialStateProperty.all(
-                                              kColorPrimary),
-                                    ),
-                                    child: Text(
-                                      'Submit',
-                                      style: Get.textTheme.headline5,
+                                  ),
+                                  const SizedBox(height: 10),
+                                  SizedBox(
+                                    width: 100.w,
+                                    height: 50,
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 2,
+                                          child: CardButtonWatchMovie(
+                                            onTap: () {
+                                              if (_username.text.isNotEmpty &&
+                                                  _password.text.isNotEmpty &&
+                                                  _domain.text.isNotEmpty) {
+                                                context
+                                                    .read<AuthBloc>()
+                                                    .add(AuthRegister(
+                                                      _username.text,
+                                                      _password.text,
+                                                      _domain.text,
+                                                    ));
+                                              }
+                                            },
+                                            title: 'Login',
+                                          ),
+                                        ),
+                                        const SizedBox(width: 10),
+                                        CardButtonWatchMovie(
+                                          onTap: () {
+                                            FocusScope.of(context).unfocus();
+                                            _username.clear();
+                                            _password.clear();
+                                            _domain.clear();
+                                          },
+                                          title: 'reload',
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ],

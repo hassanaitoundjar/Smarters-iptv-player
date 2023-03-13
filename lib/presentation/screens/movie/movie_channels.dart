@@ -15,6 +15,9 @@ class _MovieChannelsState extends State<MovieChannels> {
 
   late InterstitialAd _interstitialAd;
   _loadIntel() async {
+    if (!showAds) {
+      return false;
+    }
     InterstitialAd.load(
         adUnitId: kInterstitial,
         request: const AdRequest(),

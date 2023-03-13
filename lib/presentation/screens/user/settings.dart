@@ -144,6 +144,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   onTap: () {
                                     context.read<AuthBloc>().add(AuthLogOut());
                                     Get.offAllNamed("/");
+                                    Get.reload();
                                   },
                                 ),
                               ),

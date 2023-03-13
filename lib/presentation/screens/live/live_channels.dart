@@ -66,11 +66,13 @@ class _ListChannelsScreen extends State<LiveChannelsScreen> {
                                 SizedBox(height: 3.h),
                                 BlocBuilder<FavoritesCubit, FavoritesState>(
                                   builder: (context, state) {
-                                    final isLiked = state.lives
-                                        .where((live) =>
-                                            live.streamId ==
-                                            channelLive!.streamId)
-                                        .isNotEmpty;
+                                    final isLiked = channelLive == null
+                                        ? false
+                                        : state.lives
+                                            .where((live) =>
+                                                live.streamId ==
+                                                channelLive!.streamId)
+                                            .isNotEmpty;
                                     return AppBarLive(
                                       isLiked: isLiked,
                                       onLike: channelLive == null

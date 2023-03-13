@@ -13,6 +13,9 @@ class _MovieCategoriesScreenState extends State<MovieCategoriesScreen> {
 
   late InterstitialAd _interstitialAd;
   _loadIntel() async {
+    if (!showAds) {
+      return false;
+    }
     InterstitialAd.load(
         adUnitId: kInterstitial,
         request: const AdRequest(),

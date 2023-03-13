@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
+import '../../helpers/helpers.dart';
+
 String kBanner = Platform.isAndroid
-    ? "ca-app-pub-3940256099942544/6300978111" //TODO: Banner Android
+    ? "ca-app-pub-4228099303451066/1365018520" //TODO: Banner Android
     : "ca-app-pub-3940256099942544/2934735716"; //TODO: Banner IOS
 String kInterstitial = Platform.isAndroid
-    ? "ca-app-pub-3940256099942544/1033173712" //TODO: Interstitial Android
+    ? "ca-app-pub-4228099303451066/2843404117" //TODO: Interstitial Android
     : "ca-app-pub-3940256099942544/4411468910"; //TODO: Interstitial IOS
 
 ///
@@ -31,7 +33,9 @@ String kInterstitial = Platform.isAndroid
 
 class AdmobWidget {
   static getBanner() {
-    bool isLoaded = true;
+    if (!showAds) {
+      return const SizedBox(height: 10);
+    }
 
     final BannerAdListener listener = BannerAdListener(
       // Called when an ad is successfully received.
@@ -57,10 +61,6 @@ class AdmobWidget {
 
     myBanner.load();
     final AdWidget adWidget = AdWidget(ad: myBanner);
-
-    if (isLoaded == false) {
-      return SizedBox(height: 3.h);
-    }
 
     return Container(
       margin: const EdgeInsets.only(top: 10),

@@ -14,6 +14,9 @@ class _LiveCategoriesScreenState extends State<LiveCategoriesScreen> {
 
   late InterstitialAd _interstitialAd;
   _loadIntel() async {
+    if (!showAds) {
+      return false;
+    }
     InterstitialAd.load(
         adUnitId: kInterstitial,
         request: const AdRequest(),

@@ -101,8 +101,8 @@ class _FullVideoScreenState extends State<FullVideoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final bool isTv = MediaQuery.of(context).size.width > 600;
-
+    final bool isTv = MediaQuery.of(context).size.width > sizeTablet;
+    debugPrint("SIZE: ${MediaQuery.of(context).size.width}");
     return Scaffold(
       backgroundColor: Colors.black,
       body: Stack(

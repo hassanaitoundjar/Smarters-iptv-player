@@ -1,35 +1,74 @@
 part of 'widgets.dart';
 
-class CardInputLogin extends StatelessWidget {
-  const CardInputLogin(
-      {Key? key, required this.hint, this.controller, this.onChange})
-      : super(key: key);
+class CardInputLogin extends StatefulWidget {
+  const CardInputLogin({
+    Key? key,
+    required this.hint,
+    this.controller,
+    this.onChange,
+    this.autofocus = false,
+    required this.textInputAction,
+    required this.onSubmitted,
+  }) : super(key: key);
   final String hint;
   final TextEditingController? controller;
   final Function(String)? onChange;
+  final TextInputAction textInputAction;
+  final bool autofocus;
+  final Function(String) onSubmitted;
+
+  @override
+  State<CardInputLogin> createState() => _CardInputLoginState();
+}
+
+class _CardInputLoginState extends State<CardInputLogin> {
+  bool isFocused = false;
+
+  final FocusNode focusNode = FocusNode();
+
+  @override
+  void dispose() {
+    //focusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(5),
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: TextField(
-        controller: controller,
-        onChanged: onChange,
-        decoration: InputDecoration(
-          hintText: hint,
-          hintStyle: Get.textTheme.subtitle2!.copyWith(
-            color: Colors.grey,
+    return InkWell(
+      onTap: () {},
+      onFocusChange: (value) {
+        setState(() {
+          isFocused = value;
+        });
+      },
+      child: Ink(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(5),
+          border: Border.all(
+            color: isFocused ? kColorPrimary : Colors.white,
+            width: 3,
           ),
-          border: InputBorder.none,
         ),
-        style: Get.textTheme.subtitle2!.copyWith(
-          color: Colors.black,
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: TextField(
+          autofocus: widget.autofocus,
+          onSubmitted: widget.onSubmitted,
+          controller: widget.controller,
+          onChanged: widget.onChange,
+          textInputAction: widget.textInputAction,
+          decoration: InputDecoration(
+            hintText: widget.hint,
+            hintStyle: Get.textTheme.subtitle2!.copyWith(
+              color: Colors.grey,
+            ),
+            border: InputBorder.none,
+          ),
+          style: Get.textTheme.subtitle2!.copyWith(
+            color: Colors.black,
+          ),
+          cursorColor: kColorPrimary,
         ),
-        cursorColor: kColorPrimary,
       ),
     );
   }

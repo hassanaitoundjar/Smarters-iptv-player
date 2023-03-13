@@ -49,7 +49,10 @@ class _MovieContentState extends State<MovieContent> {
                       return Stack(
                         children: [
                           CardMovieImagesBackground(
-                            listImages: movie!.info!.backdropPath ?? [],
+                            listImages: movie!.info!.backdropPath ??
+                                [
+                                  movie.info!.movieImage ?? "",
+                                ],
                           ),
                           Padding(
                             padding: EdgeInsets.only(
@@ -206,10 +209,13 @@ class _MovieContentState extends State<MovieContent> {
                   ),
                   BlocBuilder<FavoritesCubit, FavoritesState>(
                     builder: (context, state) {
-                      final isLiked = state.movies
-                          .where((movie) =>
-                              movie.streamId == widget.channelMovie.streamId)
-                          .isNotEmpty;
+                      final isLiked = widget.channelMovie == null
+                          ? false
+                          : state.movies
+                              .where((movie) =>
+                                  movie.streamId ==
+                                  widget.channelMovie.streamId)
+                              .isNotEmpty;
                       return AppBarMovie(
                         showSearch: false,
                         isLiked: isLiked,

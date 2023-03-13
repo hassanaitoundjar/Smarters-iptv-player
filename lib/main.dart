@@ -27,7 +27,10 @@ void main() async {
   await Wakelock.enable();
   await GetStorage.init();
   await GetStorage.init("favorites");
-  MobileAds.instance.initialize();
+  if (showAds) {
+    MobileAds.instance.initialize();
+  }
+
   await SentryFlutter.init(
     (options) {
       options.dsn =
@@ -116,7 +119,8 @@ class _MyAppState extends State<MyApp> {
                   name: screenLiveCategories,
                   page: () => const LiveCategoriesScreen()),
               GetPage(name: screenRegister, page: () => const RegisterScreen()),
-              GetPage(name: screenRegisterTv, page: () => const RegisterUserTv()),
+              GetPage(
+                  name: screenRegisterTv, page: () => const RegisterUserTv()),
               GetPage(
                   name: screenRegisterTv, page: () => const RegisterUserTv()),
               GetPage(
