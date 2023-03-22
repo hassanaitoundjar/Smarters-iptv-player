@@ -31,17 +31,17 @@ class ChannelLive {
 
   ChannelLive.fromJson(Map<String, dynamic> json)
       : num = json['num'].toString(),
-        name = json['name'] as String?,
-        streamType = json['stream_type'] as String?,
+        name = json['name'].toString(),
+        streamType = json['stream_type'].toString(),
         streamId = json['stream_id'].toString(),
-        streamIcon = json['stream_icon'] as String?,
+        streamIcon = json['stream_icon'].toString(),
         epgChannelId = json['epg_channel_id'],
-        added = json['added'] as String?,
-        isAdult = json['is_adult'] as String?,
-        categoryId = json['category_id'] as String?,
-        customSid = json['custom_sid'] as String?,
+        added = json['added'].toString(),
+        isAdult = json['is_adult'].toString(),
+        categoryId = json['category_id'].toString(),
+        customSid = json['custom_sid'].toString(),
         tvArchive = json['tv_archive'].toString(),
-        directSource = json['direct_source'] as String?,
+        directSource = json['direct_source'].toString(),
         tvArchiveDuration = json['tv_archive_duration'].toString();
 
   Map<String, dynamic> toJson() => {

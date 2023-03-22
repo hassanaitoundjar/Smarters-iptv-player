@@ -127,7 +127,6 @@ class _SerieSeasonsState extends State<SerieSeasons> {
                     ),
                   ),
                   AppBarSeries(
-                    showSearch: false,
                     top: 3.h,
                   ),
                 ],

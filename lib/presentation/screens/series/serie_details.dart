@@ -180,7 +180,6 @@ class _SerieContentState extends State<SerieContent> {
                           .isNotEmpty;
                       return AppBarSeries(
                         isLiked: isLiked,
-                        showSearch: false,
                         top: 3.h,
                         onFavorite: () {
                           context

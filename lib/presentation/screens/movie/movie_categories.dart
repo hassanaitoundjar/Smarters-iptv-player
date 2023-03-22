@@ -10,6 +10,7 @@ class MovieCategoriesScreen extends StatefulWidget {
 class _MovieCategoriesScreenState extends State<MovieCategoriesScreen> {
   final ScrollController _hideButtonController = ScrollController();
   bool _hideButton = true;
+  String keySearch = "";
 
   late InterstitialAd _interstitialAd;
   _loadIntel() async {
@@ -87,12 +88,18 @@ class _MovieCategoriesScreenState extends State<MovieCategoriesScreen> {
               controller: _hideButtonController,
               headerSliverBuilder: (_, ch) {
                 return [
-                  const SliverAppBar(
+                  SliverAppBar(
                     automaticallyImplyLeading: false,
                     elevation: 0,
                     backgroundColor: Colors.transparent,
                     flexibleSpace: FlexibleSpaceBar(
-                      background: AppBarMovie(),
+                      background: AppBarMovie(
+                        onSearch: (String value) {
+                          setState(() {
+                            keySearch = value.toLowerCase();
+                          });
+                        },
+                      ),
                     ),
                   ),
                 ];
@@ -103,8 +110,17 @@ class _MovieCategoriesScreenState extends State<MovieCategoriesScreen> {
                     return const Center(child: CircularProgressIndicator());
                   } else if (state is MovieCatySuccess) {
                     final categories = state.categories;
+
+                    List<CategoryModel> searchList = categories
+                        .where((element) => element.categoryName!
+                            .toLowerCase()
+                            .contains(keySearch))
+                        .toList();
+
                     return GridView.builder(
-                      itemCount: categories.length,
+                      itemCount: keySearch.isEmpty
+                          ? categories.length
+                          : searchList.length,
                       padding: const EdgeInsets.only(
                         left: 10,
                         right: 10,
@@ -119,12 +135,15 @@ class _MovieCategoriesScreenState extends State<MovieCategoriesScreen> {
                         childAspectRatio: 5,
                       ),
                       itemBuilder: (_, i) {
+                        final model =
+                            keySearch.isEmpty ? categories[i] : searchList[i];
+
                         return CardLiveItem(
-                          title: categories[i].categoryName ?? "",
+                          title: model.categoryName ?? "",
                           onTap: () {
                             // OPEN Channels
                             Get.to(() => MovieChannels(
-                                    catyId: categories[i].categoryId ?? ''))!
+                                    catyId: model.categoryId ?? ''))!
                                 .then((value) async {
                               _interstitialAd.show();
                               _loadIntel();

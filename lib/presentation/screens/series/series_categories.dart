@@ -10,6 +10,7 @@ class SeriesCategoriesScreen extends StatefulWidget {
 class _SeriesCategoriesScreenState extends State<SeriesCategoriesScreen> {
   final ScrollController _hideButtonController = ScrollController();
   bool _hideButton = true;
+  String keySearch = "";
 
   late InterstitialAd _interstitialAd;
   _loadIntel() async {
@@ -92,7 +93,14 @@ class _SeriesCategoriesScreenState extends State<SeriesCategoriesScreen> {
                     elevation: 0,
                     backgroundColor: Colors.transparent,
                     flexibleSpace: FlexibleSpaceBar(
-                      background: AppBarSeries(top: 3.h),
+                      background: AppBarSeries(
+                        top: 3.h,
+                        onSearch: (String value) {
+                          setState(() {
+                            keySearch = value.toLowerCase();
+                          });
+                        },
+                      ),
                     ),
                   ),
                 ];
@@ -103,6 +111,12 @@ class _SeriesCategoriesScreenState extends State<SeriesCategoriesScreen> {
                     return const Center(child: CircularProgressIndicator());
                   } else if (state is SeriesCatySuccess) {
                     final categories = state.categories;
+                    final searchList = categories
+                        .where((element) => element.categoryName!
+                            .toLowerCase()
+                            .contains(keySearch))
+                        .toList();
+
                     return GridView.builder(
                       padding: const EdgeInsets.only(
                         top: 15,
@@ -110,7 +124,9 @@ class _SeriesCategoriesScreenState extends State<SeriesCategoriesScreen> {
                         right: 10,
                         bottom: 60,
                       ),
-                      itemCount: categories.length,
+                      itemCount: keySearch.isEmpty
+                          ? categories.length
+                          : searchList.length,
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 3,
@@ -119,12 +135,15 @@ class _SeriesCategoriesScreenState extends State<SeriesCategoriesScreen> {
                         childAspectRatio: 4.9,
                       ),
                       itemBuilder: (_, i) {
+                        final model =
+                            keySearch.isEmpty ? categories[i] : searchList[i];
+
                         return CardLiveItem(
-                          title: categories[i].categoryName ?? "",
+                          title: model.categoryName ?? "",
                           onTap: () {
                             // OPEN Channels
                             Get.to(() => SeriesChannels(
-                                    catyId: categories[i].categoryId ?? ''))!
+                                    catyId: model.categoryId ?? ''))!
                                 .then((value) async {
                               _interstitialAd.show();
                               _loadIntel();

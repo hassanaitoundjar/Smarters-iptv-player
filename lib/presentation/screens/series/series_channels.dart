@@ -12,6 +12,7 @@ class SeriesChannels extends StatefulWidget {
 class SeriesChannelsState extends State<SeriesChannels> {
   final ScrollController _hideButtonController = ScrollController();
   bool _hideButton = true;
+  String keySearch = "";
 
   late InterstitialAd _interstitialAd;
   _loadIntel() async {
@@ -102,7 +103,14 @@ class SeriesChannelsState extends State<SeriesChannels> {
                     elevation: 0,
                     backgroundColor: Colors.transparent,
                     flexibleSpace: FlexibleSpaceBar(
-                      background: AppBarSeries(top: 3.h),
+                      background: AppBarSeries(
+                        top: 3.h,
+                        onSearch: (String value) {
+                          setState(() {
+                            keySearch = value.toLowerCase();
+                          });
+                        },
+                      ),
                     ),
                   ),
                 ];
@@ -113,13 +121,19 @@ class SeriesChannelsState extends State<SeriesChannels> {
                     return const Center(child: CircularProgressIndicator());
                   } else if (state is ChannelsSeriesSuccess) {
                     final channels = state.channels;
+                    final List<ChannelSerie> searchList = channels
+                        .where((element) =>
+                            element.name!.toLowerCase().contains(keySearch))
+                        .toList();
 
                     return GridView.builder(
                       padding: const EdgeInsets.only(
                         bottom: 80,
                         top: 10,
                       ),
-                      itemCount: channels.length,
+                      itemCount: keySearch.isEmpty
+                          ? channels.length
+                          : searchList.length,
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 5,
@@ -128,13 +142,16 @@ class SeriesChannelsState extends State<SeriesChannels> {
                         childAspectRatio: .7,
                       ),
                       itemBuilder: (_, i) {
+                        final model =
+                            keySearch.isEmpty ? channels[i] : searchList[i];
+
                         return CardChannelMovieItem(
-                          title: channels[i].name,
-                          image: channels[i].cover,
+                          title: model.name,
+                          image: model.cover,
                           onTap: () {
                             Get.to(() => SerieContent(
-                                    channelSerie: channels[i],
-                                    videoId: channels[i].seriesId ?? ''))!
+                                    channelSerie: model,
+                                    videoId: model.seriesId ?? ''))!
                                 .then((value) async {
                               _interstitialAd.show();
                               _loadIntel();

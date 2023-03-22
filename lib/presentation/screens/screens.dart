@@ -31,6 +31,7 @@ import '../../logic/cubits/video/video_cubit.dart';
 import '../../logic/cubits/watch/watching_cubit.dart';
 import '../../repository/api/api.dart';
 import '../../repository/locale/admob.dart';
+import '../../repository/models/category.dart';
 import '../../repository/models/channelLive.dart';
 import '../../repository/models/channel_movie.dart';
 import '../../repository/models/channel_serie.dart';

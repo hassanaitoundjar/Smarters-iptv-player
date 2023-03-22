@@ -100,6 +100,7 @@ class _LiveCategoriesScreenState extends State<LiveCategoriesScreen> {
                           setState(() {
                             keySearch = value.toLowerCase();
                           });
+                          debugPrint("search :$keySearch");
                         },
                       ),
                     ),
@@ -112,6 +113,13 @@ class _LiveCategoriesScreenState extends State<LiveCategoriesScreen> {
                     return const Center(child: CircularProgressIndicator());
                   } else if (state is LiveCatySuccess) {
                     final categories = state.categories;
+
+                    List<CategoryModel> searchCaty = categories
+                        .where((element) => element.categoryName!
+                            .toLowerCase()
+                            .contains(keySearch))
+                        .toList();
+
                     return GridView.builder(
                       padding: const EdgeInsets.only(
                         left: 10,
@@ -119,7 +127,9 @@ class _LiveCategoriesScreenState extends State<LiveCategoriesScreen> {
                         top: 10,
                         bottom: 80,
                       ),
-                      itemCount: categories.length,
+                      itemCount: keySearch.isNotEmpty
+                          ? searchCaty.length
+                          : categories.length,
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 3,
@@ -128,12 +138,16 @@ class _LiveCategoriesScreenState extends State<LiveCategoriesScreen> {
                         childAspectRatio: 4.8,
                       ),
                       itemBuilder: (_, i) {
+                        final model = keySearch.isNotEmpty
+                            ? searchCaty[i]
+                            : categories[i];
+
                         return CardLiveItem(
-                          title: categories[i].categoryName ?? "",
+                          title: model.categoryName ?? "",
                           onTap: () {
                             /// OPEN Channels
                             Get.to(() => LiveChannelsScreen(
-                                    catyId: categories[i].categoryId ?? ''))!
+                                    catyId: model.categoryId ?? ''))!
                                 .then((value) async {
                               await _interstitialAd.show();
                               await _loadIntel();

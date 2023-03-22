@@ -217,7 +217,6 @@ class _MovieContentState extends State<MovieContent> {
                                   widget.channelMovie.streamId)
                               .isNotEmpty;
                       return AppBarMovie(
-                        showSearch: false,
                         isLiked: isLiked,
                         top: 2.h,
                         onFavorite: () {

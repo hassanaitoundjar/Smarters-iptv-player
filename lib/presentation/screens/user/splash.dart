@@ -25,24 +25,28 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     debugPrint("width: ${MediaQuery.of(context).size.width}");
     return Scaffold(
-      body: BlocListener<AuthBloc, AuthState>(
-        listener: (context, state) {
-          if (state is AuthSuccess) {
-            context.read<LiveCatyBloc>().add(GetLiveCategories());
-            context.read<MovieCatyBloc>().add(GetMovieCategories());
-            context.read<SeriesCatyBloc>().add(GetSeriesCategories());
-            goScreen(screenWelcome);
-          } else if (state is AuthFailed) {
-            if (MediaQuery.of(context).size.width > sizeTablet) {
-              goScreen(screenRegisterTv);
-            } else {
-              //goScreen(screenRegisterTv);
-              goScreen(screenIntro);
+      body: OrientationBuilder(builder: (context, orientation) {
+        bool isPortrait = orientation == Orientation.portrait;
+
+        return BlocListener<AuthBloc, AuthState>(
+          listener: (context, state) {
+            if (state is AuthSuccess) {
+              context.read<LiveCatyBloc>().add(GetLiveCategories());
+              context.read<MovieCatyBloc>().add(GetMovieCategories());
+              context.read<SeriesCatyBloc>().add(GetSeriesCategories());
+              goScreen(screenWelcome);
+            } else if (state is AuthFailed) {
+              if (isPortrait && Get.width > sizeTablet) {
+                goScreen(screenRegisterTv);
+              } else {
+                //goScreen(screenRegisterTv);
+                goScreen(screenIntro);
+              }
             }
-          }
-        },
-        child: const LoadingWidgt(),
-      ),
+          },
+          child: const LoadingWidgt(),
+        );
+      }),
     );
   }
 }

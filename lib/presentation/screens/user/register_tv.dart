@@ -12,9 +12,6 @@ class _RegisterUserTvState extends State<RegisterUserTv> {
   final _password = TextEditingController();
   final _domain = TextEditingController();
 
-  final FocusNode _focusNode1 = FocusNode();
-  final FocusNode _focusNode2 = FocusNode();
-
   int indexText = 0;
 
   @override

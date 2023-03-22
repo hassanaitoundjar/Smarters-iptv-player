@@ -14,6 +14,7 @@ class _ListChannelsScreen extends State<LiveChannelsScreen> {
   String? selectedStreamId;
   ChannelLive? channelLive;
   double lastPosition = 0.0;
+  String keySearch = "";
 
   @override
   void initState() {
@@ -83,6 +84,11 @@ class _ListChannelsScreen extends State<LiveChannelsScreen> {
                                                   .addLive(channelLive,
                                                       isAdd: !isLiked);
                                             },
+                                      onSearch: (String value) {
+                                        setState(() {
+                                          keySearch = value;
+                                        });
+                                      },
                                     );
                                   },
                                 ),
@@ -111,13 +117,24 @@ class _ListChannelsScreen extends State<LiveChannelsScreen> {
                                         } else if (state
                                             is ChannelsLiveSuccess) {
                                           final categories = state.channels;
+
+                                          List<ChannelLive> searchList =
+                                              categories
+                                                  .where((element) => element
+                                                      .name!
+                                                      .toLowerCase()
+                                                      .contains(keySearch))
+                                                  .toList();
+
                                           return GridView.builder(
                                             padding: const EdgeInsets.only(
                                               left: 10,
                                               right: 10,
                                               bottom: 80,
                                             ),
-                                            itemCount: categories.length,
+                                            itemCount: keySearch.isEmpty
+                                                ? categories.length
+                                                : searchList.length,
                                             gridDelegate:
                                                 SliverGridDelegateWithFixedCrossAxisCount(
                                               crossAxisCount:
@@ -130,7 +147,9 @@ class _ListChannelsScreen extends State<LiveChannelsScreen> {
                                               childAspectRatio: 7,
                                             ),
                                             itemBuilder: (_, i) {
-                                              final model = categories[i];
+                                              final model = keySearch.isEmpty
+                                                  ? categories[i]
+                                                  : searchList[i];
 
                                               final link =
                                                   "${userAuth.serverInfo!.serverUrl}/${userAuth.userInfo!.username}/${userAuth.userInfo!.password}/${model.streamId}";

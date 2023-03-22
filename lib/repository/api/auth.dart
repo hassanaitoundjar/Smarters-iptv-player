@@ -13,7 +13,7 @@ class AuthApi {
 
       if (response.statusCode == 200) {
         var json = jsonDecode(response.data ?? "");
-        final user = UserModel.fromJson(json);
+        final user = UserModel.fromJson(json, link);
         //save to locale
         await LocaleApi.saveUser(user);
         return user;

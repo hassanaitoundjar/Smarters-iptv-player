@@ -1,8 +1,12 @@
 part of 'widgets.dart';
 
 class AppBarLive extends StatefulWidget {
-  const AppBarLive({Key? key, this.onSearch, this.isLiked = false, this.onLike})
-      : super(key: key);
+  const AppBarLive({
+    Key? key,
+    this.onSearch,
+    this.isLiked = false,
+    this.onLike,
+  }) : super(key: key);
   final Function(String)? onSearch;
   final bool isLiked;
   final Function()? onLike;
@@ -47,31 +51,38 @@ class _AppBarLiveState extends State<AppBarLive> {
           ),
           Image(height: 9.h, image: const AssetImage(kIconLive)),
           const Spacer(),
-          /* showSearch
+          showSearch
               ? Expanded(
                   child: Container(
                     margin: const EdgeInsets.only(left: 15),
                     child: TextField(
                       controller: _search,
                       onChanged: widget.onSearch,
-                      decoration: InputDecoration(
-                          hintText: "Search...",
-                          suffixIcon: IconButton(
-                            icon: const Icon(
-                              FontAwesomeIcons.xmark,
-                              color: Colors.white,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                showSearch = false;
-                                _search.clear();
-                              });
-                            },
-                          )),
+                      decoration: const InputDecoration(
+                        hintText: "Search...",
+                      ),
                     ),
                   ),
                 )
               : const Spacer(),
+          if (showSearch)
+            IconButton(
+              icon: const Icon(
+                FontAwesomeIcons.xmark,
+                color: Colors.white,
+              ),
+              focusColor: kColorPrimary,
+              onPressed: () {
+                if (widget.onSearch != null) {
+                  widget.onSearch!("");
+                }
+
+                setState(() {
+                  showSearch = false;
+                  _search.clear();
+                });
+              },
+            ),
           if (!showSearch)
             IconButton(
               focusColor: kColorFocus,
@@ -84,8 +95,7 @@ class _AppBarLiveState extends State<AppBarLive> {
                 FontAwesomeIcons.magnifyingGlass,
                 color: Colors.white,
               ),
-            ),*/
-
+            ),
           if (widget.onLike != null)
             IconButton(
               focusColor: kColorFocus,
@@ -114,25 +124,34 @@ class _AppBarLiveState extends State<AppBarLive> {
   }
 }
 
-class AppBarMovie extends StatelessWidget {
+class AppBarMovie extends StatefulWidget {
   const AppBarMovie(
       {Key? key,
-      this.showSearch = true,
+      this.onSearch,
       this.onFavorite,
       this.top,
       this.isLiked = false})
       : super(key: key);
-  final bool showSearch;
+
   final Function()? onFavorite;
+  final Function(String)? onSearch;
   final double? top;
   final bool isLiked;
+
+  @override
+  State<AppBarMovie> createState() => _AppBarMovieState();
+}
+
+class _AppBarMovieState extends State<AppBarMovie> {
+  bool showSearch = false;
+  final _search = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: 100.w,
       color: Colors.transparent,
-      margin: EdgeInsets.symmetric(horizontal: 10, vertical: top ?? 2.h),
+      margin: EdgeInsets.symmetric(horizontal: 10, vertical: widget.top ?? 2.h),
       child: Material(
         color: Colors.transparent,
         child: Row(
@@ -155,21 +174,58 @@ class AppBarMovie extends StatelessWidget {
             ),
             Image(height: 9.h, image: const AssetImage(kIconMovies)),
             const Spacer(),
-            /*   if (showSearch)
+            showSearch
+                ? Expanded(
+                    child: Container(
+                      margin: const EdgeInsets.only(left: 15),
+                      child: TextField(
+                        controller: _search,
+                        onChanged: widget.onSearch,
+                        decoration: const InputDecoration(
+                          hintText: "Search...",
+                        ),
+                      ),
+                    ),
+                  )
+                : const Spacer(),
+            if (showSearch)
               IconButton(
-                focusColor: kColorFocus,
-                onPressed: () {},
                 icon: const Icon(
-                  FontAwesomeIcons.magnifyingGlass,
+                  FontAwesomeIcons.xmark,
                   color: Colors.white,
                 ),
-              ),*/
-            if (onFavorite != null)
+                focusColor: kColorPrimary,
+                onPressed: () {
+                  if (widget.onSearch != null) {
+                    widget.onSearch!("");
+                  }
+
+                  setState(() {
+                    showSearch = false;
+                    _search.clear();
+                  });
+                },
+              ),
+            if (widget.onSearch != null)
+              if (!showSearch)
+                IconButton(
+                  focusColor: kColorFocus,
+                  onPressed: () {
+                    setState(() {
+                      showSearch = true;
+                    });
+                  },
+                  icon: const Icon(
+                    FontAwesomeIcons.magnifyingGlass,
+                    color: Colors.white,
+                  ),
+                ),
+            if (widget.onFavorite != null)
               IconButton(
                 focusColor: kColorFocus,
-                onPressed: onFavorite,
+                onPressed: widget.onFavorite,
                 icon: Icon(
-                  isLiked
+                  widget.isLiked
                       ? FontAwesomeIcons.solidHeart
                       : FontAwesomeIcons.heart,
                   color: Colors.white,
@@ -193,24 +249,33 @@ class AppBarMovie extends StatelessWidget {
   }
 }
 
-class AppBarSeries extends StatelessWidget {
+class AppBarSeries extends StatefulWidget {
   const AppBarSeries(
       {Key? key,
-      this.showSearch = true,
+      this.onSearch,
       this.onFavorite,
       this.top,
       this.isLiked = false})
       : super(key: key);
-  final bool showSearch;
+
   final Function()? onFavorite;
+  final Function(String)? onSearch;
   final double? top;
   final bool isLiked;
+
+  @override
+  State<AppBarSeries> createState() => _AppBarSeriesState();
+}
+
+class _AppBarSeriesState extends State<AppBarSeries> {
+  bool showSearch = false;
+  final _search = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Container(
       color: Colors.transparent,
-      margin: EdgeInsets.only(top: top ?? 4.h, left: 10, right: 10),
+      margin: EdgeInsets.only(top: widget.top ?? 4.h, left: 10, right: 10),
       child: Material(
         color: Colors.transparent,
         child: Row(
@@ -233,21 +298,58 @@ class AppBarSeries extends StatelessWidget {
             ),
             Image(height: 9.h, image: const AssetImage(kIconSeries)),
             const Spacer(),
-            /*if (showSearch)
+            showSearch
+                ? Expanded(
+                    child: Container(
+                      margin: const EdgeInsets.only(left: 15),
+                      child: TextField(
+                        controller: _search,
+                        onChanged: widget.onSearch,
+                        decoration: const InputDecoration(
+                          hintText: "Search...",
+                        ),
+                      ),
+                    ),
+                  )
+                : const Spacer(),
+            if (showSearch)
               IconButton(
-                focusColor: kColorFocus,
-                onPressed: () {},
                 icon: const Icon(
-                  FontAwesomeIcons.magnifyingGlass,
+                  FontAwesomeIcons.xmark,
                   color: Colors.white,
                 ),
-              ),*/
-            if (onFavorite != null)
+                focusColor: kColorPrimary,
+                onPressed: () {
+                  if (widget.onSearch != null) {
+                    widget.onSearch!("");
+                  }
+
+                  setState(() {
+                    showSearch = false;
+                    _search.clear();
+                  });
+                },
+              ),
+            if (widget.onSearch != null)
+              if (!showSearch)
+                IconButton(
+                  focusColor: kColorFocus,
+                  onPressed: () {
+                    setState(() {
+                      showSearch = true;
+                    });
+                  },
+                  icon: const Icon(
+                    FontAwesomeIcons.magnifyingGlass,
+                    color: Colors.white,
+                  ),
+                ),
+            if (widget.onFavorite != null)
               IconButton(
                 focusColor: kColorFocus,
-                onPressed: onFavorite,
+                onPressed: widget.onFavorite,
                 icon: Icon(
-                  isLiked
+                  widget.isLiked
                       ? FontAwesomeIcons.solidHeart
                       : FontAwesomeIcons.heart,
                   color: Colors.white,

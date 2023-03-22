@@ -56,13 +56,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 if (Uri.tryParse(txt)?.hasAbsolutePath ?? false) {
                   Uri url = Uri.parse(txt);
                   var parameters = url.queryParameters;
+                  debugPrint("${url.scheme}://${url.host}:${url.port}");
 
                   _username.text = parameters['username'].toString();
                   _password.text = parameters['password'].toString();
-
-                  debugPrint("${url.scheme}://${url.host}:${url.port}");
-
-                  _url.text = "${url.scheme}://${url.host}:${url.port}";
+                  _url.text =
+                      "${url.scheme}://${url.host}${url.hasPort ? ":${url.port}" : ""}";
                   Get.back();
                 } else {
                   debugPrint("this text is not url!!");

@@ -12,6 +12,7 @@ class MovieChannels extends StatefulWidget {
 class _MovieChannelsState extends State<MovieChannels> {
   final ScrollController _hideButtonController = ScrollController();
   bool _hideButton = true;
+  String keySearch = "";
 
   late InterstitialAd _interstitialAd;
   _loadIntel() async {
@@ -93,12 +94,18 @@ class _MovieChannelsState extends State<MovieChannels> {
               controller: _hideButtonController,
               headerSliverBuilder: (_, ch) {
                 return [
-                  const SliverAppBar(
+                  SliverAppBar(
                     automaticallyImplyLeading: false,
                     elevation: 0,
                     backgroundColor: Colors.transparent,
                     flexibleSpace: FlexibleSpaceBar(
-                      background: AppBarMovie(),
+                      background: AppBarMovie(
+                        onSearch: (String value) {
+                          setState(() {
+                            keySearch = value.toLowerCase();
+                          });
+                        },
+                      ),
                     ),
                   ),
                 ];
@@ -110,6 +117,11 @@ class _MovieChannelsState extends State<MovieChannels> {
                   } else if (state is ChannelsMovieSuccess) {
                     final channels = state.channels;
 
+                    List<ChannelMovie> searchList = channels
+                        .where((element) =>
+                            element.name!.toLowerCase().contains(keySearch))
+                        .toList();
+
                     return GridView.builder(
                       padding: const EdgeInsets.only(
                         left: 10,
@@ -117,7 +129,9 @@ class _MovieChannelsState extends State<MovieChannels> {
                         top: 10,
                         bottom: 80,
                       ),
-                      itemCount: channels.length,
+                      itemCount: keySearch.isEmpty
+                          ? channels.length
+                          : searchList.length,
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 5,
@@ -126,13 +140,16 @@ class _MovieChannelsState extends State<MovieChannels> {
                         childAspectRatio: .7,
                       ),
                       itemBuilder: (_, i) {
+                        final model =
+                            keySearch.isEmpty ? channels[i] : searchList[i];
+
                         return CardChannelMovieItem(
-                          title: channels[i].name,
-                          image: channels[i].streamIcon,
+                          title: model.name,
+                          image: model.streamIcon,
                           onTap: () {
                             Get.to(() => MovieContent(
-                                    channelMovie: channels[i],
-                                    videoId: channels[i].streamId ?? ''))!
+                                    channelMovie: model,
+                                    videoId: model.streamId ?? ''))!
                                 .then((value) async {
                               _interstitialAd.show();
                               _loadIntel();

@@ -10,8 +10,8 @@ class CategoryModel {
   });
 
   CategoryModel.fromJson(Map<String, dynamic> json)
-      : categoryId = json['category_id'] as String?,
-        categoryName = json['category_name'] as String?,
+      : categoryId = json['category_id'].toString(),
+        categoryName = json['category_name'].toString(),
         parentId = json['parent_id'].toString();
 
   Map<String, dynamic> toJson() => {

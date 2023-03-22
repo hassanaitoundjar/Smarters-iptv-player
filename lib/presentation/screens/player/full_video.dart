@@ -41,6 +41,7 @@ class _FullVideoScreenState extends State<FullVideoScreen> {
 
   @override
   void initState() {
+    Wakelock.enable();
     _videoPlayerController = VlcPlayerController.network(
       widget.link,
       hwAcc: HwAcc.full,
@@ -101,7 +102,7 @@ class _FullVideoScreenState extends State<FullVideoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final bool isTv = MediaQuery.of(context).size.width > sizeTablet;
+    final bool isTv = MediaQuery.of(context).size.width < sizeTablet;
     debugPrint("SIZE: ${MediaQuery.of(context).size.width}");
     return Scaffold(
       backgroundColor: Colors.black,

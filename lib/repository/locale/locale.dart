@@ -16,7 +16,7 @@ class LocaleApi {
       final user = await locale.read("user");
 
       if (user != null) {
-        return UserModel.fromJson(user);
+        return UserModel.fromJson(user, user['server_info']['server_url']);
       }
       return null;
     } catch (e) {

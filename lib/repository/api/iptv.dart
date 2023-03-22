@@ -11,6 +11,8 @@ class IpTvApi {
         return [];
       }
 
+      debugPrint("SERVER: ${user.serverInfo!.serverUrl}");
+
       var url = "${user.serverInfo!.serverUrl}/player_api.php";
 
       Response<String> response = await _dio.get(
