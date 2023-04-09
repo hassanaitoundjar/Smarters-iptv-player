@@ -53,13 +53,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                         style: Get.textTheme.subtitle2,
                                       ),
                                       const SizedBox(height: 5),
-                                      Text(
-                                        "Expiration: ${expirationDate(userInfo.userInfo!.expDate)}",
-                                        style:
-                                            Get.textTheme.subtitle2!.copyWith(
-                                          color: kColorHint,
+                                      if (userInfo.userInfo!.expDate != null)
+                                        Text(
+                                          "Expiration: ${expirationDate(userInfo.userInfo!.expDate)}",
+                                          style:
+                                              Get.textTheme.subtitle2!.copyWith(
+                                            color: kColorHint,
+                                          ),
                                         ),
-                                      ),
                                     ],
                                   ),
                                 ),

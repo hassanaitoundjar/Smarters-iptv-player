@@ -98,8 +98,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     return Scaffold(
       body: Ink(
-        width: 100.w,
-        height: 100.h,
+        width: getSize(context).width,
+        height: getSize(context).height,
         decoration: kDecorBackground,
         child: BlocBuilder<SettingsCubit, SettingsState>(
           builder: (context, stateSetting) {

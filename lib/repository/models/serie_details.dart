@@ -128,7 +128,9 @@ class InfoSerie {
             : (json['backdrop_path'] as List)
                 .map((dynamic e) => e.toString())
                 .toList(),
-        youtubeTrailer = json['youtube_trailer'].toString(),
+        youtubeTrailer = json['youtube_trailer'] == null
+            ? null
+            : json['youtube_trailer'].toString(),
         episodeRunTime = json['episode_run_time'].toString(),
         categoryId = json['category_id'].toString();
 

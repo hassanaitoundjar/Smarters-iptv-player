@@ -10,11 +10,13 @@ class LiveChannelsScreen extends StatefulWidget {
 
 class _ListChannelsScreen extends State<LiveChannelsScreen> {
   VlcPlayerController? _videoPlayerController;
+
   int? selectedVideo;
   String? selectedStreamId;
   ChannelLive? channelLive;
   double lastPosition = 0.0;
   String keySearch = "";
+  final FocusNode _remoteFocus = FocusNode();
 
   @override
   void initState() {
@@ -27,6 +29,7 @@ class _ListChannelsScreen extends State<LiveChannelsScreen> {
 
   @override
   void dispose() async {
+    _remoteFocus.dispose();
     super.dispose();
     if (_videoPlayerController != null) {
       await _videoPlayerController!.stopRendererScanning();
@@ -36,254 +39,291 @@ class _ListChannelsScreen extends State<LiveChannelsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        return false;
-      },
-      child: BlocBuilder<AuthBloc, AuthState>(
-        builder: (context, stateAuth) {
-          if (stateAuth is AuthSuccess) {
-            final userAuth = stateAuth.user;
+    return BlocBuilder<VideoCubit, VideoState>(
+      builder: (context, stateVideo) {
+        return WillPopScope(
+          onWillPop: () async {
+            debugPrint("Back pressed");
+            if (stateVideo.isFull) {
+              context.read<VideoCubit>().changeUrlVideo(false);
 
-            return Scaffold(
-              body: Stack(
-                alignment: Alignment.bottomCenter,
-                children: [
-                  Ink(
-                    width: 100.w,
-                    height: 100.h,
-                    decoration: kDecorBackground,
-                    // padding: EdgeInsets.symmetric(vertical: 3.h, horizontal: 10),
-                    child: Column(
-                      children: [
-                        BlocBuilder<VideoCubit, VideoState>(
-                          builder: (context, stateVideo) {
-                            if (stateVideo.isFull) {
-                              return const SizedBox();
-                            }
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(height: 3.h),
-                                BlocBuilder<FavoritesCubit, FavoritesState>(
-                                  builder: (context, state) {
-                                    final isLiked = channelLive == null
-                                        ? false
-                                        : state.lives
-                                            .where((live) =>
-                                                live.streamId ==
-                                                channelLive!.streamId)
-                                            .isNotEmpty;
-                                    return AppBarLive(
-                                      isLiked: isLiked,
-                                      onLike: channelLive == null
-                                          ? null
-                                          : () {
-                                              context
-                                                  .read<FavoritesCubit>()
-                                                  .addLive(channelLive,
-                                                      isAdd: !isLiked);
-                                            },
-                                      onSearch: (String value) {
-                                        setState(() {
-                                          keySearch = value;
-                                        });
-                                      },
-                                    );
+              return Future.value(false);
+            } else {
+              return Future.value(true);
+            }
+          },
+          child: BlocBuilder<AuthBloc, AuthState>(
+            builder: (context, stateAuth) {
+              if (stateAuth is AuthSuccess) {
+                final userAuth = stateAuth.user;
+
+                return Scaffold(
+                  body: Stack(
+                    alignment: Alignment.bottomCenter,
+                    children: [
+                      Ink(
+                        width: 100.w,
+                        height: 100.h,
+                        decoration: kDecorBackground,
+                        // padding: EdgeInsets.symmetric(vertical: 3.h, horizontal: 10),
+                        child: Column(
+                          children: [
+                            Builder(
+                              builder: (context) {
+                                if (stateVideo.isFull) {
+                                  return const SizedBox();
+                                }
+                                return WillPopScope(
+                                  onWillPop: () async {
+                                    debugPrint("Back pressed");
+                                    if (stateVideo.isFull) {
+                                      context
+                                          .read<VideoCubit>()
+                                          .changeUrlVideo(false);
+                                      return Future.value(false);
+                                    } else {
+                                      return Future.value(true);
+                                    }
                                   },
-                                ),
-                                const SizedBox(height: 15),
-                              ],
-                            );
-                          },
-                        ),
-                        Expanded(
-                          child: Row(
-                            children: [
-                              BlocBuilder<VideoCubit, VideoState>(
-                                builder: (context, stateVideo) {
-                                  bool setFull = stateVideo.isFull;
-                                  if (setFull) {
-                                    return const SizedBox();
-                                  }
-                                  return Expanded(
-                                    child: BlocBuilder<ChannelsBloc,
-                                        ChannelsState>(
-                                      builder: (context, state) {
-                                        if (state is ChannelsLoading) {
-                                          return const Center(
-                                              child:
-                                                  CircularProgressIndicator());
-                                        } else if (state
-                                            is ChannelsLiveSuccess) {
-                                          final categories = state.channels;
-
-                                          List<ChannelLive> searchList =
-                                              categories
-                                                  .where((element) => element
-                                                      .name!
-                                                      .toLowerCase()
-                                                      .contains(keySearch))
-                                                  .toList();
-
-                                          return GridView.builder(
-                                            padding: const EdgeInsets.only(
-                                              left: 10,
-                                              right: 10,
-                                              bottom: 80,
-                                            ),
-                                            itemCount: keySearch.isEmpty
-                                                ? categories.length
-                                                : searchList.length,
-                                            gridDelegate:
-                                                SliverGridDelegateWithFixedCrossAxisCount(
-                                              crossAxisCount:
-                                                  selectedVideo == null ? 2 : 1,
-                                              mainAxisSpacing: 10,
-                                              crossAxisSpacing:
-                                                  selectedVideo == null
-                                                      ? 10
-                                                      : 0,
-                                              childAspectRatio: 7,
-                                            ),
-                                            itemBuilder: (_, i) {
-                                              final model = keySearch.isEmpty
-                                                  ? categories[i]
-                                                  : searchList[i];
-
-                                              final link =
-                                                  "${userAuth.serverInfo!.serverUrl}/${userAuth.userInfo!.username}/${userAuth.userInfo!.password}/${model.streamId}";
-
-                                              return CardLiveItem(
-                                                title: model.name ?? "",
-                                                image: model.streamIcon,
-                                                link: link,
-                                                isSelected:
-                                                    selectedVideo == null
-                                                        ? false
-                                                        : selectedVideo == i,
-                                                onTap: () async {
-                                                  try {
-                                                    debugPrint("link: $link");
-                                                    if (selectedVideo == i &&
-                                                        _videoPlayerController !=
-                                                            null) {
-                                                      // OPEN FULL SCREEN
-                                                      debugPrint(
-                                                          "///////////// OPEN FULL STREAM /////////////");
-                                                      context
-                                                          .read<VideoCubit>()
-                                                          .changeUrlVideo(true);
-                                                    } else {
-                                                      if (_videoPlayerController !=
-                                                              null &&
-                                                          (await _videoPlayerController!
-                                                                  .isPlaying() ??
-                                                              false)) {
-                                                        if (mounted) {
-                                                          _videoPlayerController!
-                                                              .pause();
-                                                          _videoPlayerController =
-                                                              null;
-                                                          setState(() {});
-                                                        }
-                                                      }
-
-                                                      await Future.delayed(
-                                                              const Duration(
-                                                                  milliseconds:
-                                                                      100))
-                                                          .then((value) {
-                                                        ///Play new Stream
-                                                        debugPrint(
-                                                            "Play new Stream");
-
-                                                        selectedVideo = i;
-                                                        _videoPlayerController =
-                                                            VlcPlayerController
-                                                                .network(
-                                                          link,
-                                                          hwAcc: HwAcc.full,
-                                                          autoPlay: true,
-                                                          autoInitialize: true,
-                                                          options:
-                                                              VlcPlayerOptions(),
-                                                        );
-                                                        if (mounted) {
-                                                          setState(() {
-                                                            channelLive = model;
-                                                            selectedStreamId =
-                                                                model.streamId;
-                                                          });
-                                                        }
-                                                      });
-                                                    }
-                                                  } catch (e) {
-                                                    debugPrint("error: $e");
-                                                    //  context.read<VideoCubit>().changeUrlVideo(false);
-
-                                                    // selectedVideo = null;
-                                                    _videoPlayerController =
-                                                        null;
-                                                    setState(() {
-                                                      channelLive = model;
-                                                      selectedStreamId =
-                                                          model.streamId;
-                                                    });
-                                                  }
-                                                },
-                                              );
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(height: 3.h),
+                                      BlocBuilder<FavoritesCubit,
+                                          FavoritesState>(
+                                        builder: (context, state) {
+                                          final isLiked = channelLive == null
+                                              ? false
+                                              : state.lives
+                                                  .where((live) =>
+                                                      live.streamId ==
+                                                      channelLive!.streamId)
+                                                  .isNotEmpty;
+                                          return AppBarLive(
+                                            isLiked: isLiked,
+                                            onLike: channelLive == null
+                                                ? null
+                                                : () {
+                                                    context
+                                                        .read<FavoritesCubit>()
+                                                        .addLive(channelLive,
+                                                            isAdd: !isLiked);
+                                                  },
+                                            onSearch: (String value) {
+                                              setState(() {
+                                                keySearch = value;
+                                              });
                                             },
                                           );
-                                        }
-
-                                        return const Center(
-                                          child: Text("Failed to load data..."),
-                                        );
-                                      },
-                                    ),
-                                  );
-                                },
-                              ),
-                              if (selectedVideo != null)
-                                Expanded(
-                                  child: Column(
-                                    children: [
-                                      Expanded(
-                                        flex: 1,
-                                        child: StreamPlayerPage(
-                                          controller: _videoPlayerController,
-                                        ),
-                                      ),
-                                      BlocBuilder<VideoCubit, VideoState>(
-                                        builder: (context, stateVideo) {
-                                          if (stateVideo.isFull) {
-                                            return const SizedBox();
-                                          }
-
-                                          ///Get EPG
-                                          return CardEpgStream(
-                                              streamId: selectedStreamId);
                                         },
                                       ),
+                                      const SizedBox(height: 15),
                                     ],
                                   ),
-                                ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  if (selectedVideo == null) AdmobWidget.getBanner(),
-                ],
-              ),
-            );
-          }
+                                );
+                              },
+                            ),
+                            Expanded(
+                              child: Row(
+                                children: [
+                                  Builder(
+                                    builder: (context) {
+                                      bool setFull = stateVideo.isFull;
+                                      if (setFull) {
+                                        return const SizedBox();
+                                      }
+                                      return Expanded(
+                                        child: BlocBuilder<ChannelsBloc,
+                                            ChannelsState>(
+                                          builder: (context, state) {
+                                            if (state is ChannelsLoading) {
+                                              return const Center(
+                                                  child:
+                                                      CircularProgressIndicator());
+                                            } else if (state
+                                                is ChannelsLiveSuccess) {
+                                              final categories = state.channels;
 
-          return const Scaffold();
-        },
-      ),
+                                              List<ChannelLive> searchList =
+                                                  categories
+                                                      .where((element) =>
+                                                          element.name!
+                                                              .toLowerCase()
+                                                              .contains(
+                                                                  keySearch))
+                                                      .toList();
+
+                                              return GridView.builder(
+                                                padding: const EdgeInsets.only(
+                                                  left: 10,
+                                                  right: 10,
+                                                  bottom: 80,
+                                                ),
+                                                itemCount: keySearch.isEmpty
+                                                    ? categories.length
+                                                    : searchList.length,
+                                                gridDelegate:
+                                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                                  crossAxisCount:
+                                                      selectedVideo == null
+                                                          ? 2
+                                                          : 1,
+                                                  mainAxisSpacing: 10,
+                                                  crossAxisSpacing:
+                                                      selectedVideo == null
+                                                          ? 10
+                                                          : 0,
+                                                  childAspectRatio: 7,
+                                                ),
+                                                itemBuilder: (_, i) {
+                                                  final model =
+                                                      keySearch.isEmpty
+                                                          ? categories[i]
+                                                          : searchList[i];
+
+                                                  final link =
+                                                      "${userAuth.serverInfo!.serverUrl}/${userAuth.userInfo!.username}/${userAuth.userInfo!.password}/${model.streamId}";
+
+                                                  return CardLiveItem(
+                                                    title: model.name ?? "",
+                                                    image: model.streamIcon,
+                                                    link: link,
+                                                    isSelected: selectedVideo ==
+                                                            null
+                                                        ? false
+                                                        : selectedVideo == i,
+                                                    onTap: () async {
+                                                      try {
+                                                        if (selectedVideo ==
+                                                                i &&
+                                                            _videoPlayerController !=
+                                                                null) {
+                                                          // OPEN FULL SCREEN
+                                                          debugPrint(
+                                                              "///////////// OPEN FULL STREAM /////////////");
+                                                          context
+                                                              .read<
+                                                                  VideoCubit>()
+                                                              .changeUrlVideo(
+                                                                  true);
+                                                        } else {
+                                                          if (_videoPlayerController !=
+                                                                  null &&
+                                                              (await _videoPlayerController!
+                                                                      .isPlaying() ??
+                                                                  false)) {
+                                                            if (mounted) {
+                                                              _videoPlayerController!
+                                                                  .pause();
+                                                              _videoPlayerController =
+                                                                  null;
+                                                              setState(() {});
+                                                            }
+                                                          }
+
+                                                          await Future.delayed(
+                                                                  const Duration(
+                                                                      milliseconds:
+                                                                          100))
+                                                              .then((value) {
+                                                            ///Play new Stream
+                                                            debugPrint(
+                                                                "Play new Stream");
+
+                                                            selectedVideo = i;
+                                                            _videoPlayerController =
+                                                                VlcPlayerController
+                                                                    .network(
+                                                              link,
+                                                              hwAcc: HwAcc.full,
+                                                              autoPlay: true,
+                                                              autoInitialize:
+                                                                  true,
+                                                              options:
+                                                                  VlcPlayerOptions(),
+                                                            );
+                                                            if (mounted) {
+                                                              setState(() {
+                                                                channelLive =
+                                                                    model;
+                                                                selectedStreamId =
+                                                                    model
+                                                                        .streamId;
+                                                              });
+                                                            }
+                                                          });
+                                                        }
+                                                      } catch (e) {
+                                                        debugPrint("error: $e");
+                                                        //  context.read<VideoCubit>().changeUrlVideo(false);
+
+                                                        // selectedVideo = null;
+                                                        _videoPlayerController =
+                                                            null;
+                                                        setState(() {
+                                                          channelLive = model;
+                                                          selectedStreamId =
+                                                              model.streamId;
+                                                        });
+                                                      }
+                                                    },
+                                                  );
+                                                },
+                                              );
+                                            }
+
+                                            return const Center(
+                                              child: Text(
+                                                  "Failed to load data..."),
+                                            );
+                                          },
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                  if (selectedVideo != null)
+                                    Expanded(
+                                      child: Column(
+                                        children: [
+                                          Expanded(
+                                            flex: 1,
+                                            child: StreamPlayerPage(
+                                              controller:
+                                                  _videoPlayerController,
+                                            ),
+                                          ),
+                                          Builder(
+                                            builder: (context) {
+                                              if (stateVideo.isFull) {
+                                                return const SizedBox();
+                                              }
+
+                                              ///Get EPG
+                                              return CardEpgStream(
+                                                  streamId: selectedStreamId);
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      if (selectedVideo == null) AdmobWidget.getBanner(),
+                    ],
+                  ),
+                );
+              }
+
+              return const Scaffold();
+            },
+          ),
+        );
+      },
     );
   }
 }

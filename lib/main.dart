@@ -72,70 +72,77 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<AuthBloc>(
-          create: (BuildContext context) => AuthBloc(widget.authApi),
+    return Shortcuts(
+      shortcuts: <LogicalKeySet, Intent>{
+        LogicalKeySet(LogicalKeyboardKey.select): const ActivateIntent()
+      },
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<AuthBloc>(
+            create: (BuildContext context) => AuthBloc(widget.authApi),
+          ),
+          BlocProvider<LiveCatyBloc>(
+            create: (BuildContext context) => LiveCatyBloc(widget.iptv),
+          ),
+          BlocProvider<ChannelsBloc>(
+            create: (BuildContext context) => ChannelsBloc(widget.iptv),
+          ),
+          BlocProvider<MovieCatyBloc>(
+            create: (BuildContext context) => MovieCatyBloc(widget.iptv),
+          ),
+          BlocProvider<SeriesCatyBloc>(
+            create: (BuildContext context) => SeriesCatyBloc(widget.iptv),
+          ),
+          BlocProvider<VideoCubit>(
+            create: (BuildContext context) => VideoCubit(),
+          ),
+          BlocProvider<SettingsCubit>(
+            create: (BuildContext context) => SettingsCubit(),
+          ),
+          BlocProvider<WatchingCubit>(
+            create: (BuildContext context) =>
+                WatchingCubit(widget.watchingLocale),
+          ),
+          BlocProvider<FavoritesCubit>(
+            create: (BuildContext context) =>
+                FavoritesCubit(widget.favoriteLocale),
+          ),
+        ],
+        child: ResponsiveSizer(
+          builder: (context, orient, type) {
+            return GetMaterialApp(
+              title: 'Azul IPTV',
+              theme: MyThemApp.themeData(context),
+              debugShowCheckedModeBanner: false,
+              initialRoute: "/",
+              getPages: [
+                GetPage(name: screenSplash, page: () => const SplashScreen()),
+                GetPage(name: screenWelcome, page: () => const WelcomeScreen()),
+                GetPage(name: screenIntro, page: () => const IntroScreen()),
+                GetPage(
+                    name: screenLiveCategories,
+                    page: () => const LiveCategoriesScreen()),
+                GetPage(
+                    name: screenRegister, page: () => const RegisterScreen()),
+                GetPage(
+                    name: screenRegisterTv, page: () => const RegisterUserTv()),
+                GetPage(
+                    name: screenRegisterTv, page: () => const RegisterUserTv()),
+                GetPage(
+                    name: screenMovieCategories,
+                    page: () => const MovieCategoriesScreen()),
+                GetPage(
+                    name: screenSeriesCategories,
+                    page: () => const SeriesCategoriesScreen()),
+                GetPage(
+                    name: screenSettings, page: () => const SettingsScreen()),
+                GetPage(
+                    name: screenFavourite, page: () => const FavouriteScreen()),
+                GetPage(name: screenCatchUp, page: () => const CatchUpScreen()),
+              ],
+            );
+          },
         ),
-        BlocProvider<LiveCatyBloc>(
-          create: (BuildContext context) => LiveCatyBloc(widget.iptv),
-        ),
-        BlocProvider<ChannelsBloc>(
-          create: (BuildContext context) => ChannelsBloc(widget.iptv),
-        ),
-        BlocProvider<MovieCatyBloc>(
-          create: (BuildContext context) => MovieCatyBloc(widget.iptv),
-        ),
-        BlocProvider<SeriesCatyBloc>(
-          create: (BuildContext context) => SeriesCatyBloc(widget.iptv),
-        ),
-        BlocProvider<VideoCubit>(
-          create: (BuildContext context) => VideoCubit(),
-        ),
-        BlocProvider<SettingsCubit>(
-          create: (BuildContext context) => SettingsCubit(),
-        ),
-        BlocProvider<WatchingCubit>(
-          create: (BuildContext context) =>
-              WatchingCubit(widget.watchingLocale),
-        ),
-        BlocProvider<FavoritesCubit>(
-          create: (BuildContext context) =>
-              FavoritesCubit(widget.favoriteLocale),
-        ),
-      ],
-      child: ResponsiveSizer(
-        builder: (context, orient, type) {
-          return GetMaterialApp(
-            title: 'Azul IPTV',
-            theme: MyThemApp.themeData(context),
-            debugShowCheckedModeBanner: false,
-            initialRoute: "/",
-            getPages: [
-              GetPage(name: screenSplash, page: () => const SplashScreen()),
-              GetPage(name: screenWelcome, page: () => const WelcomeScreen()),
-              GetPage(name: screenIntro, page: () => const IntroScreen()),
-              GetPage(
-                  name: screenLiveCategories,
-                  page: () => const LiveCategoriesScreen()),
-              GetPage(name: screenRegister, page: () => const RegisterScreen()),
-              GetPage(
-                  name: screenRegisterTv, page: () => const RegisterUserTv()),
-              GetPage(
-                  name: screenRegisterTv, page: () => const RegisterUserTv()),
-              GetPage(
-                  name: screenMovieCategories,
-                  page: () => const MovieCategoriesScreen()),
-              GetPage(
-                  name: screenSeriesCategories,
-                  page: () => const SeriesCategoriesScreen()),
-              GetPage(name: screenSettings, page: () => const SettingsScreen()),
-              GetPage(
-                  name: screenFavourite, page: () => const FavouriteScreen()),
-              GetPage(name: screenCatchUp, page: () => const CatchUpScreen()),
-            ],
-          );
-        },
       ),
     );
   }

@@ -8,17 +8,71 @@ class RegisterUserTv extends StatefulWidget {
 }
 
 class _RegisterUserTvState extends State<RegisterUserTv> {
-  final _username = TextEditingController();
-  final _password = TextEditingController();
-  final _domain = TextEditingController();
+  final _username = TextEditingController(text: "Momo");
+  final _password = TextEditingController(text: "hQHzGhk1zf");
+  final _domain = TextEditingController(text: "http://iceprime.ddns.net:8080");
 
-  int indexText = 0;
+  int indexTab = 0;
+
+  final FocusNode focusNode0 = FocusNode();
+  final FocusNode focusNode1 = FocusNode();
+  final FocusNode focusNode2 = FocusNode();
+  final FocusNode _remoteFocus = FocusNode();
+
+  _onKey(RawKeyEvent event) {
+    debugPrint("EVENT");
+    if (event.isKeyPressed(LogicalKeyboardKey.arrowDown)) {
+      debugPrint('downd');
+
+      if (indexTab == 0) {
+        indexTab = 1;
+      } else if (indexTab == 1) {
+        indexTab = 2;
+      } else if (indexTab == 2) {
+        indexTab = 3;
+      }
+    } else if (event.isKeyPressed(LogicalKeyboardKey.arrowUp)) {
+      debugPrint('up');
+      if (indexTab == 0) {
+      } else if (indexTab == 1) {
+        indexTab = 0;
+      } else if (indexTab == 2) {
+        indexTab = 1;
+      } else if (indexTab == 3) {
+        indexTab = 2;
+      }
+    } else if (event.isKeyPressed(LogicalKeyboardKey.select)) {
+      debugPrint("enter");
+
+      if (indexTab == 0) {
+        focusNode0.requestFocus();
+      } else if (indexTab == 1) {
+        focusNode1.requestFocus();
+      } else if (indexTab == 2) {
+        focusNode2.requestFocus();
+      } else if (indexTab == 3) {
+        debugPrint("Login");
+        _login();
+      }
+    }
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    focusNode0.requestFocus();
+  }
 
   @override
   void dispose() {
     _domain.dispose();
     _username.dispose();
     _password.dispose();
+    focusNode0.dispose();
+    focusNode1.dispose();
+    focusNode2.dispose();
+    _remoteFocus.dispose();
 
     super.dispose();
   }
@@ -37,193 +91,177 @@ class _RegisterUserTvState extends State<RegisterUserTv> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Focus(
-        onKey: (node, event) {
-          //Select
-          debugPrint("EVETN: ${event.data.logicalKey.keyLabel}");
-          if (indexText == 3 && event.data.logicalKey.keyLabel == "Select" ||
-              event.data.logicalKey.keyLabel == "Enter") {
-            _login();
-          }
-
-          return KeyEventResult.ignored;
-        },
-        child: BlocBuilder<SettingsCubit, SettingsState>(
+    return RawKeyboardListener(
+      focusNode: _remoteFocus,
+      onKey: _onKey,
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: BlocBuilder<SettingsCubit, SettingsState>(
           builder: (context, state) {
             return AzulEnvatoChecker(
               uniqueKey: state.setting,
-              successPage: Ink(
-                width: 100.w,
-                height: 100.h,
-                decoration: kDecorBackground,
-                child: BlocConsumer<AuthBloc, AuthState>(
-                  listener: (context, state) {
-                    if (state is AuthSuccess) {
-                      context.read<LiveCatyBloc>().add(GetLiveCategories());
-                      context.read<MovieCatyBloc>().add(GetMovieCategories());
-                      context.read<SeriesCatyBloc>().add(GetSeriesCategories());
+              successPage: Stack(
+                children: [
+                  ///Background
+                  const Opacity(
+                    opacity: .1,
+                    child: IntroImageAnimated(isTv: true),
+                  ),
 
-                      Get.offAndToNamed(screenWelcome);
-                    } else if (state is AuthFailed) {
-                      showWarningToast(
-                        context,
-                        'Login failed.',
-                        'Please check your IPTV credentials and try again.',
-                      );
-                      debugPrint(state.message);
-                    }
-                  },
-                  builder: (context, state) {
-                    if (state is AuthLoading) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
+                  Ink(
+                    width: getSize(context).width,
+                    height: getSize(context).height,
+                    decoration: kDecorBackground,
+                    child: BlocConsumer<AuthBloc, AuthState>(
+                      listener: (context, state) {
+                        if (state is AuthSuccess) {
+                          context.read<LiveCatyBloc>().add(GetLiveCategories());
+                          context
+                              .read<MovieCatyBloc>()
+                              .add(GetMovieCategories());
+                          context
+                              .read<SeriesCatyBloc>()
+                              .add(GetSeriesCategories());
 
-                    return Center(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image(
-                              width: 0.4.dp,
-                              height: 0.4.dp,
-                              image: const AssetImage(kIconSplash),
-                            ),
-                            Center(
-                              child: Ink(
-                                width: 90.w,
-                                // height: 70.h,
-                                decoration: BoxDecoration(
-                                    gradient: kDecorBackground.gradient,
-                                    borderRadius: BorderRadius.circular(10),
-                                    boxShadow: const [
-                                      BoxShadow(
-                                        color: Colors.black38,
-                                        blurRadius: 5,
-                                      )
-                                    ]),
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                  vertical: 20,
-                                ),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    CardInputLogin(
-                                      textInputAction: TextInputAction.next,
-                                      autofocus: indexText == 0,
-                                      controller: _username,
-                                      hint: 'username',
-                                      onSubmitted: (_) async {
-                                        setState(() {
-                                          indexText = 1;
-                                        });
+                          Get.offAndToNamed(screenWelcome);
+                        } else if (state is AuthFailed) {
+                          showWarningToast(
+                            context,
+                            'Login failed.',
+                            'Please check your IPTV credentials and try again.',
+                          );
+                          debugPrint(state.message);
+                        }
+                      },
+                      builder: (context, state) {
+                        if (state is AuthLoading) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
 
-                                        /*   await Future.delayed(const Duration(
-                                                  microseconds: 400))
-                                              .then((value) =>
-                                                  FocusScope.of(context)
-                                                      .requestFocus());*/
-                                      },
-                                    ),
-                                    const SizedBox(height: 15),
-                                    CardInputLogin(
-                                      textInputAction: TextInputAction.next,
-                                      controller: _password,
-                                      hint: 'password',
-                                      onSubmitted: (_) async {
-                                        setState(() {
-                                          indexText = 2;
-                                        });
-                                      },
-                                    ),
-                                    const SizedBox(height: 15),
-                                    CardInputLogin(
-                                      textInputAction: TextInputAction.next,
-                                      controller: _domain,
-                                      hint: 'domain',
-                                      onSubmitted: (_) {
-                                        setState(() {
-                                          indexText = 3;
-                                        });
-                                      },
-                                    ),
-                                    const SizedBox(height: 15),
-                                    SizedBox(
-                                      width: 100.w,
-                                      height: 50,
-                                      child: Row(
-                                        children: [
-                                          Expanded(
-                                            flex: 2,
-                                            child: CardButtonWatchMovie(
-                                              isFocused: indexText == 3,
-                                              onFocusChanged: (value) {
-                                                setState(() {
-                                                  indexText == 3;
-                                                });
-                                              },
-                                              onTap: () {
-                                                _login();
-                                              },
-                                              title: 'Login',
-                                            ),
-                                          ),
-                                          const SizedBox(width: 10),
-                                          CardButtonWatchMovie(
-                                            index: 4,
-                                            isFocused: indexText == 4,
-                                            onFocusChanged: (value) {
-                                              setState(() {
-                                                indexText == 4;
-                                              });
-                                            },
+                        return Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image(
+                                width: getSize(context).height * .22,
+                                height: getSize(context).height * .22,
+                                image: const AssetImage(kIconSplash),
+                              ),
+                              Center(
+                                child: Ink(
+                                  width: getSize(context).width * .9,
+                                  decoration: BoxDecoration(
+                                      gradient: kDecorBackground.gradient,
+                                      borderRadius: BorderRadius.circular(10),
+                                      boxShadow: const [
+                                        BoxShadow(
+                                          color: Colors.black38,
+                                          blurRadius: 5,
+                                        )
+                                      ]),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 10,
+                                    vertical: 20,
+                                  ),
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      children: [
+                                        const SizedBox(height: 15),
+                                        CardInputTv(
+                                          label: "username",
+                                          controller: _username,
+                                          icon: FontAwesomeIcons.solidUser,
+                                          focusNode: focusNode0,
+                                          isEnabled: indexTab == 0,
+                                          isFocused: indexTab == 0,
+                                          onEditingComplete: null,
+                                          onTap: () {
+                                            setState(() {
+                                              indexTab = 0;
+                                            });
+                                          },
+                                        ),
+                                        const SizedBox(height: 10),
+                                        CardInputTv(
+                                          label: "password",
+                                          controller: _password,
+                                          icon: FontAwesomeIcons.lock,
+                                          focusNode: focusNode1,
+                                          isEnabled: indexTab == 1,
+                                          isFocused: indexTab == 1,
+                                          onTap: () {
+                                            setState(() {
+                                              indexTab = 1;
+                                            });
+                                          },
+                                        ),
+                                        const SizedBox(height: 15),
+                                        CardInputTv(
+                                          label: "http://example.ex:8080",
+                                          controller: _domain,
+                                          icon: FontAwesomeIcons.lock,
+                                          focusNode: focusNode2,
+                                          isEnabled: indexTab == 2,
+                                          isFocused: indexTab == 2,
+                                          onTap: () {
+                                            setState(() {
+                                              indexTab = 2;
+                                            });
+                                          },
+                                        ),
+                                        const SizedBox(height: 15),
+                                        SizedBox(
+                                          width: getSize(context).width,
+                                          height: 50,
+                                          child: CardButtonWatchMovie(
+                                            isFocused: indexTab == 3,
+                                            onFocusChanged: (value) {},
                                             onTap: () {
-                                              debugPrint("click1");
-                                              Get.offAllNamed("/");
+                                              _login();
                                             },
-                                            title: 'reload',
+                                            title: 'Login',
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                      ],
                                     ),
-                                  ],
+                                  ),
                                 ),
                               ),
-                            ),
-                            SizedBox(height: 4.h),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "You don't have account? ",
-                                  style: Get.textTheme.subtitle2!.copyWith(
-                                    color: kColorCardDark,
-                                  ),
-                                ),
-                                InkWell(
-                                  onTap: () async {
-                                    await launchUrlString(kContact,
-                                        mode: LaunchMode.externalApplication);
-                                  },
-                                  child: Text(
-                                    'contact us',
-                                    style: Get.textTheme.headline5!.copyWith(
-                                      color: kColorPrimary,
+                              /*  SizedBox(height: 4.h),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "You don't have account? ",
+                                    style: Get.textTheme.subtitle2!.copyWith(
+                                      color: kColorCardDark,
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                ),
+                                  InkWell(
+                                    onTap: () async {
+                                      await launchUrlString(kContact,
+                                          mode:
+                                              LaunchMode.externalApplication);
+                                    },
+                                    child: Text(
+                                      'contact us',
+                                      style:
+                                          Get.textTheme.headline5!.copyWith(
+                                        color: kColorPrimary,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),*/
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
               ),
             );
           },

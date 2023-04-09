@@ -12,8 +12,8 @@ class _IntroScreenState extends State<IntroScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Ink(
-        width: 100.w,
-        height: 100.h,
+        width: getSize(context).width,
+        height: getSize(context).height,
         decoration: kDecorBackground,
         child: Column(
           children: [

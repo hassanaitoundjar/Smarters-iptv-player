@@ -23,7 +23,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       if (user != null) {
         changeDeviceOrient();
-        await Future.delayed(const Duration(seconds: 1));
+        await Future.delayed(const Duration(milliseconds: 300));
         emit(AuthSuccess(user));
       } else {
         emit(AuthFailed("could not login!!"));

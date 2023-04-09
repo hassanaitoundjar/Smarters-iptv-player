@@ -55,7 +55,7 @@ class UserInfo {
         message = json['message'].toString(),
         auth = json['auth'].toString(),
         status = json['status'].toString(),
-        expDate = json['exp_date'].toString(),
+        expDate = json['exp_date'] == null ? null : json['exp_date'].toString(),
         isTrial = json['is_trial'].toString(),
         activeCons = json['active_cons'].toString(),
         createdAt = json['created_at'].toString(),

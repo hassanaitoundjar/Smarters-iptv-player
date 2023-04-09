@@ -102,7 +102,6 @@ class _FullVideoScreenState extends State<FullVideoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final bool isTv = MediaQuery.of(context).size.width < sizeTablet;
     debugPrint("SIZE: ${MediaQuery.of(context).size.width}");
     return Scaffold(
       backgroundColor: Colors.black,
@@ -110,8 +109,8 @@ class _FullVideoScreenState extends State<FullVideoScreen> {
         alignment: Alignment.bottomCenter,
         children: [
           Container(
-            width: 100.w,
-            height: 100.h,
+            width: getSize(context).width,
+            height: getSize(context).height,
             color: Colors.black,
             child: VlcPlayer(
               controller: _videoPlayerController,
@@ -135,8 +134,8 @@ class _FullVideoScreenState extends State<FullVideoScreen> {
               });
             },
             child: Container(
-              width: 100.w,
-              height: 100.h,
+              width: getSize(context).width,
+              height: getSize(context).height,
               color: Colors.transparent,
               child: AnimatedSize(
                 duration: const Duration(milliseconds: 200),
@@ -232,7 +231,7 @@ class _FullVideoScreenState extends State<FullVideoScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                if (!isTv)
+                if (!isTv(context))
                   FillingSlider(
                     direction: FillingSliderDirection.vertical,
                     initialValue: _currentVolume,
@@ -275,7 +274,7 @@ class _FullVideoScreenState extends State<FullVideoScreen> {
                     ),
                   ),
                 ),
-                if (!isTv)
+                if (!isTv(context))
                   FillingSlider(
                     initialValue: _currentBright,
                     direction: FillingSliderDirection.vertical,

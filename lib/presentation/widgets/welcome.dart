@@ -119,11 +119,13 @@ class CardWelcomeTv extends StatelessWidget {
     required this.onTap,
     required this.title,
     required this.subTitle,
+    this.autoFocus = false,
   }) : super(key: key);
   final String icon;
   final String title;
   final String subTitle;
   final Function() onTap;
+  final bool autoFocus;
 
   @override
   Widget build(BuildContext context) {
@@ -131,6 +133,8 @@ class CardWelcomeTv extends StatelessWidget {
       onTap: onTap,
       borderRadius: BorderRadius.circular(30),
       focusColor: kColorFocus,
+      autofocus: autoFocus,
+      onFocusChange: (value) {},
       child: Ink(
         decoration: BoxDecoration(
           color: kColorCardLight,

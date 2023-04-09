@@ -14,11 +14,17 @@ const String kImageIntro = "assets/images/intro h.jpeg";
 const String kPrivacy = "https://www.whmcssmarters.com/terms-of-service/";
 const String kContact = "https://mouadzizi.me";
 
-const double sizeTablet = 600; // 950;
+const double sizeTablet = 950;
 
 enum TypeCategory {
   all,
   live,
   movies,
   series,
+}
+
+Size getSize(BuildContext context) => MediaQuery.of(context).size;
+
+bool isTv(BuildContext context) {
+  return MediaQuery.of(context).size.width > sizeTablet;
 }

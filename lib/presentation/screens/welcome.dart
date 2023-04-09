@@ -39,8 +39,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Ink(
-        width: 100.w,
-        height: 100.h,
+        width: getSize(context).width,
+        height: getSize(context).height,
         decoration: kDecorBackground,
         padding: EdgeInsets.only(left: 10, right: 10, top: 3.h),
         child: Column(
@@ -63,6 +63,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                           if (state is LiveCatySuccess) {
                             return CardWelcomeTv(
                               title: "LIVE TV",
+                              autoFocus: true,
                               subTitle: "${state.categories.length} Channels",
                               icon: kIconLive,
                               onTap: () {

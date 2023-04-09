@@ -31,8 +31,8 @@ class _StreamPlayerPageState extends State<StreamPlayerPage> {
     }
     return Ink(
       color: Colors.black,
-      width: 100.w,
-      height: 100.h,
+      width: getSize(context).width,
+      height: getSize(context).height,
       child: Stack(
         alignment: Alignment.center,
         children: [
@@ -50,8 +50,8 @@ class _StreamPlayerPageState extends State<StreamPlayerPage> {
               });
             },
             child: Container(
-              width: 100.w,
-              height: 100.h,
+              width: getSize(context).width,
+              height: getSize(context).height,
               color: Colors.transparent,
             ),
           ),
@@ -64,7 +64,7 @@ class _StreamPlayerPageState extends State<StreamPlayerPage> {
               }
 
               return SizedBox(
-                width: 100.w,
+                width: getSize(context).width,
                 child: AnimatedSwitcher(
                   duration: const Duration(milliseconds: 400),
                   child: !showControllersVideo

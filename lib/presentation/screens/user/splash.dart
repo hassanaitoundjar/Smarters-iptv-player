@@ -9,16 +9,31 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   goScreen(String screen) {
-    Future.delayed(const Duration(seconds: 1)).then((value) {
+    Future.delayed(const Duration(seconds: 3)).then((value) {
       Get.offAndToNamed(screen);
     });
   }
 
   @override
   void initState() {
-    context.read<SettingsCubit>().getSettingsCode();
-    context.read<AuthBloc>().add(AuthGetUser());
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) {
+        if (isTv(context)) {
+          SystemChrome.setPreferredOrientations([
+            DeviceOrientation.landscapeLeft,
+            DeviceOrientation.landscapeRight,
+          ]);
+        } else {
+          SystemChrome.setPreferredOrientations([
+            DeviceOrientation.portraitDown,
+            DeviceOrientation.portraitUp,
+          ]);
+        }
+        context.read<SettingsCubit>().getSettingsCode();
+        context.read<AuthBloc>().add(AuthGetUser());
+      },
+    );
   }
 
   @override
@@ -36,7 +51,7 @@ class _SplashScreenState extends State<SplashScreen> {
               context.read<SeriesCatyBloc>().add(GetSeriesCategories());
               goScreen(screenWelcome);
             } else if (state is AuthFailed) {
-              if (isPortrait && Get.width > sizeTablet) {
+              if (isTv(context)) {
                 goScreen(screenRegisterTv);
               } else {
                 //goScreen(screenRegisterTv);
@@ -57,15 +72,15 @@ class LoadingWidgt extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 100.w,
-      height: 100.h,
+      width: getSize(context).width,
+      height: getSize(context).height,
       decoration: kDecorBackground,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image(
-            width: 0.6.dp,
-            height: 0.6.dp,
+            width: getSize(context).height * .22,
+            height: getSize(context).height * .22,
             image: const AssetImage(kIconSplash),
           ),
           const SizedBox(height: 10),
@@ -81,7 +96,7 @@ class LoadingWidgt extends StatelessWidget {
                   child: const CircularProgressIndicator(),
                 );
               } else if (state is AuthFailed) {
-                return const Text('Failed to Load user data');
+                return const Text('');
               }
               return const SizedBox();
             },

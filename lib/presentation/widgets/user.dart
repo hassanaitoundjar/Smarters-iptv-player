@@ -1,76 +1,69 @@
 part of 'widgets.dart';
 
-class CardInputLogin extends StatefulWidget {
-  const CardInputLogin({
-    Key? key,
-    required this.hint,
-    this.controller,
-    this.onChange,
-    this.autofocus = false,
-    required this.textInputAction,
-    required this.onSubmitted,
-  }) : super(key: key);
-  final String hint;
+class CardInputTv extends StatelessWidget {
+  const CardInputTv(
+      {Key? key,
+      this.controller,
+      required this.label,
+      required this.icon,
+      required this.focusNode,
+      required this.onTap,
+      this.onEditingComplete,
+      required this.isFocused,
+      required this.isEnabled})
+      : super(key: key);
   final TextEditingController? controller;
-  final Function(String)? onChange;
-  final TextInputAction textInputAction;
-  final bool autofocus;
-  final Function(String) onSubmitted;
+  final FocusNode focusNode;
+  final String label;
+  final IconData icon;
+  final Function() onTap;
+  final Function()? onEditingComplete;
 
-  @override
-  State<CardInputLogin> createState() => _CardInputLoginState();
-}
-
-class _CardInputLoginState extends State<CardInputLogin> {
-  bool isFocused = false;
-
-  final FocusNode node = FocusNode();
+  final bool isFocused, isEnabled;
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        // node.requestFocus();
-        setState(() {
-          isFocused = true;
-        });
-      },
-      onFocusChange: (value) {
-        if (value) {
-          node.requestFocus();
-        }
-        setState(() {
-          isFocused = value;
-        });
-      },
-      child: Ink(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(5),
-          border: Border.all(
-            color: isFocused ? kColorPrimary : Colors.white,
-            width: 3,
-          ),
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: TextField(
-          focusNode: node,
-          autofocus: widget.autofocus,
-          onSubmitted: widget.onSubmitted,
-          controller: widget.controller,
-          onChanged: widget.onChange,
-          textInputAction: widget.textInputAction,
-          decoration: InputDecoration(
-            hintText: widget.hint,
-            hintStyle: Get.textTheme.subtitle2!.copyWith(
-              color: Colors.grey,
+    final style = Get.textTheme.bodyMedium!.copyWith(
+      color: Colors.black,
+      fontSize: 14.sp,
+      fontWeight: FontWeight.bold,
+    );
+
+    return SizedBox(
+      width: getSize(context).width,
+      height: 50,
+      child: InkWell(
+        onTap: onTap,
+        child: Container(
+          constraints: const BoxConstraints(maxWidth: 300),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              color: isFocused ? kColorPrimary : Colors.transparent,
+              width: 3,
             ),
-            border: InputBorder.none,
           ),
-          style: Get.textTheme.subtitle2!.copyWith(
-            color: Colors.black,
+          padding: const EdgeInsets.only(left: 10),
+          child: TextField(
+            controller: controller,
+            enabled: isEnabled,
+            focusNode: focusNode,
+            textInputAction: TextInputAction.next,
+            onEditingComplete: onEditingComplete,
+            decoration: InputDecoration(
+              hintText: label,
+              hintStyle: Get.textTheme.bodyMedium!.copyWith(color: Colors.grey),
+              suffixIcon: Icon(
+                icon,
+                size: 18,
+                color: kColorPrimary,
+              ),
+              border: InputBorder.none,
+            ),
+            cursorColor: kColorPrimary,
+            style: style,
           ),
-          cursorColor: kColorPrimary,
         ),
       ),
     );
@@ -78,7 +71,8 @@ class _CardInputLoginState extends State<CardInputLogin> {
 }
 
 class IntroImageAnimated extends StatefulWidget {
-  const IntroImageAnimated({Key? key}) : super(key: key);
+  final bool isTv;
+  const IntroImageAnimated({Key? key, this.isTv = false}) : super(key: key);
 
   @override
   State<IntroImageAnimated> createState() => _IntroImageAnimatedState();
@@ -93,7 +87,7 @@ class _IntroImageAnimatedState extends State<IntroImageAnimated> {
     const int second = 27;
 
     await Future.delayed(const Duration(milliseconds: 400));
-    debugPrint("start first one");
+    //debugPrint("start first one");
 
     await controller.animateTo(
       isImage ? controller.position.maxScrollExtent : 0,
@@ -121,12 +115,12 @@ class _IntroImageAnimatedState extends State<IntroImageAnimated> {
 
   @override
   Widget build(BuildContext context) {
-    final height = 50.h;
+    final height = getSize(context).height / (widget.isTv ? 1 : 2);
     return Stack(
       alignment: Alignment.center,
       children: [
         SizedBox(
-          width: 100.w,
+          width: getSize(context).width,
           height: height,
           child: SingleChildScrollView(
             controller: controller,
@@ -134,38 +128,42 @@ class _IntroImageAnimatedState extends State<IntroImageAnimated> {
             child: Image.asset(
               kImageIntro,
               fit: BoxFit.cover,
+              width: getSize(context).width + 140,
             ),
           ),
         ),
         Opacity(
-          opacity: .5,
+          opacity: widget.isTv ? 0 : .5,
           child: Container(
-            width: 100.w,
+            width: getSize(context).width,
             height: height,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [kColorPrimary, kColorPrimaryDark],
+                colors: widget.isTv
+                    ? [kColorBackDark]
+                    : [kColorPrimary, kColorPrimaryDark],
               ),
             ),
           ),
         ),
-        Column(
-          children: [
-            Image.asset(
-              kIconSplash,
-              width: 40.w,
-              height: 40.w,
-            ),
-            Text(
-              kAppName.toUpperCase(),
-              textAlign: TextAlign.center,
-              style: Get.textTheme.headlineLarge!.copyWith(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
+        if (!widget.isTv)
+          Column(
+            children: [
+              Image.asset(
+                kIconSplash,
+                width: 40.w,
+                height: 40.w,
               ),
-            ),
-          ],
-        ),
+              Text(
+                kAppName.toUpperCase(),
+                textAlign: TextAlign.center,
+                style: Get.textTheme.headlineLarge!.copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
       ],
     );
   }
