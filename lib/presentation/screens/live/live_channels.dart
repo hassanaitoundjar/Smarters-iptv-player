@@ -368,10 +368,11 @@ class CardEpgStream extends StatelessWidget {
                     ),
                     itemBuilder: (_, i) {
                       final model = list[i];
-                      String description = String.fromCharCodes(
-                          base64.decode(model.description ?? ""));
-                      String title = String.fromCharCodes(
-                          base64.decode(model.title ?? ""));
+                      String description =
+                          utf8.decode(base64.decode(model.description ?? ""));
+
+                      String title =
+                          utf8.decode(base64.decode(model.title ?? ""));
                       return CardEpg(
                         title:
                             "${getTimeFromDate(model.start ?? "")} - ${getTimeFromDate(model.end ?? "")} - $title",

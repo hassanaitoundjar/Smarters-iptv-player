@@ -8,9 +8,9 @@ class RegisterUserTv extends StatefulWidget {
 }
 
 class _RegisterUserTvState extends State<RegisterUserTv> {
-  final _username = TextEditingController(text: "Momo");
-  final _password = TextEditingController(text: "hQHzGhk1zf");
-  final _domain = TextEditingController(text: "http://iceprime.ddns.net:8080");
+  final _username = TextEditingController();
+  final _password = TextEditingController();
+  final _domain = TextEditingController();
 
   int indexTab = 0;
 
