@@ -128,9 +128,7 @@ class InfoSerie {
             : (json['backdrop_path'] as List)
                 .map((dynamic e) => e.toString())
                 .toList(),
-        youtubeTrailer = json['youtube_trailer'] == null
-            ? null
-            : json['youtube_trailer'].toString(),
+        youtubeTrailer = json['youtube_trailer'] as String?,
         episodeRunTime = json['episode_run_time'].toString(),
         categoryId = json['category_id'].toString();
 
@@ -178,7 +176,7 @@ class Episode {
   Episode.fromJson(Map<String, dynamic> json)
       : id = json['id'].toString(),
         episodeNum = json['episode_num'].toString(),
-        title = json['title'] == null ? null : json['title'].toString(),
+        title = json['title'] as String?,
         containerExtension = json['container_extension'].toString(),
         info = json['info'] != null && json['info'].runtimeType == List
             ? null
@@ -230,7 +228,7 @@ class InfoEpisode {
         plot = json['plot'] == null ? "" : json['plot'].toString(),
         releasedate = json['releasedate'].toString(),
         rating = json['rating'].toString(),
-        name = json['name'] == null ? null : json['name'].toString(),
+        name = json['name'] as String?,
         durationSecs = json['duration_secs'].toString(),
         duration = json['duration'].toString(),
         bitrate = json['bitrate'].toString();

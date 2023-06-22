@@ -49,7 +49,7 @@ class CardChannelMovieItem extends StatelessWidget {
                 title ?? 'null',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: Get.textTheme.headline6,
+                style: Get.textTheme.titleLarge,
               ),
             ),
           ],
@@ -123,8 +123,9 @@ class _CardButtonWatchMovieState extends State<CardButtonWatchMovie> {
           child: Center(
             child: Text(
               widget.title.toUpperCase(),
-              style:
-                  isFocused ? Get.textTheme.headline4 : Get.textTheme.headline5,
+              style: isFocused
+                  ? Get.textTheme.headlineMedium
+                  : Get.textTheme.headlineSmall,
             ),
           ),
         ),
@@ -162,7 +163,7 @@ class CardInfoMovie extends StatelessWidget {
               const SizedBox(width: 5),
               Text(
                 hint,
-                style: Get.textTheme.headline5,
+                style: Get.textTheme.headlineSmall,
               ),
             ],
           ),
@@ -170,7 +171,7 @@ class CardInfoMovie extends StatelessWidget {
           !isShowMore
               ? Text(
                   title,
-                  style: Get.textTheme.subtitle2!.copyWith(
+                  style: Get.textTheme.titleSmall!.copyWith(
                     fontWeight: FontWeight.w100,
                   ),
                 )
@@ -181,13 +182,13 @@ class CardInfoMovie extends StatelessWidget {
                   trimMode: TrimMode.Line,
                   trimCollapsedText: 'more',
                   trimExpandedText: 'less',
-                  style: Get.textTheme.subtitle2!.copyWith(
+                  style: Get.textTheme.titleSmall!.copyWith(
                     fontWeight: FontWeight.w100,
                   ),
-                  moreStyle: Get.textTheme.headline5!.copyWith(
+                  moreStyle: Get.textTheme.headlineSmall!.copyWith(
                     color: kColorFocus,
                   ),
-                  lessStyle: Get.textTheme.headline5!.copyWith(
+                  lessStyle: Get.textTheme.headlineSmall!.copyWith(
                     color: kColorFocus,
                   ),
                 ),
@@ -380,7 +381,7 @@ class CardEpisodeItem extends StatelessWidget {
                   Text(
                     episode!.info!.name ?? "Episode $index",
                     maxLines: 1,
-                    style: Get.textTheme.headline4!.copyWith(
+                    style: Get.textTheme.headlineMedium!.copyWith(
                       fontSize: isSelected ? 18.sp : 17.sp,
                     ),
                   ),
@@ -388,7 +389,7 @@ class CardEpisodeItem extends StatelessWidget {
                   Text(
                     episode!.info!.plot ?? "",
                     maxLines: 3,
-                    style: Get.textTheme.subtitle1!.copyWith(
+                    style: Get.textTheme.titleMedium!.copyWith(
                       color: Colors.grey.shade400,
                       fontSize: 15.sp,
                     ),
@@ -405,7 +406,7 @@ class CardEpisodeItem extends StatelessWidget {
                       Text(
                         getDurationMovie(episode!.info!.duration),
                         maxLines: 3,
-                        style: Get.textTheme.subtitle1!.copyWith(
+                        style: Get.textTheme.titleMedium!.copyWith(
                           color: Colors.grey.shade400,
                           fontSize: 15.sp,
                         ),
@@ -420,7 +421,7 @@ class CardEpisodeItem extends StatelessWidget {
                       Text(
                         "Play",
                         maxLines: 3,
-                        style: Get.textTheme.subtitle1!.copyWith(
+                        style: Get.textTheme.titleMedium!.copyWith(
                           color:
                               isSelected ? Colors.white : Colors.grey.shade400,
                           fontSize: isSelected ? 16.sp : 15.sp,
@@ -473,8 +474,8 @@ class CardSeasonItem extends StatelessWidget {
             Text(
               '$number SEASONS',
               style: isSelected
-                  ? Get.textTheme.headline4
-                  : Get.textTheme.subtitle1!.copyWith(
+                  ? Get.textTheme.headlineMedium
+                  : Get.textTheme.titleMedium!.copyWith(
                       color: Colors.grey.shade500,
                       fontSize: 17.sp,
                     ),

@@ -30,16 +30,13 @@ class ChannelMovie {
   });
 
   ChannelMovie.fromJson(Map<String, dynamic> json)
-      : num = json['num'] == null ? null : json['num'].toString(),
+      : num = json['num'] as String?,
         name = json['name'].toString(),
         streamType = json['stream_type'].toString(),
-        streamId =
-            json['stream_id'] == null ? null : json['stream_id'].toString(),
+        streamId = json['stream_id'] as String?,
         streamIcon = json['stream_icon'].toString(),
         rating = json['rating'].toString(),
-        rating5based = json['rating_5based'] == null
-            ? null
-            : json['rating_5based'].toString(),
+        rating5based = json['rating_5based'] as String?,
         added = json['added'].toString(),
         isAdult = json['is_adult'].toString(),
         categoryId = json['category_id'].toString(),

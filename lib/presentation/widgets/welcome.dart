@@ -19,7 +19,7 @@ class AppBarWelcome extends StatelessWidget {
           const SizedBox(width: 5),
           Text(
             kAppName,
-            style: Get.textTheme.headline4,
+            style: Get.textTheme.headlineMedium,
           ),
           Container(
             width: 1,
@@ -38,11 +38,11 @@ class AppBarWelcome extends StatelessWidget {
                     children: [
                       Text(
                         dateNowWelcome(),
-                        style: Get.textTheme.subtitle2,
+                        style: Get.textTheme.titleSmall,
                       ),
                       Text(
                         "Expiration: ${expirationDate(userInfo!.expDate)}",
-                        style: Get.textTheme.subtitle2!.copyWith(
+                        style: Get.textTheme.titleSmall!.copyWith(
                           color: kColorHint,
                         ),
                       ),
@@ -104,7 +104,7 @@ class CardWelcomeSetting extends StatelessWidget {
           const SizedBox(width: 10),
           Text(
             title,
-            style: Get.textTheme.headline5,
+            style: Get.textTheme.headlineSmall,
           ),
         ],
       ),
@@ -152,12 +152,12 @@ class CardWelcomeTv extends StatelessWidget {
             SizedBox(height: 3.h),
             Text(
               title,
-              style: Get.textTheme.headline3,
+              style: Get.textTheme.displaySmall,
             ),
             SizedBox(height: 1.h),
             Text(
               "◍ $subTitle",
-              style: Get.textTheme.subtitle2!.copyWith(color: Colors.white70),
+              style: Get.textTheme.titleSmall!.copyWith(color: Colors.white70),
             ),
           ],
         ),

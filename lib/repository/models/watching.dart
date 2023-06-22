@@ -1,6 +1,3 @@
-import '../../helpers/helpers.dart';
-import 'movie_detail.dart';
-
 class WatchingModel {
   final String streamId;
   final String image;

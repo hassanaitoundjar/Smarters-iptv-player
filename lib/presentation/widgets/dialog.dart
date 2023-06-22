@@ -46,7 +46,7 @@ class _DialogTrailerYoutubeState extends State<DialogTrailerYoutube> {
             Expanded(
               child: PodVideoPlayer(
                 controller: controller,
-                onToggleFullScreen: (value) async {},
+                //onToggleFullScreen: (value) async {},
                 alwaysShowProgressBar: false,
                 podProgressBarConfig: const PodProgressBarConfig(
                   alwaysVisibleCircleHandler: false,

@@ -13,7 +13,7 @@ class ChannelLive {
   final String? directSource;
   final String? tvArchiveDuration;
 
-  ChannelLive({
+  const ChannelLive({
     this.num,
     this.name,
     this.streamType,

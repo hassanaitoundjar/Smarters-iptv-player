@@ -79,7 +79,7 @@ class _MovieContentState extends State<MovieContent> {
                                       children: [
                                         Text(
                                           movie.movieData!.name ?? "",
-                                          style: Get.textTheme.headline3,
+                                          style: Get.textTheme.displaySmall,
                                         ),
                                         const SizedBox(height: 15),
                                         Wrap(
@@ -183,8 +183,7 @@ class _MovieContentState extends State<MovieContent> {
                                                               .streamIcon ??
                                                           "",
                                                       streamId: widget
-                                                          .channelMovie!
-                                                          .streamId
+                                                          .channelMovie.streamId
                                                           .toString(),
                                                     );
                                                     context
@@ -209,13 +208,10 @@ class _MovieContentState extends State<MovieContent> {
                   ),
                   BlocBuilder<FavoritesCubit, FavoritesState>(
                     builder: (context, state) {
-                      final isLiked = widget.channelMovie == null
-                          ? false
-                          : state.movies
-                              .where((movie) =>
-                                  movie.streamId ==
-                                  widget.channelMovie.streamId)
-                              .isNotEmpty;
+                      final isLiked = state.movies
+                          .where((movie) =>
+                              movie.streamId == widget.channelMovie.streamId)
+                          .isNotEmpty;
                       return AppBarMovie(
                         isLiked: isLiked,
                         top: 2.h,

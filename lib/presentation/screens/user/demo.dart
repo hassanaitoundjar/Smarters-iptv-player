@@ -19,7 +19,7 @@ class _DemoScreenState extends State<DemoScreen> {
       appBar: AppBar(
         title: const Text('DEMO'),
         centerTitle: true,
-        actions: [
+        actions: const [
           /* IconButton(
             onPressed: () {
 
@@ -28,7 +28,7 @@ class _DemoScreenState extends State<DemoScreen> {
           ),*/
         ],
       ),
-      body: Center(child: Text('hello')),
+      body: const Center(child: Text('hello')),
     );
   }
 }

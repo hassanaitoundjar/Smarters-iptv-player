@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:azul_envato_checker/azul_envato_checker.dart';
 import 'package:filling_slider/filling_slider.dart';
@@ -17,7 +16,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:screen_brightness/screen_brightness.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
-import 'package:wakelock/wakelock.dart';
+//import 'package:wakelock/wakelock.dart';
 
 import '../../helpers/helpers.dart';
 import '../../logic/blocs/auth/auth_bloc.dart';
@@ -32,7 +31,7 @@ import '../../logic/cubits/watch/watching_cubit.dart';
 import '../../repository/api/api.dart';
 import '../../repository/locale/admob.dart';
 import '../../repository/models/category.dart';
-import '../../repository/models/channelLive.dart';
+import '../../repository/models/channel_live.dart';
 import '../../repository/models/channel_movie.dart';
 import '../../repository/models/channel_serie.dart';
 import '../../repository/models/epg.dart';

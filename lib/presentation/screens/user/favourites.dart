@@ -151,7 +151,7 @@ class _FavMoviesPage extends StatelessWidget {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, stateAuth) {
         if (stateAuth is AuthSuccess) {
-          final userAuth = stateAuth.user;
+          // final userAuth = stateAuth.user;
           return BlocBuilder<FavoritesCubit, FavoritesState>(
             builder: (context, state) {
               final movies = state.movies;
@@ -198,7 +198,7 @@ class _FavSeriesPage extends StatelessWidget {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, stateAuth) {
         if (stateAuth is AuthSuccess) {
-          final userAuth = stateAuth.user;
+          // final userAuth = stateAuth.user;
           return BlocBuilder<FavoritesCubit, FavoritesState>(
             builder: (context, state) {
               final series = state.series;

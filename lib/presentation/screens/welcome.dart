@@ -173,7 +173,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               children: [
                 Text(
                   'By using this application, you agree to the',
-                  style: Get.textTheme.subtitle2!.copyWith(
+                  style: Get.textTheme.titleSmall!.copyWith(
                     fontSize: 12.sp,
                     color: Colors.grey,
                   ),
@@ -184,7 +184,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   },
                   child: Text(
                     ' Terms of Services.',
-                    style: Get.textTheme.subtitle2!.copyWith(
+                    style: Get.textTheme.titleSmall!.copyWith(
                       fontSize: 12.sp,
                       color: Colors.blue,
                     ),

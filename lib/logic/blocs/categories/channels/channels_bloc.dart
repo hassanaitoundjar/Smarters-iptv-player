@@ -4,7 +4,7 @@ import 'package:mbark_iptv/helpers/helpers.dart';
 import 'package:mbark_iptv/repository/models/channel_movie.dart';
 
 import '../../../../repository/api/api.dart';
-import '../../../../repository/models/channelLive.dart';
+import '../../../../repository/models/channel_live.dart';
 import '../../../../repository/models/channel_serie.dart';
 
 part 'channels_event.dart';

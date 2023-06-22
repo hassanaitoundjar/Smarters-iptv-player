@@ -1,8 +1,7 @@
-import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../repository/api/api.dart';
-import '../../../repository/models/channelLive.dart';
+import '../../../repository/models/channel_live.dart';
 import '../../../repository/models/channel_movie.dart';
 import '../../../repository/models/channel_serie.dart';
 

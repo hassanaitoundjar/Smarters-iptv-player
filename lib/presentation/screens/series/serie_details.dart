@@ -76,7 +76,7 @@ class _SerieContentState extends State<SerieContent> {
                                       children: [
                                         Text(
                                           movie.info!.name ?? "",
-                                          style: Get.textTheme.headline3,
+                                          style: Get.textTheme.displaySmall,
                                         ),
                                         const SizedBox(height: 15),
                                         Wrap(

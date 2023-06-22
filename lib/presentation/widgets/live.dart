@@ -41,7 +41,7 @@ class _AppBarLiveState extends State<AppBarLive> {
           const SizedBox(width: 5),
           Text(
             kAppName,
-            style: Get.textTheme.headline4,
+            style: Get.textTheme.headlineMedium,
           ),
           Container(
             width: 1,
@@ -164,7 +164,7 @@ class _AppBarMovieState extends State<AppBarMovie> {
             const SizedBox(width: 5),
             Text(
               kAppName,
-              style: Get.textTheme.headline4,
+              style: Get.textTheme.headlineMedium,
             ),
             Container(
               width: 1,
@@ -288,7 +288,7 @@ class _AppBarSeriesState extends State<AppBarSeries> {
             const SizedBox(width: 5),
             Text(
               kAppName,
-              style: Get.textTheme.headline4,
+              style: Get.textTheme.headlineMedium,
             ),
             Container(
               width: 1,
@@ -392,7 +392,7 @@ class AppBarSettings extends StatelessWidget {
           const SizedBox(width: 5),
           Text(
             "Settings",
-            style: Get.textTheme.headline4,
+            style: Get.textTheme.headlineMedium,
           ),
           Container(
             width: 1,
@@ -475,7 +475,7 @@ class CardLiveItem extends StatelessWidget {
                 title,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: Get.textTheme.headline5!.copyWith(
+                style: Get.textTheme.headlineSmall!.copyWith(
                   color: Colors.white,
                 ),
               ),
@@ -515,7 +515,7 @@ class AppBarFav extends StatelessWidget {
           const SizedBox(width: 5),
           Text(
             "Favourites",
-            style: Get.textTheme.headline4,
+            style: Get.textTheme.headlineMedium,
           ),
           Container(
             width: 1,
@@ -564,7 +564,7 @@ class AppBarCatchUp extends StatelessWidget {
           const SizedBox(width: 5),
           Text(
             "Catch Up",
-            style: Get.textTheme.headline4,
+            style: Get.textTheme.headlineMedium,
           ),
           Container(
             width: 1,

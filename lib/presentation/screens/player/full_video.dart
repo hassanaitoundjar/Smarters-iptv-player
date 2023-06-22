@@ -41,7 +41,7 @@ class _FullVideoScreenState extends State<FullVideoScreen> {
 
   @override
   void initState() {
-    Wakelock.enable();
+    //Wakelock.enable();
     _videoPlayerController = VlcPlayerController.network(
       widget.link,
       hwAcc: HwAcc.full,
@@ -211,7 +211,7 @@ class _FullVideoScreenState extends State<FullVideoScreen> {
                                     ),
                                     Text(
                                       "$position / $duration",
-                                      style: Get.textTheme.subtitle2!.copyWith(
+                                      style: Get.textTheme.titleSmall!.copyWith(
                                         fontSize: 15.sp,
                                       ),
                                     ),

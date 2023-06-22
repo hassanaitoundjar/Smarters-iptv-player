@@ -6,7 +6,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.4+5
 
 environment:
-  sdk: '>=2.19.0 <3.0.0'
+  sdk: '>=3.0.5 <4.0.0'
 
 dependencies:
   flutter:
@@ -25,25 +25,25 @@ dependencies:
 
 
   #Logic
-  azul_envato_checker: ^0.0.2+2
-  flutter_bloc: ^8.1.2
+  azul_envato_checker: ^0.0.3+3
+  flutter_bloc: ^8.1.3
   get: ^4.6.5
-  intl: ^0.17.0
+  intl: ^0.18.0
   get_storage: ^2.1.1
-  url_launcher: ^6.1.10
-  wakelock: ^0.6.2
+  url_launcher: ^6.1.11
+ # wakelock: ^0.6.2
   perfect_volume_control: ^1.0.5
   screen_brightness: ^0.2.2
 
   #M3U
   #m3u_nullsafe: ^1.0.4
   flutter_vlc_player: ^7.2.0
-  pod_player: ^0.1.0
-  sentry_flutter: ^7.5.0
+  pod_player: any
+  sentry_flutter: ^7.7.0
 
 
   #Http
-  dio: ^5.1.1
+  dio: ^5.2.1+1
   google_mobile_ads: ^3.0.0
 
 

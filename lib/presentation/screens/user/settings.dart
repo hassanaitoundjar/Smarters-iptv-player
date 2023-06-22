@@ -50,14 +50,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                     children: [
                                       Text(
                                         dateNowWelcome(),
-                                        style: Get.textTheme.subtitle2,
+                                        style: Get.textTheme.titleSmall,
                                       ),
                                       const SizedBox(height: 5),
                                       if (userInfo.userInfo!.expDate != null)
                                         Text(
                                           "Expiration: ${expirationDate(userInfo.userInfo!.expDate)}",
-                                          style:
-                                              Get.textTheme.subtitle2!.copyWith(
+                                          style: Get.textTheme.titleSmall!
+                                              .copyWith(
                                             color: kColorHint,
                                           ),
                                         ),
@@ -84,17 +84,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                     children: [
                                       Text(
                                         "name: ${userInfo.userInfo!.username}",
-                                        style: Get.textTheme.subtitle2,
+                                        style: Get.textTheme.titleSmall,
                                       ),
                                       const SizedBox(height: 5),
                                       Text(
                                         "password: ${userInfo.userInfo!.password}",
-                                        style: Get.textTheme.subtitle2,
+                                        style: Get.textTheme.titleSmall,
                                       ),
                                       const SizedBox(height: 5),
                                       Text(
                                         "Url: ${userInfo.serverInfo!.serverUrl}",
-                                        style: Get.textTheme.subtitle2,
+                                        style: Get.textTheme.titleSmall,
                                       ),
                                     ],
                                   ),
@@ -161,7 +161,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     children: [
                       Text(
                         'CreatedBy:',
-                        style: Get.textTheme.subtitle2!.copyWith(
+                        style: Get.textTheme.titleSmall!.copyWith(
                           fontSize: 12.sp,
                           color: Colors.grey,
                         ),
@@ -175,7 +175,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         },
                         child: Text(
                           ' @Azul Mouad',
-                          style: Get.textTheme.subtitle2!.copyWith(
+                          style: Get.textTheme.titleSmall!.copyWith(
                             fontSize: 12.sp,
                             color: Colors.blue,
                           ),

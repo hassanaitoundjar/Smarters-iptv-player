@@ -59,9 +59,7 @@ class Info {
       : movieImage = json['movie_image'].toString(),
         tmdbId = json['tmdb_id'].toString(),
         backdrop = json['backdrop'].toString(),
-        youtubeTrailer = json['youtube_trailer'] == null
-            ? null
-            : json['youtube_trailer'].toString(),
+        youtubeTrailer = json['youtube_trailer'] as String?,
         genre = json['genre'].toString(),
         plot = json['plot'].toString(),
         cast = json['cast'].toString(),

@@ -41,7 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
     debugPrint("width: ${MediaQuery.of(context).size.width}");
     return Scaffold(
       body: OrientationBuilder(builder: (context, orientation) {
-        bool isPortrait = orientation == Orientation.portrait;
+        //bool isPortrait = orientation == Orientation.portrait;
 
         return BlocListener<AuthBloc, AuthState>(
           listener: (context, state) {
@@ -86,7 +86,7 @@ class LoadingWidgt extends StatelessWidget {
           const SizedBox(height: 10),
           Text(
             kAppName,
-            style: Get.textTheme.headline3,
+            style: Get.textTheme.displaySmall,
           ),
           BlocBuilder<AuthBloc, AuthState>(
             builder: (context, state) {

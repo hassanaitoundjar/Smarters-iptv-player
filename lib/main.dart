@@ -1,4 +1,3 @@
-import 'package:azul_envato_checker/azul_envato_checker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,7 +7,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:mbark_iptv/repository/api/api.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
-import 'package:wakelock/wakelock.dart';
+//import 'package:wakelock/wakelock.dart';
 
 import 'helpers/helpers.dart';
 import 'logic/blocs/auth/auth_bloc.dart';
@@ -24,26 +23,19 @@ import 'presentation/screens/screens.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Wakelock.enable();
+  // await Wakelock.enable();
   await GetStorage.init();
   await GetStorage.init("favorites");
   if (showAds) {
     MobileAds.instance.initialize();
   }
 
-  await SentryFlutter.init(
-    (options) {
-      options.dsn =
-          'https://c02f199280584f7fac1c049965f25427@o4504351469404160.ingest.sentry.io/4504351471435776';
-      options.tracesSampleRate = 1.0;
-    },
-    appRunner: () => runApp(MyApp(
-      iptv: IpTvApi(),
-      authApi: AuthApi(),
-      watchingLocale: WatchingLocale(),
-      favoriteLocale: FavoriteLocale(),
-    )),
-  );
+  runApp(MyApp(
+    iptv: IpTvApi(),
+    authApi: AuthApi(),
+    watchingLocale: WatchingLocale(),
+    favoriteLocale: FavoriteLocale(),
+  ));
 }
 
 class MyApp extends StatefulWidget {

@@ -1,8 +1,7 @@
-import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../repository/api/api.dart';
-import '../../../repository/models/movie_detail.dart';
+
 import '../../../repository/models/watching.dart';
 
 part 'watching_state.dart';
