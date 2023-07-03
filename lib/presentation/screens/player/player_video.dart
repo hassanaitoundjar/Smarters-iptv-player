@@ -16,6 +16,7 @@ class _StreamPlayerPageState extends State<StreamPlayerPage> {
 
   @override
   void initState() {
+    Wakelock.enable();
     super.initState();
   }
 

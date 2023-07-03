@@ -26,6 +26,7 @@ class _FullVideoScreenState extends State<FullVideoScreen> {
   bool validPosition = false;
   double _currentVolume = 0.0;
   double _currentBright = 0.0;
+  late Timer timer;
 
   _settingPage() async {
     try {
@@ -41,7 +42,7 @@ class _FullVideoScreenState extends State<FullVideoScreen> {
 
   @override
   void initState() {
-    //Wakelock.enable();
+    Wakelock.enable();
     _videoPlayerController = VlcPlayerController.network(
       widget.link,
       hwAcc: HwAcc.full,
@@ -53,6 +54,14 @@ class _FullVideoScreenState extends State<FullVideoScreen> {
     super.initState();
     _videoPlayerController.addListener(listener);
     _settingPage();
+
+    timer = Timer.periodic(const Duration(seconds: 5), (timer) {
+      if (showControllersVideo) {
+        setState(() {
+          showControllersVideo = false;
+        });
+      }
+    });
   }
 
   void listener() async {
@@ -98,6 +107,7 @@ class _FullVideoScreenState extends State<FullVideoScreen> {
     super.dispose();
     await _videoPlayerController.stopRendererScanning();
     await _videoPlayerController.dispose();
+    timer.cancel();
   }
 
   @override

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:azul_envato_checker/azul_envato_checker.dart';
@@ -16,6 +17,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:screen_brightness/screen_brightness.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import 'package:wakelock/wakelock.dart';
 //import 'package:wakelock/wakelock.dart';
 
 import '../../helpers/helpers.dart';

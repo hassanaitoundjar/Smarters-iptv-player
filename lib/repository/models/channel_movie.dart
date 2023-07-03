@@ -30,19 +30,30 @@ class ChannelMovie {
   });
 
   ChannelMovie.fromJson(Map<String, dynamic> json)
-      : num = json['num'] as String?,
-        name = json['name'].toString(),
-        streamType = json['stream_type'].toString(),
-        streamId = json['stream_id'] as String?,
-        streamIcon = json['stream_icon'].toString(),
-        rating = json['rating'].toString(),
-        rating5based = json['rating_5based'] as String?,
-        added = json['added'].toString(),
-        isAdult = json['is_adult'].toString(),
-        categoryId = json['category_id'].toString(),
-        containerExtension = json['container_extension'].toString(),
-        customSid = json['custom_sid'].toString(),
-        directSource = json['direct_source'].toString();
+      : num = json['num'] == null ? null : json['num'].toString(),
+        name = json['name'] == null ? null : json['name'].toString(),
+        streamType =
+            json['stream_type'] == null ? null : json['stream_type'].toString(),
+        streamId =
+            json['stream_id'] == null ? null : json['stream_id'].toString(),
+        streamIcon =
+            json['stream_icon'] == null ? null : json['stream_icon'].toString(),
+        rating = json['rating'] == null ? null : json['rating'].toString(),
+        rating5based = json['rating_5based'] == null
+            ? null
+            : json['rating_5based'].toString(),
+        added = json['added'] == null ? null : json['added'].toString(),
+        isAdult = json['is_adult'] == null ? null : json['is_adult'].toString(),
+        categoryId =
+            json['category_id'] == null ? null : json['category_id'].toString(),
+        containerExtension = json['container_extension'] == null
+            ? null
+            : json['container_extension'].toString(),
+        customSid =
+            json['custom_sid'] == null ? null : json['custom_sid'].toString(),
+        directSource = json['direct_source'] == null
+            ? null
+            : json['direct_source'].toString();
 
   Map<String, dynamic> toJson() => {
         'num': num,
