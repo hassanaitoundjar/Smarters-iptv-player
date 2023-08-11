@@ -8,6 +8,11 @@ class MainActivity : FlutterActivity() {
     private val CHANNEL = "main_activity_channel"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        flutterEngine?.dartExecutor?.let {
+            MethodChannel(it.binaryMessenger, "gdpr_plugin").setMethodCallHandler(
+                GdprPlugin(this)
+            )
+        }
 
         MethodChannel(flutterEngine!!.dartExecutor, CHANNEL).setMethodCallHandler { call, result ->
             if (call.method == "getData") {
