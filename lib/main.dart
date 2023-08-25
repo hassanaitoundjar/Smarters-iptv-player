@@ -6,9 +6,6 @@ import 'package:get_storage/get_storage.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:mbark_iptv/repository/api/api.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
-//import 'package:wakelock/wakelock.dart';
-
 import 'helpers/helpers.dart';
 import 'logic/blocs/auth/auth_bloc.dart';
 import 'logic/blocs/categories/channels/channels_bloc.dart';

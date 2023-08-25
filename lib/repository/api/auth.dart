@@ -8,6 +8,7 @@ class AuthApi {
     String name,
   ) async {
     try {
+      debugPrint("$link/player_api.php?username=$username&password=$password");
       Response<String> response = await _dio
           .get("$link/player_api.php?username=$username&password=$password");
 

@@ -11,10 +11,10 @@ class AppBarWelcome extends StatelessWidget {
       // margin: EdgeInsets.symmetric(vertical: 7.h, horizontal: 15),
       child: Row(
         children: [
-          Image(
-            width: 0.3.dp,
-            height: 0.3.dp,
-            image: const AssetImage(kIconSplash),
+          const Image(
+            width: 40,
+            height: 40,
+            image: AssetImage(kIconSplash),
           ),
           const SizedBox(width: 5),
           Text(
@@ -23,36 +23,35 @@ class AppBarWelcome extends StatelessWidget {
           ),
           Container(
             width: 1,
-            height: 8.h,
+            height: 40,
             margin: const EdgeInsets.symmetric(horizontal: 13),
             color: kColorHint,
           ),
-          Expanded(
-            child: BlocBuilder<AuthBloc, AuthState>(
-              builder: (context, state) {
-                if (state is AuthSuccess) {
-                  final userInfo = state.user.userInfo;
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        dateNowWelcome(),
-                        style: Get.textTheme.titleSmall,
+          const Spacer(),
+          BlocBuilder<AuthBloc, AuthState>(
+            builder: (context, state) {
+              if (state is AuthSuccess) {
+                final userInfo = state.user.userInfo;
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      dateNowWelcome(),
+                      style: Get.textTheme.titleSmall,
+                    ),
+                    Text(
+                      "Expiration: ${expirationDate(userInfo!.expDate)}",
+                      style: Get.textTheme.titleSmall!.copyWith(
+                        color: kColorHint,
                       ),
-                      Text(
-                        "Expiration: ${expirationDate(userInfo!.expDate)}",
-                        style: Get.textTheme.titleSmall!.copyWith(
-                          color: kColorHint,
-                        ),
-                      ),
-                    ],
-                  );
-                }
+                    ),
+                  ],
+                );
+              }
 
-                return const SizedBox();
-              },
-            ),
+              return const SizedBox();
+            },
           ),
           IconButton(
             focusColor: kColorFocus,

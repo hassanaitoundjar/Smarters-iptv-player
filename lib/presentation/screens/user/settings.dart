@@ -92,10 +92,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                         style: Get.textTheme.titleSmall,
                                       ),
                                       const SizedBox(height: 5),
-                                      Text(
-                                        "Url: ${userInfo.serverInfo!.serverUrl}",
-                                        style: Get.textTheme.titleSmall,
-                                      ),
+                                      if (userInfo.serverInfo != null)
+                                        Text(
+                                          "Url: ${userInfo.serverInfo!.serverUrl}",
+                                          style: Get.textTheme.titleSmall,
+                                        ),
                                     ],
                                   ),
                                 ),

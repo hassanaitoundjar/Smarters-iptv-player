@@ -55,11 +55,8 @@ class _MovieContentState extends State<MovieContent> {
                                 ],
                           ),
                           Padding(
-                            padding: EdgeInsets.only(
-                              top: 19.h,
-                              left: 10,
-                              right: 10,
-                            ),
+                            padding: const EdgeInsets.only(
+                                top: 15, left: 10, right: 10),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -214,7 +211,7 @@ class _MovieContentState extends State<MovieContent> {
                           .isNotEmpty;
                       return AppBarMovie(
                         isLiked: isLiked,
-                        top: 2.h,
+                        top: 15,
                         onFavorite: () {
                           context
                               .read<FavoritesCubit>()

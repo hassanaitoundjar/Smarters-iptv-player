@@ -42,11 +42,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         width: getSize(context).width,
         height: getSize(context).height,
         decoration: kDecorBackground,
-        padding: EdgeInsets.only(left: 10, right: 10, top: 3.h),
+        padding: const EdgeInsets.only(left: 10, right: 10, top: 15),
         child: Column(
           children: [
             const AppBarWelcome(),
-            SizedBox(height: 5.h),
+            const SizedBox(height: 10),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(10.0),

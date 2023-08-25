@@ -34,8 +34,8 @@ class _AppBarLiveState extends State<AppBarLive> {
       child: Row(
         children: [
           const Image(
-            width: 90,
-            height: 90,
+            width: 40,
+            height: 40,
             image: AssetImage(kIconSplash),
           ),
           const SizedBox(width: 5),
@@ -45,11 +45,11 @@ class _AppBarLiveState extends State<AppBarLive> {
           ),
           Container(
             width: 1,
-            height: 80,
+            height: 40,
             margin: const EdgeInsets.symmetric(horizontal: 13),
             color: kColorHint,
           ),
-          const Image(height: 80, image: AssetImage(kIconLive)),
+          const Image(height: 40, image: AssetImage(kIconLive)),
           const Spacer(),
           showSearch
               ? Expanded(
@@ -151,14 +151,14 @@ class _AppBarMovieState extends State<AppBarMovie> {
     return Container(
       width: 100.w,
       color: Colors.transparent,
-      margin: EdgeInsets.symmetric(horizontal: 10, vertical: widget.top ?? 2.h),
+      margin: EdgeInsets.symmetric(horizontal: 10, vertical: widget.top ?? 15),
       child: Material(
         color: Colors.transparent,
         child: Row(
           children: [
             const Image(
-              width: 90,
-              height: 90,
+              width: 40,
+              height: 40,
               image: AssetImage(kIconSplash),
             ),
             const SizedBox(width: 5),
@@ -168,11 +168,11 @@ class _AppBarMovieState extends State<AppBarMovie> {
             ),
             Container(
               width: 1,
-              height: 80,
+              height: 40,
               margin: const EdgeInsets.symmetric(horizontal: 13),
               color: kColorHint,
             ),
-            const Image(height: 90, image: const AssetImage(kIconMovies)),
+            const Image(height: 40, image: AssetImage(kIconMovies)),
             const Spacer(),
             showSearch
                 ? Expanded(

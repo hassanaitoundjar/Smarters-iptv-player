@@ -8,9 +8,11 @@ class MovieDetail {
   });
 
   MovieDetail.fromJson(Map<String, dynamic> json)
-      : info = (json['info'] as Map<String, dynamic>?) != null
-            ? Info.fromJson(json['info'] as Map<String, dynamic>)
-            : null,
+      : info = json['info'] == null
+            ? null
+            : (json['info'] as Map<String, dynamic>?) != null
+                ? Info.fromJson(json['info'] as Map<String, dynamic>)
+                : null,
         movieData = (json['movie_data'] as Map<String, dynamic>?) != null
             ? MovieData.fromJson(json['movie_data'] as Map<String, dynamic>)
             : null;

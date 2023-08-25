@@ -20,12 +20,8 @@ class _IntroScreenState extends State<IntroScreen> {
             const IntroImageAnimated(),
             Expanded(
               child: Padding(
-                padding: EdgeInsets.only(
-                  left: 10,
-                  right: 10,
-                  top: 5.h,
-                  bottom: 10,
-                ),
+                padding: const EdgeInsets.only(
+                    left: 10, right: 10, top: 15, bottom: 10),
                 child: Column(
                   children: [
                     Text(

@@ -124,7 +124,7 @@ class _LiveCategoriesScreenState extends State<LiveCategoriesScreen> {
                       padding: const EdgeInsets.only(
                         left: 10,
                         right: 10,
-                        top: 10,
+                        top: 0,
                         bottom: 80,
                       ),
                       itemCount: keySearch.isNotEmpty

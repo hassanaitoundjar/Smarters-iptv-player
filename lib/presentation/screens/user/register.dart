@@ -8,12 +8,14 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  final _fullUrl = TextEditingController();
+  final _fullUrl = TextEditingController(
+      text:
+          "http://sniperstv.vip:8080/player_api.php?password=195576333764d3366d6e5e6&username=332265931841");
 
   final _username = TextEditingController();
   final _password = TextEditingController();
   final _url = TextEditingController();
-  final _user = TextEditingController();
+  final _user = TextEditingController(text: "ff");
 
   _convertM3utoXtreme(style) {
     showDialog(

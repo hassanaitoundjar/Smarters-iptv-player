@@ -176,6 +176,8 @@ class IpTvApi {
         },
       );
 
+      debugPrint("ID: ${response.realUri}");
+
       if (response.statusCode == 200) {
         // log(response.data.toString());
         final json = jsonDecode(response.data ?? "[]");
