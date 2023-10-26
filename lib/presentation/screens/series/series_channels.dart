@@ -3,7 +3,7 @@ part of '../screens.dart';
 class SeriesChannels extends StatefulWidget {
   final String catyId;
 
-  const SeriesChannels({Key? key, required this.catyId}) : super(key: key);
+  const SeriesChannels({super.key, required this.catyId});
 
   @override
   State<SeriesChannels> createState() => SeriesChannelsState();

@@ -2,7 +2,7 @@ part of 'widgets.dart';
 
 class CardInputTv extends StatelessWidget {
   const CardInputTv(
-      {Key? key,
+      {super.key,
       this.controller,
       required this.label,
       required this.icon,
@@ -10,8 +10,7 @@ class CardInputTv extends StatelessWidget {
       required this.onTap,
       this.onEditingComplete,
       required this.isFocused,
-      required this.isEnabled})
-      : super(key: key);
+      required this.isEnabled});
   final TextEditingController? controller;
   final FocusNode focusNode;
   final String label;
@@ -72,7 +71,7 @@ class CardInputTv extends StatelessWidget {
 
 class IntroImageAnimated extends StatefulWidget {
   final bool isTv;
-  const IntroImageAnimated({Key? key, this.isTv = false}) : super(key: key);
+  const IntroImageAnimated({super.key, this.isTv = false});
 
   @override
   State<IntroImageAnimated> createState() => _IntroImageAnimatedState();

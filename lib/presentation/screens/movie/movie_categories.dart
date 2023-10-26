@@ -1,7 +1,7 @@
 part of '../screens.dart';
 
 class MovieCategoriesScreen extends StatefulWidget {
-  const MovieCategoriesScreen({Key? key}) : super(key: key);
+  const MovieCategoriesScreen({super.key});
 
   @override
   State<MovieCategoriesScreen> createState() => _MovieCategoriesScreenState();

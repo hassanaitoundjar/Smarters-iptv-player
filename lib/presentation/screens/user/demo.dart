@@ -1,7 +1,7 @@
 part of '../screens.dart';
 
 class DemoScreen extends StatefulWidget {
-  const DemoScreen({Key? key}) : super(key: key);
+  const DemoScreen({super.key});
 
   @override
   State<DemoScreen> createState() => _DemoScreenState();

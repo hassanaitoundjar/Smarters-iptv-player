@@ -1,7 +1,7 @@
 part of '../screens.dart';
 
 class LiveCategoriesScreen extends StatefulWidget {
-  const LiveCategoriesScreen({Key? key}) : super(key: key);
+  const LiveCategoriesScreen({super.key});
 
   @override
   State<LiveCategoriesScreen> createState() => _LiveCategoriesScreenState();

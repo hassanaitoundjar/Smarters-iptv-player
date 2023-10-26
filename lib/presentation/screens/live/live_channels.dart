@@ -1,7 +1,7 @@
 part of '../screens.dart';
 
 class LiveChannelsScreen extends StatefulWidget {
-  const LiveChannelsScreen({Key? key, required this.catyId}) : super(key: key);
+  const LiveChannelsScreen({super.key, required this.catyId});
   final String catyId;
 
   @override
@@ -329,7 +329,7 @@ class _ListChannelsScreen extends State<LiveChannelsScreen> {
 }
 
 class CardEpgStream extends StatelessWidget {
-  const CardEpgStream({Key? key, required this.streamId}) : super(key: key);
+  const CardEpgStream({super.key, required this.streamId});
   final String? streamId;
 
   @override
@@ -395,11 +395,10 @@ class CardEpgStream extends StatelessWidget {
 
 class CardEpg extends StatelessWidget {
   const CardEpg(
-      {Key? key,
+      {super.key,
       required this.title,
       required this.description,
-      required this.isSameTime})
-      : super(key: key);
+      required this.isSameTime});
   final String title;
   final String description;
   final bool isSameTime;

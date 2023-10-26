@@ -2,8 +2,7 @@ part of 'widgets.dart';
 
 class CardChannelMovieItem extends StatelessWidget {
   const CardChannelMovieItem(
-      {Key? key, required this.onTap, this.title, this.image})
-      : super(key: key);
+      {super.key, required this.onTap, this.title, this.image});
   final Function() onTap;
   final String? title;
   final String? image;
@@ -61,7 +60,7 @@ class CardChannelMovieItem extends StatelessWidget {
 
 class CardButtonWatchMovie extends StatefulWidget {
   const CardButtonWatchMovie({
-    Key? key,
+    super.key,
     required this.title,
     required this.onTap,
     this.isFocused = false,
@@ -69,7 +68,7 @@ class CardButtonWatchMovie extends StatefulWidget {
     this.isSelected = false,
     this.index,
     this.onFocusChanged,
-  }) : super(key: key);
+  });
   final String title;
   final Function() onTap;
   final bool isFocused;
@@ -136,12 +135,11 @@ class _CardButtonWatchMovieState extends State<CardButtonWatchMovie> {
 
 class CardInfoMovie extends StatelessWidget {
   const CardInfoMovie(
-      {Key? key,
+      {super.key,
       required this.hint,
       required this.title,
       required this.icon,
-      this.isShowMore = false})
-      : super(key: key);
+      this.isShowMore = false});
   final String hint;
   final String title;
   final IconData icon;
@@ -199,8 +197,8 @@ class CardInfoMovie extends StatelessWidget {
 }
 
 class CardMovieImageRate extends StatelessWidget {
-  const CardMovieImageRate({Key? key, required this.image, required this.rate})
-      : super(key: key);
+  const CardMovieImageRate(
+      {super.key, required this.image, required this.rate});
   final String image;
   final String rate;
 
@@ -239,8 +237,7 @@ class CardMovieImageRate extends StatelessWidget {
 }
 
 class CardMovieImagesBackground extends StatefulWidget {
-  const CardMovieImagesBackground({Key? key, required this.listImages})
-      : super(key: key);
+  const CardMovieImagesBackground({super.key, required this.listImages});
   final List<String> listImages;
 
   @override
@@ -323,13 +320,12 @@ class _CardMovieImagesBackgroundState extends State<CardMovieImagesBackground> {
 ///Serie
 class CardEpisodeItem extends StatelessWidget {
   const CardEpisodeItem(
-      {Key? key,
+      {super.key,
       required this.episode,
       required this.isSelected,
       required this.onFocused,
       required this.onTap,
-      required this.index})
-      : super(key: key);
+      required this.index});
   final Episode? episode;
   final bool isSelected;
   final int index;
@@ -442,12 +438,12 @@ class CardEpisodeItem extends StatelessWidget {
 
 class CardSeasonItem extends StatelessWidget {
   const CardSeasonItem({
-    Key? key,
+    super.key,
     required this.number,
     required this.isSelected,
     required this.onFocused,
     required this.onTap,
-  }) : super(key: key);
+  });
   final String number;
   final bool isSelected;
   final Function(bool) onFocused;

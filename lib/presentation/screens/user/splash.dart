@@ -1,7 +1,7 @@
 part of '../screens.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key? key}) : super(key: key);
+  const SplashScreen({super.key});
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -59,15 +59,15 @@ class _SplashScreenState extends State<SplashScreen> {
               }
             }
           },
-          child: const LoadingWidgt(),
+          child: const LoadingWidget(),
         );
       }),
     );
   }
 }
 
-class LoadingWidgt extends StatelessWidget {
-  const LoadingWidgt({Key? key}) : super(key: key);
+class LoadingWidget extends StatelessWidget {
+  const LoadingWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

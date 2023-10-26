@@ -2,11 +2,11 @@ part of 'widgets.dart';
 
 class AppBarLive extends StatefulWidget {
   const AppBarLive({
-    Key? key,
+    super.key,
     this.onSearch,
     this.isLiked = false,
     this.onLike,
-  }) : super(key: key);
+  });
   final Function(String)? onSearch;
   final bool isLiked;
   final Function()? onLike;
@@ -126,12 +126,11 @@ class _AppBarLiveState extends State<AppBarLive> {
 
 class AppBarMovie extends StatefulWidget {
   const AppBarMovie(
-      {Key? key,
+      {super.key,
       this.onSearch,
       this.onFavorite,
       this.top,
-      this.isLiked = false})
-      : super(key: key);
+      this.isLiked = false});
 
   final Function()? onFavorite;
   final Function(String)? onSearch;
@@ -251,12 +250,11 @@ class _AppBarMovieState extends State<AppBarMovie> {
 
 class AppBarSeries extends StatefulWidget {
   const AppBarSeries(
-      {Key? key,
+      {super.key,
       this.onSearch,
       this.onFavorite,
       this.top,
-      this.isLiked = false})
-      : super(key: key);
+      this.isLiked = false});
 
   final Function()? onFavorite;
   final Function(String)? onSearch;
@@ -374,7 +372,7 @@ class _AppBarSeriesState extends State<AppBarSeries> {
 }
 
 class AppBarSettings extends StatelessWidget {
-  const AppBarSettings({Key? key}) : super(key: key);
+  const AppBarSettings({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -424,13 +422,12 @@ class AppBarSettings extends StatelessWidget {
 
 class CardLiveItem extends StatelessWidget {
   const CardLiveItem(
-      {Key? key,
+      {super.key,
       required this.title,
       required this.onTap,
       this.isSelected = false,
       this.link,
-      this.image})
-      : super(key: key);
+      this.image});
   final String title;
   final Function() onTap;
   final bool isSelected;
@@ -497,7 +494,7 @@ class CardLiveItem extends StatelessWidget {
 }
 
 class AppBarFav extends StatelessWidget {
-  const AppBarFav({Key? key}) : super(key: key);
+  const AppBarFav({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -546,7 +543,7 @@ class AppBarFav extends StatelessWidget {
 }
 
 class AppBarCatchUp extends StatelessWidget {
-  const AppBarCatchUp({Key? key}) : super(key: key);
+  const AppBarCatchUp({super.key});
 
   @override
   Widget build(BuildContext context) {

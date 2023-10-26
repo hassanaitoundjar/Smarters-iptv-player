@@ -4,32 +4,32 @@ PODS:
   - Flutter (1.0.0)
   - flutter_vlc_player (3.0.3):
     - Flutter
-    - MobileVLCKit (~> 3.5.1)
+    - MobileVLCKit (~> 3.6.0b9)
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
-  - Google-Mobile-Ads-SDK (10.4.0):
+  - Google-Mobile-Ads-SDK (10.9.0):
     - GoogleAppMeasurement (< 11.0, >= 7.0)
     - GoogleUserMessagingPlatform (>= 1.1)
   - google_mobile_ads (1.0.0):
     - Flutter
-    - Google-Mobile-Ads-SDK (~> 10.4.0)
+    - Google-Mobile-Ads-SDK (~> 10.9.0)
     - webview_flutter_wkwebview
-  - GoogleAppMeasurement (10.13.0):
-    - GoogleAppMeasurement/AdIdSupport (= 10.13.0)
+  - GoogleAppMeasurement (10.16.0):
+    - GoogleAppMeasurement/AdIdSupport (= 10.16.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.11)
     - GoogleUtilities/MethodSwizzler (~> 7.11)
     - GoogleUtilities/Network (~> 7.11)
     - "GoogleUtilities/NSData+zlib (~> 7.11)"
     - nanopb (< 2.30910.0, >= 2.30908.0)
-  - GoogleAppMeasurement/AdIdSupport (10.13.0):
-    - GoogleAppMeasurement/WithoutAdIdSupport (= 10.13.0)
+  - GoogleAppMeasurement/AdIdSupport (10.16.0):
+    - GoogleAppMeasurement/WithoutAdIdSupport (= 10.16.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.11)
     - GoogleUtilities/MethodSwizzler (~> 7.11)
     - GoogleUtilities/Network (~> 7.11)
     - "GoogleUtilities/NSData+zlib (~> 7.11)"
     - nanopb (< 2.30910.0, >= 2.30908.0)
-  - GoogleAppMeasurement/WithoutAdIdSupport (10.13.0):
+  - GoogleAppMeasurement/WithoutAdIdSupport (10.16.0):
     - GoogleUtilities/AppDelegateSwizzler (~> 7.11)
     - GoogleUtilities/MethodSwizzler (~> 7.11)
     - GoogleUtilities/Network (~> 7.11)
@@ -53,7 +53,7 @@ PODS:
   - "GoogleUtilities/NSData+zlib (7.11.5)"
   - GoogleUtilities/Reachability (7.11.5):
     - GoogleUtilities/Logger
-  - MobileVLCKit (3.5.1)
+  - MobileVLCKit (3.6.0b10)
   - nanopb (2.30909.0):
     - nanopb/decode (= 2.30909.0)
     - nanopb/encode (= 2.30909.0)
@@ -78,6 +78,8 @@ PODS:
     - Flutter
   - wakelock (0.0.1):
     - Flutter
+  - wakelock_plus (0.0.1):
+    - Flutter
   - webview_flutter_wkwebview (0.0.1):
     - Flutter
 
@@ -94,6 +96,7 @@ DEPENDENCIES:
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
   - video_player_avfoundation (from `.symlinks/plugins/video_player_avfoundation/ios`)
   - wakelock (from `.symlinks/plugins/wakelock/ios`)
+  - wakelock_plus (from `.symlinks/plugins/wakelock_plus/ios`)
   - webview_flutter_wkwebview (from `.symlinks/plugins/webview_flutter_wkwebview/ios`)
 
 SPEC REPOS:
@@ -132,20 +135,22 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/video_player_avfoundation/ios"
   wakelock:
     :path: ".symlinks/plugins/wakelock/ios"
+  wakelock_plus:
+    :path: ".symlinks/plugins/wakelock_plus/ios"
   webview_flutter_wkwebview:
     :path: ".symlinks/plugins/webview_flutter_wkwebview/ios"
 
 SPEC CHECKSUMS:
   azul_envato_checker: bfd1d93568112bbeb66b07f84b9ae51159d008ec
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
-  flutter_vlc_player: e321a4dcfaa0b9018a644791231e3e24e73d2fc7
+  flutter_vlc_player: 2e318881576450ff081eb023d47c289f2c6681eb
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
-  Google-Mobile-Ads-SDK: 32fe7836431a06a29f7734ae092b600137c8108d
-  google_mobile_ads: 53b1f0d74445963e5810e34ac38dfb27aabe278e
-  GoogleAppMeasurement: 3ae505b44174bcc0775f5c86cecc5826259fbb1e
+  Google-Mobile-Ads-SDK: e81e8b009a182dc8dd14951782efdbb30a5e4510
+  google_mobile_ads: 035df0d095e1a196b52e3c91534d0718d3dacf98
+  GoogleAppMeasurement: 079d7632810e9d9704a99932547ba1554acc4342
   GoogleUserMessagingPlatform: dce302b8f1b84d6e945812ee7a15c3f65a102cbf
   GoogleUtilities: 13e2c67ede716b8741c7989e26893d151b2b2084
-  MobileVLCKit: 144d5f565512d1147d63b0fa1379231b3fd66535
+  MobileVLCKit: 5600003cf2dc47acf7ad2fd87fe9f3739b2475ed
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
   package_info_plus: fd030dabf36271f146f1f3beacd48f564b0f17f7
   path_provider_foundation: 37748e03f12783f9de2cb2c4eadfaa25fe6d4852
@@ -153,11 +158,12 @@ SPEC CHECKSUMS:
   PromisesObjC: c50d2056b5253dadbd6c2bea79b0674bd5a52fa4
   screen_brightness_ios: 715ca807df953bf676d339f11464e438143ee625
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
-  url_launcher_ios: ae1517e5e344f5544fb090b079e11f399dfbe4d2
+  url_launcher_ios: 68d46cc9766d0c41dbdc884310529557e3cd7a86
   video_player_avfoundation: e489aac24ef5cf7af82702979ed16f2a5ef84cff
   wakelock: d0fc7c864128eac40eba1617cb5264d9c940b46f
+  wakelock_plus: 8b09852c8876491e4b6d179e17dfe2a0b5f60d47
   webview_flutter_wkwebview: 2e2d318f21a5e036e2c3f26171342e95908bd60a
 
 PODFILE CHECKSUM: cc1f88378b4bfcf93a6ce00d2c587857c6008d3b
 
-COCOAPODS: 1.12.1
+COCOAPODS: 1.13.0

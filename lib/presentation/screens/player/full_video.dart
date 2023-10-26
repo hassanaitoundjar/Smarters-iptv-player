@@ -2,11 +2,11 @@ part of '../screens.dart';
 
 class FullVideoScreen extends StatefulWidget {
   const FullVideoScreen({
-    Key? key,
+    super.key,
     required this.link,
     required this.title,
     this.isLive = false,
-  }) : super(key: key);
+  });
   final String link;
   final String title;
   final bool isLive;

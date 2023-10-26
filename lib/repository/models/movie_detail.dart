@@ -77,7 +77,7 @@ class Info {
         backdropPath = json['backdrop_path'] == null
             ? []
             : (json['backdrop_path'] as List?)
-                ?.map((dynamic e) => e.toString())
+                ?.map((e) => e.toString())
                 .toList(),
         durationSecs = json['duration_secs'] == null
             ? null

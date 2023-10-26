@@ -1,7 +1,7 @@
 part of '../screens.dart';
 
 class SerieSeasons extends StatefulWidget {
-  const SerieSeasons({Key? key, required this.serieDetails}) : super(key: key);
+  const SerieSeasons({super.key, required this.serieDetails});
   final SerieDetails serieDetails;
 
   @override

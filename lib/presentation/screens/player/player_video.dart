@@ -1,8 +1,7 @@
 part of '../screens.dart';
 
 class StreamPlayerPage extends StatefulWidget {
-  const StreamPlayerPage({Key? key, required this.controller})
-      : super(key: key);
+  const StreamPlayerPage({super.key, required this.controller});
   final VlcPlayerController? controller;
 
   @override

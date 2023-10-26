@@ -2,8 +2,7 @@ part of '../screens.dart';
 
 class MovieContent extends StatefulWidget {
   const MovieContent(
-      {Key? key, required this.videoId, required this.channelMovie})
-      : super(key: key);
+      {super.key, required this.videoId, required this.channelMovie});
   final String videoId;
   final ChannelMovie channelMovie;
 
@@ -56,7 +55,7 @@ class _MovieContentState extends State<MovieContent> {
                           ),
                           Padding(
                             padding: const EdgeInsets.only(
-                                top: 15, left: 10, right: 10),
+                                top: 70, left: 10, right: 10),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -159,6 +158,7 @@ class _MovieContentState extends State<MovieContent> {
                                                 final link =
                                                     "${userAuth.serverInfo!.serverUrl}/movie/${userAuth.userInfo!.username}/${userAuth.userInfo!.password}/${movie.movieData!.streamId}.${movie.movieData!.containerExtension}";
 
+                                                debugPrint("URL: $link");
                                                 Get.to(() => FullVideoScreen(
                                                           link: link,
                                                           title: movie

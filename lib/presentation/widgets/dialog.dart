@@ -1,8 +1,7 @@
 part of 'widgets.dart';
 
 class DialogTrailerYoutube extends StatefulWidget {
-  const DialogTrailerYoutube({Key? key, required this.trailer, this.thumb})
-      : super(key: key);
+  const DialogTrailerYoutube({super.key, required this.trailer, this.thumb});
   final String trailer;
   final String? thumb;
 
@@ -48,6 +47,15 @@ class _DialogTrailerYoutubeState extends State<DialogTrailerYoutube> {
                 controller: controller,
                 //onToggleFullScreen: (value) async {},
                 alwaysShowProgressBar: false,
+                onToggleFullScreen: (value) async {
+                  if (!value) {
+                    SystemChrome.setPreferredOrientations([
+                      DeviceOrientation.landscapeLeft,
+                      DeviceOrientation.landscapeRight,
+                    ]);
+                  }
+                  return;
+                },
                 podProgressBarConfig: const PodProgressBarConfig(
                   alwaysVisibleCircleHandler: false,
                   circleHandlerColor: kColorPrimary,

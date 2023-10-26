@@ -1,7 +1,7 @@
 part of '../screens.dart';
 
 class CatchUpScreen extends StatefulWidget {
-  const CatchUpScreen({Key? key}) : super(key: key);
+  const CatchUpScreen({super.key});
 
   @override
   State<CatchUpScreen> createState() => _CatchUpScreenState();

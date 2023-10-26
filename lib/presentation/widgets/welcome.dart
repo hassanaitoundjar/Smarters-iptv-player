@@ -1,13 +1,13 @@
 part of 'widgets.dart';
 
 class AppBarWelcome extends StatelessWidget {
-  const AppBarWelcome({Key? key}) : super(key: key);
+  const AppBarWelcome({super.key});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: 100.w,
-      height: 11.h,
+      //height: 11.h,
       // margin: EdgeInsets.symmetric(vertical: 7.h, horizontal: 15),
       child: Row(
         children: [
@@ -72,8 +72,10 @@ class AppBarWelcome extends StatelessWidget {
 
 class CardWelcomeSetting extends StatelessWidget {
   const CardWelcomeSetting(
-      {Key? key, required this.title, required this.icon, required this.onTap})
-      : super(key: key);
+      {super.key,
+      required this.title,
+      required this.icon,
+      required this.onTap});
   final String title;
   final IconData icon;
   final Function() onTap;
@@ -113,13 +115,13 @@ class CardWelcomeSetting extends StatelessWidget {
 
 class CardWelcomeTv extends StatelessWidget {
   const CardWelcomeTv({
-    Key? key,
+    super.key,
     required this.icon,
     required this.onTap,
     required this.title,
     required this.subTitle,
     this.autoFocus = false,
-  }) : super(key: key);
+  });
   final String icon;
   final String title;
   final String subTitle;
@@ -167,12 +169,11 @@ class CardWelcomeTv extends StatelessWidget {
 
 class CardTallButton extends StatelessWidget {
   const CardTallButton(
-      {Key? key,
+      {super.key,
       required this.label,
       required this.onTap,
       this.radius = 5,
-      this.isLoading = false})
-      : super(key: key);
+      this.isLoading = false});
   final String label;
   final Function() onTap;
   final double radius;

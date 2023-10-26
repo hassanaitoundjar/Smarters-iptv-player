@@ -1,7 +1,7 @@
 part of '../screens.dart';
 
 class IntroScreen extends StatefulWidget {
-  const IntroScreen({Key? key}) : super(key: key);
+  const IntroScreen({super.key});
 
   @override
   State<IntroScreen> createState() => _IntroScreenState();

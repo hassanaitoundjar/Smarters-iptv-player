@@ -1,7 +1,7 @@
 part of '../screens.dart';
 
 class FavouriteScreen extends StatefulWidget {
-  const FavouriteScreen({Key? key}) : super(key: key);
+  const FavouriteScreen({super.key});
 
   @override
   State<FavouriteScreen> createState() => _FavouriteScreenState();
@@ -98,7 +98,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
 }
 
 class _FavLivePage extends StatelessWidget {
-  const _FavLivePage({Key? key}) : super(key: key);
+  const _FavLivePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -144,7 +144,7 @@ class _FavLivePage extends StatelessWidget {
 }
 
 class _FavMoviesPage extends StatelessWidget {
-  const _FavMoviesPage({Key? key}) : super(key: key);
+  const _FavMoviesPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -191,7 +191,7 @@ class _FavMoviesPage extends StatelessWidget {
 }
 
 class _FavSeriesPage extends StatelessWidget {
-  const _FavSeriesPage({Key? key}) : super(key: key);
+  const _FavSeriesPage({super.key});
 
   @override
   Widget build(BuildContext context) {

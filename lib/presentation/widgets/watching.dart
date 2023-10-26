@@ -1,7 +1,7 @@
 part of 'widgets.dart';
 
 class ContinueWatchingMovies extends StatelessWidget {
-  const ContinueWatchingMovies({Key? key}) : super(key: key);
+  const ContinueWatchingMovies({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +51,7 @@ class ContinueWatchingMovies extends StatelessWidget {
 }
 
 class ContinueWatchingSeries extends StatelessWidget {
-  const ContinueWatchingSeries({Key? key}) : super(key: key);
+  const ContinueWatchingSeries({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -105,8 +105,7 @@ class ContinueWatchingSeries extends StatelessWidget {
 
 class CardMovieContinueWatch extends StatelessWidget {
   const CardMovieContinueWatch(
-      {Key? key, required this.onTap, required this.model})
-      : super(key: key);
+      {super.key, required this.onTap, required this.model});
 
   final Function() onTap;
   final WatchingModel model;
@@ -204,7 +203,7 @@ class CardMovieContinueWatch extends StatelessWidget {
 }
 
 class CardNoImage extends StatelessWidget {
-  const CardNoImage({Key? key}) : super(key: key);
+  const CardNoImage({super.key});
 
   @override
   Widget build(BuildContext context) {

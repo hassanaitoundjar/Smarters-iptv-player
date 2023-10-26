@@ -1,7 +1,7 @@
 part of '../screens.dart';
 
 class RegisterUserTv extends StatefulWidget {
-  const RegisterUserTv({Key? key}) : super(key: key);
+  const RegisterUserTv({super.key});
 
   @override
   State<RegisterUserTv> createState() => _RegisterUserTvState();

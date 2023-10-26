@@ -2,8 +2,7 @@ part of '../screens.dart';
 
 class SerieContent extends StatefulWidget {
   const SerieContent(
-      {Key? key, required this.videoId, required this.channelSerie})
-      : super(key: key);
+      {super.key, required this.videoId, required this.channelSerie});
   final String videoId;
   final ChannelSerie channelSerie;
 
