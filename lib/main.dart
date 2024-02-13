@@ -63,7 +63,8 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return Shortcuts(
       shortcuts: <LogicalKeySet, Intent>{
-        LogicalKeySet(LogicalKeyboardKey.select): const ActivateIntent()
+        LogicalKeySet(LogicalKeyboardKey.select): const ActivateIntent(),
+        LogicalKeySet(LogicalKeyboardKey.enter): const ActivateIntent(),
       },
       child: MultiBlocProvider(
         providers: [
@@ -100,7 +101,7 @@ class _MyAppState extends State<MyApp> {
         child: ResponsiveSizer(
           builder: (context, orient, type) {
             return GetMaterialApp(
-              title: 'Azul IPTV',
+              title: kAppName,
               theme: MyThemApp.themeData(context),
               debugShowCheckedModeBanner: false,
               initialRoute: "/",

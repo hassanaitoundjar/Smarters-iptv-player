@@ -18,6 +18,45 @@ class _ListChannelsScreen extends State<LiveChannelsScreen> {
   String keySearch = "";
   final FocusNode _remoteFocus = FocusNode();
 
+  _initialVideo(String streamId) async {
+    UserModel? user = await LocaleApi.getUser();
+
+    if (_videoPlayerController != null &&
+        _videoPlayerController!.value.isInitialized) {
+      _videoPlayerController!.pause();
+      _videoPlayerController!.stop();
+      _videoPlayerController = null;
+      await Future.delayed(const Duration(milliseconds: 300));
+    } else {
+      _videoPlayerController = null;
+      setState(() {});
+      await Future.delayed(const Duration(milliseconds: 300));
+    }
+
+    var videoUrl =
+        "${user!.serverInfo!.serverUrl}/${user.userInfo!.username}/${user.userInfo!.password}/$streamId";
+
+    debugPrint("Load Video: $videoUrl");
+    _videoPlayerController = VlcPlayerController.network(
+      videoUrl,
+      hwAcc: HwAcc.full,
+      autoPlay: true,
+      options: VlcPlayerOptions(
+        advanced: VlcAdvancedOptions([
+          VlcAdvancedOptions.networkCaching(2000),
+          VlcAdvancedOptions.liveCaching(2000),
+        ]),
+        http: VlcHttpOptions([
+          VlcHttpOptions.httpReconnect(true),
+        ]),
+        rtp: VlcRtpOptions([
+          VlcRtpOptions.rtpOverRtsp(true),
+        ]),
+      ),
+    );
+    setState(() {});
+  }
+
   @override
   void initState() {
     context.read<ChannelsBloc>().add(GetLiveChannelsEvent(
@@ -208,51 +247,24 @@ class _ListChannelsScreen extends State<LiveChannelsScreen> {
                                                               .changeUrlVideo(
                                                                   true);
                                                         } else {
-                                                          if (_videoPlayerController !=
-                                                                  null &&
-                                                              (await _videoPlayerController!
-                                                                      .isPlaying() ??
-                                                                  false)) {
-                                                            if (mounted) {
-                                                              _videoPlayerController!
-                                                                  .pause();
-                                                              _videoPlayerController =
-                                                                  null;
-                                                              setState(() {});
-                                                            }
+                                                          ///Play new Stream
+                                                          debugPrint(
+                                                              "Play new Stream");
+
+                                                          _initialVideo(model
+                                                              .streamId
+                                                              .toString());
+
+                                                          if (mounted) {
+                                                            setState(() {
+                                                              selectedVideo = i;
+                                                              channelLive =
+                                                                  model;
+                                                              selectedStreamId =
+                                                                  model
+                                                                      .streamId;
+                                                            });
                                                           }
-
-                                                          await Future.delayed(
-                                                                  const Duration(
-                                                                      milliseconds:
-                                                                          100))
-                                                              .then((value) {
-                                                            ///Play new Stream
-                                                            debugPrint(
-                                                                "Play new Stream");
-
-                                                            selectedVideo = i;
-                                                            _videoPlayerController =
-                                                                VlcPlayerController
-                                                                    .network(
-                                                              link,
-                                                              hwAcc: HwAcc.full,
-                                                              autoPlay: true,
-                                                              autoInitialize:
-                                                                  true,
-                                                              options:
-                                                                  VlcPlayerOptions(),
-                                                            );
-                                                            if (mounted) {
-                                                              setState(() {
-                                                                channelLive =
-                                                                    model;
-                                                                selectedStreamId =
-                                                                    model
-                                                                        .streamId;
-                                                              });
-                                                            }
-                                                          });
                                                         }
                                                       } catch (e) {
                                                         debugPrint("error: $e");

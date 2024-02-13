@@ -12,11 +12,25 @@ class _StreamPlayerPageState extends State<StreamPlayerPage> {
   bool isPlayed = true;
 
   bool showControllersVideo = true;
+  late Timer timer;
 
   @override
   void initState() {
     Wakelock.enable();
     super.initState();
+    timer = Timer.periodic(const Duration(seconds: 5), (timer) {
+      if (showControllersVideo) {
+        setState(() {
+          showControllersVideo = false;
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
   }
 
   @override

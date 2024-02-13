@@ -13,7 +13,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _username = TextEditingController();
   final _password = TextEditingController();
   final _url = TextEditingController();
-  final _user = TextEditingController();
 
   _convertM3utoXtreme(style) {
     showDialog(
@@ -84,7 +83,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     _url.dispose();
     _username.dispose();
     _password.dispose();
-
     super.dispose();
   }
 
@@ -184,23 +182,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     style: Get.textTheme.bodyLarge!.copyWith(
                                       color: Colors.white,
                                     ),
-                                  ),
-                                  SizedBox(height: 3.h),
-                                  TextField(
-                                    controller: _user,
-                                    decoration: InputDecoration(
-                                      hintText: "Account Name",
-                                      hintStyle:
-                                          Get.textTheme.bodyMedium!.copyWith(
-                                        color: Colors.grey,
-                                      ),
-                                      suffixIcon: const Icon(
-                                        FontAwesomeIcons.house,
-                                        size: 18,
-                                        color: kColorPrimary,
-                                      ),
-                                    ),
-                                    style: style,
                                   ),
                                   const SizedBox(height: 15),
                                   TextField(
@@ -308,8 +289,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                                 if (_username.text.isNotEmpty &&
                                     _password.text.isNotEmpty &&
-                                    _url.text.isNotEmpty &&
-                                    _user.text.isNotEmpty) {
+                                    _url.text.isNotEmpty) {
                                   context.read<AuthBloc>().add(AuthRegister(
                                         _username.text,
                                         _password.text,
