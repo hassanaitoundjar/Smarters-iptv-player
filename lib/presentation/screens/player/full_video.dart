@@ -28,10 +28,19 @@ class _FullVideoScreenState extends State<FullVideoScreen> {
   double _currentBright = 0.0;
   late Timer timer;
 
+  final ScreenBrightnessUtil _screenBrightnessUtil = ScreenBrightnessUtil();
+
   _settingPage() async {
     try {
+      double brightness = await _screenBrightnessUtil.getBrightness();
+      if (brightness == -1) {
+        debugPrint("Oops... something wrong!");
+      } else {
+        _currentBright = brightness;
+      }
+
       ///default volume is half
-      _currentBright = await ScreenBrightness().current;
+
       _currentVolume = await PerfectVolumeControl.volume;
 
       setState(() {});
@@ -292,7 +301,9 @@ class _FullVideoScreenState extends State<FullVideoScreen> {
                     height: 40.h,
                     width: 30,
                     onFinish: (value) async {
-                      await ScreenBrightness().setScreenBrightness(value);
+                      bool success =
+                          await _screenBrightnessUtil.setBrightness(value);
+
                       setState(() {
                         _currentBright = value;
                       });
