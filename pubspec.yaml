@@ -6,7 +6,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.7+8
 
 environment:
-  sdk: '>=3.3.3 <4.0.0'
+  sdk: '>=3.4.0 <4.0.0'
 
 dependencies:
   flutter:
@@ -26,10 +26,10 @@ dependencies:
 
 
   #Logic
-  azul_envato_checker: ^0.0.5+5
+  azul_envato_checker: ^0.0.6+6
   flutter_bloc: ^8.1.5
   get: ^4.6.6
-  intl: ^0.18.1
+  intl: ^0.19.0
   get_storage: ^2.1.1
   url_launcher: ^6.2.6
  # wakelock: ^0.6.2
@@ -44,7 +44,7 @@ dependencies:
 
   #Http
   dio: ^5.4.3+1
-  google_mobile_ads: ^5.0.0
+  google_mobile_ads: ^5.1.0
 
 
 dependency_overrides:
@@ -54,7 +54,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^3.0.2
+  flutter_lints: ^4.0.0
 
 flutter:
 
