@@ -3,7 +3,7 @@ part of 'helpers.dart';
 const String kAppName = "AZUL IPTV";
 
 //TODO: SHow Ads ( true / false )
-const bool showAds = true;
+const bool showAds = false;
 
 const String kIconLive = "assets/images/live-stream.png";
 const String kIconSeries = "assets/images/clapperboard.png";

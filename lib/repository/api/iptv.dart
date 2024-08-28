@@ -52,7 +52,7 @@ class IpTvApi {
 
       var url = "${user.serverInfo!.serverUrl}/player_api.php";
 
-      Response<String> response = await _dio.get(
+      Response<List<dynamic>> response = await _dio.get(
         url,
         queryParameters: {
           "password": user.userInfo!.password,
@@ -61,9 +61,12 @@ class IpTvApi {
           "category_id": catyId
         },
       );
+      debugPrint("URL: ${response.realUri}");
 
       if (response.statusCode == 200) {
-        final List<dynamic> json = jsonDecode(response.data ?? "[]");
+        final json = response.data ?? [];
+
+        debugPrint("SIZE: ${json.length}");
 
         final list = json.map((e) => ChannelLive.fromJson(e)).toList();
         //TODO: save list to locale
@@ -73,7 +76,7 @@ class IpTvApi {
 
       return [];
     } catch (e) {
-      debugPrint("Error Channel $catyId: $e");
+      log("Error Channel $catyId: $e");
       return [];
     }
   }

@@ -35,7 +35,7 @@ class ChannelLive {
         streamType = json['stream_type'].toString(),
         streamId = json['stream_id'].toString(),
         streamIcon = json['stream_icon'].toString(),
-        epgChannelId = json['epg_channel_id'],
+        epgChannelId = json['epg_channel_id'].toString(),
         added = json['added'].toString(),
         isAdult = json['is_adult'].toString(),
         categoryId = json['category_id'].toString(),

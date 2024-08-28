@@ -40,8 +40,10 @@ class _FullVideoScreenState extends State<FullVideoScreen> {
       }
 
       ///default volume is half
-
-      _currentVolume = await PerfectVolumeControl.volume;
+      VolumeController().listener((volume) {
+        setState(() => _currentVolume = volume);
+      });
+      VolumeController().getVolume().then((volume) => _currentVolume = volume);
 
       setState(() {});
     } catch (e) {
@@ -117,6 +119,7 @@ class _FullVideoScreenState extends State<FullVideoScreen> {
     await _videoPlayerController.stopRendererScanning();
     await _videoPlayerController.dispose();
     timer.cancel();
+    VolumeController().removeListener();
   }
 
   @override
@@ -255,8 +258,7 @@ class _FullVideoScreenState extends State<FullVideoScreen> {
                     direction: FillingSliderDirection.vertical,
                     initialValue: _currentVolume,
                     onFinish: (value) async {
-                      PerfectVolumeControl.hideUI = true;
-                      await PerfectVolumeControl.setVolume(value);
+                      VolumeController().setVolume(value);
                       setState(() {
                         _currentVolume = value;
                       });
