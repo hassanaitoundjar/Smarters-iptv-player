@@ -1,0 +1,40 @@
+<svg width="400" height="400" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Glow effect -->
+  <defs>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="15" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <!-- Gradient for the rounded square background -->
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#00D9FF;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#4169E1;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FF1493;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Gradient for the play button -->
+    <linearGradient id="playGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00FFFF;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#8A2BE2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FF1493;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Outer glow -->
+  <rect x="50" y="50" width="300" height="300" rx="60" fill="url(#bgGradient)" opacity="0.3" filter="url(#glow)"/>
+  
+  <!-- Main rounded square with gradient border -->
+  <rect x="70" y="70" width="260" height="260" rx="50" fill="#0A1628" stroke="url(#bgGradient)" stroke-width="4"/>
+  
+  <!-- Play button icon -->
+  <g transform="translate(200, 200)">
+    <!-- Play triangle -->
+    <path d="M -30 -40 L -30 40 L 40 0 Z" fill="url(#playGradient)" opacity="0.9"/>
+    <!-- Play button underline/accent -->
+    <path d="M -35 50 L 45 50" stroke="url(#playGradient)" stroke-width="8" stroke-linecap="round" opacity="0.8"/>
+  </g>
+</svg>

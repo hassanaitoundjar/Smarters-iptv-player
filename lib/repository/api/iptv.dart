@@ -13,7 +13,12 @@ class IpTvApi {
 
       debugPrint("SERVER: ${user.serverInfo!.serverUrl}");
 
-      var url = "${user.serverInfo!.serverUrl}/player_api.php";
+      // Ensure we don't double-add /player_api.php
+      var baseUrl = user.serverInfo!.serverUrl!;
+      if (baseUrl.endsWith('/player_api.php')) {
+        baseUrl = baseUrl.substring(0, baseUrl.length - '/player_api.php'.length);
+      }
+      var url = "$baseUrl/player_api.php";
 
       Response<String> response = await _dio.get(
         url,
@@ -50,7 +55,11 @@ class IpTvApi {
         return [];
       }
 
-      var url = "${user.serverInfo!.serverUrl}/player_api.php";
+      var baseUrl = user.serverInfo!.serverUrl!;
+      if (baseUrl.endsWith('/player_api.php')) {
+        baseUrl = baseUrl.substring(0, baseUrl.length - '/player_api.php'.length);
+      }
+      var url = "$baseUrl/player_api.php";
 
       Response<List<dynamic>> response = await _dio.get(
         url,
@@ -91,7 +100,11 @@ class IpTvApi {
         return [];
       }
 
-      var url = "${user.serverInfo!.serverUrl}/player_api.php";
+      var baseUrl = user.serverInfo!.serverUrl!;
+      if (baseUrl.endsWith('/player_api.php')) {
+        baseUrl = baseUrl.substring(0, baseUrl.length - '/player_api.php'.length);
+      }
+      var url = "$baseUrl/player_api.php";
 
       Response<String> response = await _dio.get(
         url,
@@ -129,7 +142,11 @@ class IpTvApi {
         return [];
       }
 
-      var url = "${user.serverInfo!.serverUrl}/player_api.php";
+      var baseUrl = user.serverInfo!.serverUrl!;
+      if (baseUrl.endsWith('/player_api.php')) {
+        baseUrl = baseUrl.substring(0, baseUrl.length - '/player_api.php'.length);
+      }
+      var url = "$baseUrl/player_api.php";
 
       Response<String> response = await _dio.get(
         url,
@@ -167,7 +184,11 @@ class IpTvApi {
         return null;
       }
 
-      var url = "${user.serverInfo!.serverUrl}/player_api.php";
+      var baseUrl = user.serverInfo!.serverUrl!;
+      if (baseUrl.endsWith('/player_api.php')) {
+        baseUrl = baseUrl.substring(0, baseUrl.length - '/player_api.php'.length);
+      }
+      var url = "$baseUrl/player_api.php";
 
       Response<String> response = await _dio.get(
         url,
@@ -206,7 +227,11 @@ class IpTvApi {
         return null;
       }
 
-      var url = "${user.serverInfo!.serverUrl}/player_api.php";
+      var baseUrl = user.serverInfo!.serverUrl!;
+      if (baseUrl.endsWith('/player_api.php')) {
+        baseUrl = baseUrl.substring(0, baseUrl.length - '/player_api.php'.length);
+      }
+      var url = "$baseUrl/player_api.php";
 
       Response<String> response = await _dio.get(
         url,
@@ -242,7 +267,11 @@ class IpTvApi {
         return [];
       }
 
-      var url = "${user.serverInfo!.serverUrl}/player_api.php";
+      var baseUrl = user.serverInfo!.serverUrl!;
+      if (baseUrl.endsWith('/player_api.php')) {
+        baseUrl = baseUrl.substring(0, baseUrl.length - '/player_api.php'.length);
+      }
+      var url = "$baseUrl/player_api.php";
 
       Response<String> response = await _dio.get(
         url,

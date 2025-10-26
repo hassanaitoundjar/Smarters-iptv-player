@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:mbark_iptv/repository/models/channel_movie.dart';
+import 'package:evoflix/repository/models/channel_movie.dart';
 
 import '../models/category.dart';
 import '../models/channel_live.dart';

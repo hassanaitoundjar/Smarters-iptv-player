@@ -46,16 +46,13 @@ class _SplashScreenState extends State<SplashScreen> {
         return BlocListener<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state is AuthSuccess) {
-              context.read<LiveCatyBloc>().add(GetLiveCategories());
-              context.read<MovieCatyBloc>().add(GetMovieCategories());
-              context.read<SeriesCatyBloc>().add(GetSeriesCategories());
-              goScreen(screenWelcome);
+              // Navigate to data loader screen which will load all categories
+              goScreen(screenDataLoader);
             } else if (state is AuthFailed) {
               if (isTv(context)) {
                 goScreen(screenRegisterTv);
               } else {
-                //goScreen(screenRegisterTv);
-                goScreen(screenIntro);
+                goScreen(screenMenu);
               }
             }
           },
@@ -78,15 +75,17 @@ class LoadingWidget extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image(
-            width: getSize(context).height * .22,
-            height: getSize(context).height * .22,
-            image: const AssetImage(kIconSplash),
+          EvoFlixLogo(
+            size: getSize(context).height * .22,
+            showGlow: true,
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 20),
           Text(
             kAppName,
-            style: Get.textTheme.displaySmall,
+            style: Get.textTheme.displaySmall!.copyWith(
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
           ),
           BlocBuilder<AuthBloc, AuthState>(
             builder: (context, state) {

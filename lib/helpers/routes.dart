@@ -1,15 +1,20 @@
 part of 'helpers.dart';
 
 const String screenSplash = "/";
+const String screenDataLoader = "/data-loader";
 const String screenWelcome = "/welcome";
-const String screenIntro = "/intro";
-const String screenRegister = "/register";
+const String screenMenu = "/menu";
 const String screenRegisterTv = "/register-tv";
+const String screenM3uLogin = "/m3u-login";
 const String screenSettings = "/settings";
 const String screenFavourite = "/favourite";
 const String screenCatchUp = "/catchup";
+const String screenUserList = "/user-list";
 const String screenMovies = "/movies";
+const String screenMovieScreen = "/movie-screen";
 const String screenSeries = "/series";
+const String screenSeriesScreen = "/series-screen";
+const String screenLive = "/live";
 const String screenLiveCategories = "/categories-live";
 const String screenMovieCategories = "/categories-movie";
 const String screenSeriesCategories = "/categories-series";

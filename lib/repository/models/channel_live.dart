@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 class ChannelLive {
   final String? num;
   final String? name;
@@ -30,19 +32,26 @@ class ChannelLive {
   });
 
   ChannelLive.fromJson(Map<String, dynamic> json)
-      : num = json['num'].toString(),
-        name = json['name'].toString(),
-        streamType = json['stream_type'].toString(),
-        streamId = json['stream_id'].toString(),
-        streamIcon = json['stream_icon'].toString(),
-        epgChannelId = json['epg_channel_id'].toString(),
-        added = json['added'].toString(),
-        isAdult = json['is_adult'].toString(),
-        categoryId = json['category_id'].toString(),
-        customSid = json['custom_sid'].toString(),
-        tvArchive = json['tv_archive'].toString(),
-        directSource = json['direct_source'].toString(),
-        tvArchiveDuration = json['tv_archive_duration'].toString();
+      : num = json['num']?.toString(),
+        name = json['name']?.toString(),
+        streamType = json['stream_type']?.toString(),
+        streamId = json['stream_id']?.toString(),
+        streamIcon = json['stream_icon'] != null && json['stream_icon'].toString().isNotEmpty
+            ? json['stream_icon'].toString()
+            : null,
+        epgChannelId = json['epg_channel_id'],
+        added = json['added']?.toString(),
+        isAdult = json['is_adult']?.toString(),
+        categoryId = json['category_id']?.toString(),
+        customSid = json['custom_sid']?.toString(),
+        tvArchive = json['tv_archive']?.toString(),
+        directSource = json['direct_source']?.toString(),
+        tvArchiveDuration = json['tv_archive_duration']?.toString() {
+    // Debug logging
+    if (streamIcon != null && streamIcon!.isNotEmpty) {
+      debugPrint('Channel: $name - Icon: $streamIcon');
+    }
+  }
 
   Map<String, dynamic> toJson() => {
         'num': num,

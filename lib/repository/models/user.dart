@@ -50,16 +50,16 @@ class UserInfo {
   });
 
   UserInfo.fromJson(Map<String, dynamic> json)
-      : username = json['username'].toString(),
-        password = json['password'].toString(),
-        message = json['message'].toString(),
-        auth = json['auth'].toString(),
-        status = json['status'].toString(),
-        expDate = json['exp_date'] as String?,
-        isTrial = json['is_trial'].toString(),
-        activeCons = json['active_cons'].toString(),
-        createdAt = json['created_at'].toString(),
-        maxConnections = json['max_connections'].toString(),
+      : username = json['username']?.toString(),
+        password = json['password']?.toString(),
+        message = json['message']?.toString(),
+        auth = json['auth']?.toString(),
+        status = json['status']?.toString(),
+        expDate = json['exp_date']?.toString(),
+        isTrial = json['is_trial']?.toString(),
+        activeCons = json['active_cons']?.toString(),
+        createdAt = json['created_at']?.toString(),
+        maxConnections = json['max_connections']?.toString(),
         allowedOutputFormats = (json['allowed_output_formats'] as List?)
             ?.map((dynamic e) => e.toString())
             .toList();
@@ -105,15 +105,15 @@ class ServerInfo {
   });
 
   ServerInfo.fromJson(Map<String, dynamic> json, String domain)
-      : url = json['url'].toString(),
-        port = json['port'].toString(),
-        httpsPort = json['https_port'].toString(),
-        serverProtocol = json['server_protocol'].toString(),
-        rtmpPort = json['rtmp_port'].toString(),
-        timezone = json['timezone'].toString(),
-        timestampNow = json['timestamp_now'].toString(),
-        timeNow = json['time_now'].toString(),
-        process = json['process'].toString(),
+      : url = json['url']?.toString(),
+        port = json['port']?.toString(),
+        httpsPort = json['https_port']?.toString(),
+        serverProtocol = json['server_protocol']?.toString(),
+        rtmpPort = json['rtmp_port']?.toString(),
+        timezone = json['timezone']?.toString(),
+        timestampNow = json['timestamp_now']?.toString(),
+        timeNow = json['time_now']?.toString(),
+        process = json['process']?.toString(),
         serverUrl = (json['server_url'] ?? domain).toString();
 
   Map<String, dynamic> toJson() => {

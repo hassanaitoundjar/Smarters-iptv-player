@@ -63,4 +63,22 @@ class WatchingCubit extends Cubit<WatchingState> {
     await favoriteLocale.deleteWatching();
     emit(WatchingState.defaultData());
   }
+
+  void clearAllMovies() async {
+    await favoriteLocale.saveWatchingMovie([]);
+    emit(WatchingState(
+      movies: [],
+      series: state.series,
+      live: state.live,
+    ));
+  }
+
+  void clearAllSeries() async {
+    await favoriteLocale.saveWatchSerie([]);
+    emit(WatchingState(
+      movies: state.movies,
+      series: [],
+      live: state.live,
+    ));
+  }
 }

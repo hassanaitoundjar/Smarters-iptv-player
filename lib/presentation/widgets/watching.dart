@@ -25,9 +25,31 @@ class ContinueWatchingMovies extends StatelessWidget {
               return CardMovieContinueWatch(
                 model: watching[i],
                 onTap: () {
+                  final model = watching[i];
+                  
+                  debugPrint('=== 🎬 CONTINUE WATCHING - MOVIE CLICKED ===');
+                  debugPrint('streamId: ${model.streamId}');
+                  debugPrint('sliderValue (position): ${model.sliderValue}s');
+                  debugPrint('durationStrm (total): ${model.durationStrm}s');
+                  debugPrint('Progress: ${(model.sliderValue / model.durationStrm * 100).toStringAsFixed(1)}%');
+                  debugPrint('stream: ${model.stream}');
+                  debugPrint('==========================================');
+                  
+                  // sliderValue now contains position in seconds
+                  // durationStrm now contains total duration in seconds
+                  final resumeSeconds = model.sliderValue;
+                  
+                  if (resumeSeconds <= 0) {
+                    debugPrint('⚠️ WARNING: Invalid resume position: $resumeSeconds - Starting from beginning');
+                  }
+                  
                   Get.to(() => FullVideoScreen(
                             link: watching[i].stream,
                             title: watching[i].title,
+                            streamId: watching[i].streamId,
+                            imageUrl: watching[i].image,
+                            isSeries: false,
+                            resumePosition: resumeSeconds,
                           ))!
                       .then((slider) {
                     if (slider != null) {
@@ -78,9 +100,19 @@ class ContinueWatchingSeries extends StatelessWidget {
               return CardMovieContinueWatch(
                 model: model,
                 onTap: () {
+                  // sliderValue now contains position in seconds
+                  // durationStrm now contains total duration in seconds
+                  final resumeSeconds = model.sliderValue;
+                  
+                  debugPrint('▶️ Resuming series from ${resumeSeconds.toInt()}s');
+                  
                   Get.to(() => FullVideoScreen(
                             link: model.stream,
                             title: "Episode ${i + 1}: ${model.title}",
+                            streamId: model.streamId,
+                            imageUrl: model.image,
+                            isSeries: true,
+                            resumePosition: resumeSeconds,
                           ))!
                       .then((slider) {
                     debugPrint("DATA: $slider");
@@ -172,12 +204,16 @@ class CardMovieContinueWatch extends StatelessWidget {
                     child: Row(
                       children: [
                         Expanded(
-                            flex: (model.sliderValue * 10).round(),
+                            flex: model.durationStrm > 0 
+                                ? (model.sliderValue / model.durationStrm * 100).round()
+                                : 0,
                             child: Container(
                               color: kColorPrimary,
                             )),
                         Expanded(
-                            flex: (model.durationStrm * 10).round(),
+                            flex: model.durationStrm > 0
+                                ? (100 - (model.sliderValue / model.durationStrm * 100)).round()
+                                : 100,
                             child: Container(
                               color: Colors.grey,
                             )),

@@ -158,13 +158,114 @@ class _MovieContentState extends State<MovieContent> {
                                                 final link =
                                                     "${userAuth.serverInfo!.serverUrl}/movie/${userAuth.userInfo!.username}/${userAuth.userInfo!.password}/${movie.movieData!.streamId}.${movie.movieData!.containerExtension}";
 
+                                                // Parse subtitles from API response
+                                                List<Map<String, String>>?
+                                                    subtitles;
+                                                try {
+                                                  // Check if movie has subtitles in the response
+                                                  // Xtream API returns subtitles as a list or object
+                                                  final movieDataJson =
+                                                      movie.toJson();
+                                                  if (movieDataJson.containsKey(
+                                                          'info') &&
+                                                      movieDataJson['info'] !=
+                                                          null &&
+                                                      movieDataJson['info']
+                                                              ['subtitles'] !=
+                                                          null) {
+                                                    final subs =
+                                                        movieDataJson['info']
+                                                            ['subtitles'];
+                                                    subtitles = [];
+
+                                                    if (subs is List) {
+                                                      for (var sub in subs) {
+                                                        if (sub is Map) {
+                                                          final lang = sub[
+                                                                      'language']
+                                                                  ?.toString() ??
+                                                              sub['name']
+                                                                  ?.toString() ??
+                                                              'Unknown';
+                                                          final url = sub['url']
+                                                                  ?.toString() ??
+                                                              sub['path']
+                                                                  ?.toString() ??
+                                                              '';
+
+                                                          if (url.isNotEmpty) {
+                                                            // Make sure subtitle URL is absolute
+                                                            final subtitleUrl = url
+                                                                    .startsWith(
+                                                                        'http')
+                                                                ? url
+                                                                : "${userAuth.serverInfo!.serverUrl}$url";
+
+                                                            subtitles.add({
+                                                              'lang': lang,
+                                                              'url':
+                                                                  subtitleUrl,
+                                                            });
+                                                            debugPrint(
+                                                                "📝 Subtitle found: $lang - $subtitleUrl");
+                                                          }
+                                                        }
+                                                      }
+                                                    } else if (subs is Map) {
+                                                      // Sometimes subtitles come as a map {en: url, es: url}
+                                                      subs.forEach(
+                                                          (key, value) {
+                                                        final url =
+                                                            value.toString();
+                                                        if (url.isNotEmpty) {
+                                                          final subtitleUrl = url
+                                                                  .startsWith(
+                                                                      'http')
+                                                              ? url
+                                                              : "${userAuth.serverInfo!.serverUrl}$url";
+
+                                                          subtitles!.add({
+                                                            'lang': key
+                                                                .toString()
+                                                                .toUpperCase(),
+                                                            'url': subtitleUrl,
+                                                          });
+                                                          debugPrint(
+                                                              "📝 Subtitle found: ${key.toString().toUpperCase()} - $subtitleUrl");
+                                                        }
+                                                      });
+                                                    }
+
+                                                    if (subtitles.isEmpty) {
+                                                      subtitles = null;
+                                                    }
+                                                  }
+                                                } catch (e) {
+                                                  debugPrint(
+                                                      "Error parsing subtitles: $e");
+                                                  subtitles = null;
+                                                }
+
                                                 debugPrint("URL: $link");
+                                                debugPrint(
+                                                    "Subtitles: ${subtitles?.length ?? 0} found");
+
                                                 Get.to(() => FullVideoScreen(
                                                           link: link,
                                                           title: movie
                                                                   .movieData!
                                                                   .name ??
                                                               "",
+                                                          subtitles: subtitles,
+                                                          streamId: widget
+                                                              .channelMovie
+                                                              .streamId
+                                                              .toString(),
+                                                          imageUrl: widget
+                                                                  .channelMovie
+                                                                  .streamIcon ??
+                                                              "",
+                                                          isSeries: false,
                                                         ))!
                                                     .then((slider) {
                                                   debugPrint("DATA: $slider");

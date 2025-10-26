@@ -4,14 +4,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:mbark_iptv/repository/api/api.dart';
+import 'package:evoflix/repository/api/api.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:media_kit/media_kit.dart';
 import 'helpers/helpers.dart';
 import 'logic/blocs/auth/auth_bloc.dart';
 import 'logic/blocs/categories/channels/channels_bloc.dart';
 import 'logic/blocs/categories/live_caty/live_caty_bloc.dart';
 import 'logic/blocs/categories/movie_caty/movie_caty_bloc.dart';
 import 'logic/blocs/categories/series_caty/series_caty_bloc.dart';
+import 'logic/cubits/data_loader/data_loader_cubit.dart';
 import 'logic/cubits/favorites/favorites_cubit.dart';
 import 'logic/cubits/settings/settings_cubit.dart';
 import 'logic/cubits/video/video_cubit.dart';
@@ -20,6 +22,10 @@ import 'presentation/screens/screens.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  
+  // Initialize MediaKit for video playback
+  MediaKit.ensureInitialized();
+  
   // await Wakelock.enable();
   await GetStorage.init();
   await GetStorage.init("favorites");
@@ -97,6 +103,9 @@ class _MyAppState extends State<MyApp> {
             create: (BuildContext context) =>
                 FavoritesCubit(widget.favoriteLocale),
           ),
+          BlocProvider<DataLoaderCubit>(
+            create: (BuildContext context) => DataLoaderCubit(widget.iptv),
+          ),
         ],
         child: ResponsiveSizer(
           builder: (context, orient, type) {
@@ -107,28 +116,37 @@ class _MyAppState extends State<MyApp> {
               initialRoute: "/",
               getPages: [
                 GetPage(name: screenSplash, page: () => const SplashScreen()),
+                GetPage(
+                    name: screenDataLoader,
+                    page: () => const DataLoaderScreen()),
                 GetPage(name: screenWelcome, page: () => const WelcomeScreen()),
-                GetPage(name: screenIntro, page: () => const IntroScreen()),
+                GetPage(name: screenMenu, page: () => const MenuScreen()),
+                GetPage(name: screenLive, page: () => const LiveScreen()),
                 GetPage(
                     name: screenLiveCategories,
                     page: () => const LiveCategoriesScreen()),
                 GetPage(
-                    name: screenRegister, page: () => const RegisterScreen()),
-                GetPage(
                     name: screenRegisterTv, page: () => const RegisterUserTv()),
                 GetPage(
-                    name: screenRegisterTv, page: () => const RegisterUserTv()),
+                    name: screenM3uLogin, page: () => const M3uLoginScreen()),
                 GetPage(
                     name: screenMovieCategories,
                     page: () => const MovieCategoriesScreen()),
                 GetPage(
+                    name: screenMovieScreen,
+                    page: () => const MovieScreen()),
+                GetPage(
                     name: screenSeriesCategories,
                     page: () => const SeriesCategoriesScreen()),
+                GetPage(
+                    name: screenSeriesScreen,
+                    page: () => const SeriesScreen()),
                 GetPage(
                     name: screenSettings, page: () => const SettingsScreen()),
                 GetPage(
                     name: screenFavourite, page: () => const FavouriteScreen()),
                 GetPage(name: screenCatchUp, page: () => const CatchUpScreen()),
+                GetPage(name: screenUserList, page: () => const UserListScreen()),
               ],
             );
           },

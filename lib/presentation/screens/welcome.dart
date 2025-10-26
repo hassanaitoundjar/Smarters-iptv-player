@@ -32,170 +32,477 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     context.read<FavoritesCubit>().initialData();
     context.read<WatchingCubit>().initialData();
     _loadIntel();
+    
+    // Preload all movies and series once
+    _preloadContent();
+    
     super.initState();
+  }
+  
+  // Preload all movies and series to cache them
+  void _preloadContent() {
+    // Load all movies
+    context.read<ChannelsBloc>().add(GetLiveChannelsEvent(
+      catyId: '',
+      typeCategory: TypeCategory.movies,
+    ));
+    
+    // Load all series
+    context.read<ChannelsBloc>().add(GetLiveChannelsEvent(
+      catyId: '',
+      typeCategory: TypeCategory.series,
+    ));
   }
 
   @override
   Widget build(BuildContext context) {
+    final width = getSize(context).width;
+    final isPhone = width < 600;
+    final isTablet = width >= 600 && width < 950;
+
     return Scaffold(
-      body: Ink(
-        width: getSize(context).width,
-        height: getSize(context).height,
+      body: Container(
+        width: 100.w,
+        height: 100.h,
         decoration: kDecorBackground,
-        padding: const EdgeInsets.only(left: 10, right: 10, top: 15),
-        child: Column(
-          children: [
-            const AppBarWelcome(),
-            const SizedBox(height: 10),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: BlocBuilder<LiveCatyBloc, LiveCatyState>(
-                        builder: (context, state) {
-                          if (state is LiveCatyLoading) {
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          }
-                          if (state is LiveCatySuccess) {
-                            return CardWelcomeTv(
-                              title: "LIVE TV",
-                              autoFocus: true,
-                              subTitle: "${state.categories.length} Channels",
-                              icon: kIconLive,
-                              onTap: () {
-                                Get.toNamed(screenLiveCategories)!
-                                    .then((value) async {
-                                  debugPrint("show interstitial");
-                                  _interstitialAd.show();
-                                  await _loadIntel();
-                                });
-                              },
-                            );
-                          }
-
-                          return const Text('error live caty');
-                        },
-                      ),
+        child: SafeArea(
+          child: Column(
+            children: [
+              _buildModernHeader(isPhone, isTablet),
+              Expanded(
+                child: Center(
+                  child: Container(
+                    height: 70.h, // 70% of screen height
+                    padding: EdgeInsets.symmetric(
+                      horizontal: isPhone ? 4.w : 3.w,
                     ),
-                    SizedBox(width: 2.w),
-                    Expanded(
-                      child: BlocBuilder<MovieCatyBloc, MovieCatyState>(
-                        builder: (context, state) {
-                          if (state is MovieCatyLoading) {
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          } else if (state is MovieCatySuccess) {
-                            return CardWelcomeTv(
-                              title: "Movies",
-                              subTitle: "${state.categories.length} Channels",
-                              icon: kIconMovies,
-                              onTap: () {
-                                Get.toNamed(screenMovieCategories)!
-                                    .then((value) async {
-                                  await _interstitialAd.show();
-                                  await _loadIntel();
-                                });
-                              },
-                            );
-                          }
-
-                          return const Text('error movie caty');
-                        },
-                      ),
-                    ),
-                    SizedBox(width: 2.w),
-                    Expanded(
-                      child: BlocBuilder<SeriesCatyBloc, SeriesCatyState>(
-                        builder: (context, state) {
-                          if (state is SeriesCatyLoading) {
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          } else if (state is SeriesCatySuccess) {
-                            return CardWelcomeTv(
-                              title: "Series",
-                              subTitle: "${state.categories.length} Channels",
-                              icon: kIconSeries,
-                              onTap: () {
-                                Get.toNamed(screenSeriesCategories)!
-                                    .then((value) async {
-                                  await _interstitialAd.show();
-                                  await _loadIntel();
-                                });
-                              },
-                            );
-                          }
-
-                          return const Text('could not load series');
-                        },
-                      ),
-                    ),
-                    SizedBox(width: 2.w),
-                    SizedBox(
-                      width: 20.w,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          CardWelcomeSetting(
-                            title: 'Catch up',
-                            icon: FontAwesomeIcons.rotate,
-                            onTap: () {
-                              Get.toNamed(screenCatchUp);
+                    child: Row(
+                      children: [
+                        // Column 1 - LIVE TV
+                        Expanded(
+                          child: BlocBuilder<LiveCatyBloc, LiveCatyState>(
+                            builder: (context, state) {
+                              if (state is LiveCatyLoading) {
+                                return _buildLoadingCard();
+                              }
+                              if (state is LiveCatySuccess) {
+                                return _buildMainCard(
+                                  title: "LIVE TV",
+                                  subtitle:
+                                      "${state.categories.length} Channels",
+                                  icon: FontAwesomeIcons.tv,
+                                  gradient: const LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      Color(0xFF373047),
+                                      Color(0xFF2F2840)
+                                    ],
+                                  ),
+                                  onTap: () {
+                                    Get.toNamed(screenLive)!
+                                        .then((value) async {
+                                      _interstitialAd.show();
+                                      await _loadIntel();
+                                    });
+                                  },
+                                  isPhone: isPhone,
+                                );
+                              }
+                              return _buildErrorCard();
                             },
                           ),
-                          CardWelcomeSetting(
-                            title: 'Favourites',
-                            icon: FontAwesomeIcons.heart,
-                            onTap: () {
-                              Get.toNamed(screenFavourite);
+                        ),
+                        SizedBox(width: isPhone ? 3.w : 2.w),
+                        // Column 2 - MOVIES
+                        Expanded(
+                          child: BlocBuilder<MovieCatyBloc, MovieCatyState>(
+                            builder: (context, state) {
+                              if (state is MovieCatyLoading) {
+                                return _buildLoadingCard();
+                              } else if (state is MovieCatySuccess) {
+                                return _buildMainCard(
+                                  title: "MOVIES",
+                                  subtitle:
+                                      "${state.categories.length} Categories",
+                                  icon: FontAwesomeIcons.circlePlay,
+                                  gradient: const LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      Color(
+                                          0xFF3A3352), // Dark card base (same as others)
+                                      Color(0xFF2F2840), // Darker
+                                    ],
+                                  ),
+                                  isOrangeAccent: true,
+                                  onTap: () {
+                                    Get.toNamed(screenMovieScreen)!
+                                        .then((value) async {
+                                      await _interstitialAd.show();
+                                      await _loadIntel();
+                                    });
+                                  },
+                                  isPhone: isPhone,
+                                );
+                              }
+                              return _buildErrorCard();
                             },
                           ),
-                          CardWelcomeSetting(
-                            title: 'Settings',
-                            icon: FontAwesomeIcons.gear,
-                            onTap: () {
-                              Get.toNamed(screenSettings);
+                        ),
+                        SizedBox(width: isPhone ? 3.w : 2.w),
+                        // Column 3 - SERIES
+                        Expanded(
+                          child: BlocBuilder<SeriesCatyBloc, SeriesCatyState>(
+                            builder: (context, state) {
+                              if (state is SeriesCatyLoading) {
+                                return _buildLoadingCard();
+                              } else if (state is SeriesCatySuccess) {
+                                return _buildMainCard(
+                                  title: "SERIES",
+                                  subtitle:
+                                      "${state.categories.length} Categories",
+                                  icon: FontAwesomeIcons.clapperboard,
+                                  gradient: const LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      Color(0xFF373047),
+                                      Color(0xFF2F2840)
+                                    ],
+                                  ),
+                                  onTap: () {
+                                    Get.toNamed(screenSeriesScreen)!
+                                        .then((value) async {
+                                      await _interstitialAd.show();
+                                      await _loadIntel();
+                                    });
+                                  },
+                                  isPhone: isPhone,
+                                );
+                              }
+                              return _buildErrorCard();
                             },
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
+              // Bottom Info Bar - Fixed at bottom
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: isPhone ? 4.w : 3.w,
+                  vertical: 1.h,
+                ),
+                child: _buildBottomInfo(isPhone),
+              ),
+              AdmobWidget.getBanner(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildModernHeader(bool isPhone, bool isTablet) {
+    return Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: isPhone ? 4.w : 3.w,
+        vertical: isPhone ? 2.h : 1.5.h,
+      ),
+      child: Row(
+        children: [
+          // Left: Logo and App Name
+          Row(
+            children: [
+              EvoFlixLogo(
+                size: isPhone ? 35 : 40,
+                showGlow: false,
+              ),
+              SizedBox(width: 2.w),
+              Text(
+                kAppName,
+                style: Get.textTheme.headlineMedium!.copyWith(
+                  fontSize: isPhone ? 18.sp : 16.sp,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+          const Spacer(),
+          // Center: Date and Time
+          Text(
+            dateNowWelcome(),
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: isPhone ? 18.sp : 16.sp,
+              fontWeight: FontWeight.bold,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'By using this application, you agree to the',
-                  style: Get.textTheme.titleSmall!.copyWith(
-                    fontSize: 12.sp,
-                    color: Colors.grey,
+          ),
+          const Spacer(),
+          // Right: Icon Buttons
+          BlocBuilder<AuthBloc, AuthState>(
+            builder: (context, state) {
+              if (state is AuthSuccess) {
+                return Row(
+                  children: [
+                    // Icon Buttons
+                    IconButton(
+                      icon: Icon(
+                        FontAwesomeIcons.bell,
+                        color: Colors.white,
+                        size: isPhone ? 18.sp : 16.sp,
+                      ),
+                      onPressed: () {
+                        // TODO: Notifications
+                      },
+                    ),
+                    IconButton(
+                      icon: Icon(
+                        FontAwesomeIcons.user,
+                        color: Colors.white,
+                        size: isPhone ? 18.sp : 16.sp,
+                      ),
+                      onPressed: () {
+                        Get.toNamed(screenUserList);
+                      },
+                    ),
+                    IconButton(
+                      icon: Icon(
+                        FontAwesomeIcons.rectangleList,
+                        color: Colors.white,
+                        size: isPhone ? 18.sp : 16.sp,
+                      ),
+                      onPressed: () {
+                        Get.toNamed(screenFavourite);
+                      },
+                    ),
+                    IconButton(
+                      icon: Icon(
+                        FontAwesomeIcons.gear,
+                        color: Colors.white,
+                        size: isPhone ? 18.sp : 16.sp,
+                      ),
+                      onPressed: () {
+                        Get.toNamed(screenSettings);
+                      },
+                    ),
+                    IconButton(
+                      icon: Icon(
+                        FontAwesomeIcons.rightFromBracket,
+                        color: Colors.white,
+                        size: isPhone ? 18.sp : 16.sp,
+                      ),
+                      onPressed: () {
+                        Get.toNamed(screenMenu);
+                      },
+                    ),
+                  ],
+                );
+              }
+              return const SizedBox();
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMainCard({
+    required String title,
+    required String subtitle,
+    required IconData icon,
+    required Gradient gradient,
+    required VoidCallback onTap,
+    required bool isPhone,
+    bool isOrangeAccent = false,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(16),
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: gradient,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: isOrangeAccent
+                ? const Color(0xFFFFC107).withOpacity(0.3)
+                : Colors.white.withOpacity(0.05),
+            width: 1,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: isOrangeAccent
+                  ? const Color(0xFFFFC107).withOpacity(0.2)
+                  : Colors.black.withOpacity(0.3),
+              blurRadius: isOrangeAccent ? 20 : 15,
+              offset: const Offset(0, 5),
+            ),
+          ],
+        ),
+        child: Stack(
+          children: [
+            // Orange accent indicator (top right) - only for Movies
+            if (isOrangeAccent)
+              Positioned(
+                top: isPhone ? 2.w : 1.5.w,
+                right: isPhone ? 2.w : 1.5.w,
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: isPhone ? 2.w : 1.5.w,
+                    vertical: isPhone ? 0.5.h : 0.4.h,
                   ),
                 ),
-                InkWell(
-                  onTap: () async {
-                    await launchUrlString(kPrivacy);
-                  },
-                  child: Text(
-                    ' Terms of Services.',
-                    style: Get.textTheme.titleSmall!.copyWith(
-                      fontSize: 12.sp,
-                      color: Colors.blue,
+              ),
+            // Background pattern
+            Positioned(
+              right: -20,
+              bottom: -20,
+              child: Icon(
+                icon,
+                size: isPhone ? 150 : 200,
+                color: isOrangeAccent
+                    ? Colors.white.withOpacity(0.05)
+                    : Colors.white.withOpacity(0.03),
+              ),
+            ),
+            // Content
+            Padding(
+              padding: EdgeInsets.all(isPhone ? 4.w : 3.w),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(isPhone ? 3.w : 2.5.w),
+                    decoration: BoxDecoration(
+                      color: isOrangeAccent
+                          ? Colors.white.withOpacity(0.15)
+                          : Colors.white.withOpacity(0.08),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      icon,
+                      size: isPhone ? 40 : 60,
+                      color: Colors.white,
                     ),
                   ),
-                ),
-              ],
+                  SizedBox(height: 2.h),
+                  Text(
+                    title,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: isPhone ? 20.sp : 18.sp,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1.2,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 0.5.h),
+                  Text(
+                    subtitle,
+                    style: TextStyle(
+                      color: Colors.white.withOpacity(0.8),
+                      fontSize: isPhone ? 12.sp : 11.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
             ),
-            AdmobWidget.getBanner(),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildLoadingCard() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: const Center(
+        child: CircularProgressIndicator(color: Colors.white),
+      ),
+    );
+  }
+
+  Widget _buildErrorCard() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: const Center(
+        child: Text(
+          'Error loading data',
+          style: TextStyle(color: Colors.white54),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBottomInfo(bool isPhone) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        BlocBuilder<AuthBloc, AuthState>(
+          builder: (context, state) {
+            if (state is AuthSuccess) {
+              final userInfo = state.user.userInfo;
+              return Text(
+                "Expiration : ${expirationDate(userInfo!.expDate)}",
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontSize: isPhone ? 11.sp : 15.sp,
+                ),
+              );
+            }
+            return const SizedBox();
+          },
+        ),
+        Row(
+          children: [
+            Icon(
+              FontAwesomeIcons.cartShopping,
+              color: Colors.white70,
+              size: isPhone ? 14.sp : 12.sp,
+            ),
+            SizedBox(width: 1.w),
+            InkWell(
+              onTap: () async {
+                await launchUrlString(kContact);
+              },
+              child: Text(
+                "Purchase Ads Free Version",
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontSize: isPhone ? 11.sp : 15.sp,
+                ),
+              ),
+            ),
+          ],
+        ),
+        BlocBuilder<AuthBloc, AuthState>(
+          builder: (context, state) {
+            if (state is AuthSuccess) {
+              final userInfo = state.user.userInfo;
+              return Text(
+                "Logged in : ${userInfo!.username}",
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontSize: isPhone ? 11.sp : 15.sp,
+                ),
+              );
+            }
+            return const SizedBox();
+          },
+        ),
+      ],
     );
   }
 }

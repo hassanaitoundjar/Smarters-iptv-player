@@ -379,7 +379,7 @@
 				DEVELOPMENT_TEAM = D5VW3B8HS6;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Azul IpTv";
+				INFOPLIST_KEY_CFBundleDisplayName = "evoflix";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.video";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -511,7 +511,7 @@
 				DEVELOPMENT_TEAM = D5VW3B8HS6;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Azul IpTv";
+				INFOPLIST_KEY_CFBundleDisplayName = "evoflix";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.video";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -537,7 +537,7 @@
 				DEVELOPMENT_TEAM = D5VW3B8HS6;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Azul IpTv";
+				INFOPLIST_KEY_CFBundleDisplayName = "evoflix";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.video";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

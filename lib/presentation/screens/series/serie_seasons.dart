@@ -94,6 +94,9 @@ class _SerieSeasonsState extends State<SerieSeasons> {
                                   Get.to(() => FullVideoScreen(
                                             link: link,
                                             title: model.title ?? "",
+                                            streamId: model.id.toString(),
+                                            imageUrl: model.info?.movieImage ?? widget.serieDetails.info?.cover ?? "",
+                                            isSeries: true,
                                           ))!
                                       .then((slider) {
                                     debugPrint("DATA: $slider");

@@ -34,8 +34,9 @@ if (keystorePropertiesFile.exists()) {
 
 
 android {
-    compileSdkVersion 34
-    ndkVersion flutter.ndkVersion
+    namespace "com.iptv.azul"
+    compileSdk 36
+    ndkVersion "29.0.13599879"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -52,8 +53,8 @@ android {
 
     defaultConfig {
         applicationId "com.iptv.azul"
-        minSdkVersion 21
-        targetSdkVersion 33
+        minSdkVersion flutter.minSdkVersion
+        targetSdkVersion 36
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         multiDexEnabled = true
@@ -74,6 +75,13 @@ android {
 //            minifyEnabled false
             signingConfig signingConfigs.debug
         }
+    }
+
+    packagingOptions {
+        pickFirst 'lib/armeabi-v7a/libc++_shared.so'
+        pickFirst 'lib/arm64-v8a/libc++_shared.so'
+        pickFirst 'lib/x86/libc++_shared.so'
+        pickFirst 'lib/x86_64/libc++_shared.so'
     }
 
 }

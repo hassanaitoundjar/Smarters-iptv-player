@@ -38,6 +38,7 @@ class Info {
   final Video? video;
 
   final String? bitrate;
+  final dynamic subtitles; // Can be List or Map from API
 
   Info({
     this.movieImage,
@@ -55,6 +56,7 @@ class Info {
     this.duration,
     this.video,
     this.bitrate,
+    this.subtitles,
   });
 
   Info.fromJson(Map<String, dynamic> json)
@@ -91,7 +93,8 @@ class Info {
                 : (json['video'] as Map<String, dynamic>?) != null
                     ? Video.fromJson(json['video'] as Map<String, dynamic>)
                     : null,
-        bitrate = json['bitrate'] == null ? null : json['bitrate'].toString();
+        bitrate = json['bitrate'] == null ? null : json['bitrate'].toString(),
+        subtitles = json['subtitles']; // Store raw subtitle data
 
   Map<String, dynamic> toJson() => {
         'movie_image': movieImage,
@@ -108,7 +111,8 @@ class Info {
         'duration_secs': durationSecs,
         'duration': duration,
         'video': video?.toJson(),
-        'bitrate': bitrate
+        'bitrate': bitrate,
+        'subtitles': subtitles
       };
 }
 

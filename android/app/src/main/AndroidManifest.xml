@@ -15,7 +15,7 @@
 
 
     <application
-        android:label="Azul IPTV"
+        android:label="evoflix"
         android:usesCleartextTraffic="true"
         android:hardwareAccelerated="true"
         android:name="${applicationName}"

@@ -3,8 +3,10 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-  azul_envato_checker
+  media_kit_libs_windows_video
+  media_kit_video
   screen_brightness_util_windows
+  screen_brightness_windows
   url_launcher_windows
 )
 

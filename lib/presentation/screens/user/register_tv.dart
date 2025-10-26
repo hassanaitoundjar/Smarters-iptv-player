@@ -7,7 +7,8 @@ class RegisterUserTv extends StatefulWidget {
   State<RegisterUserTv> createState() => _RegisterUserTvState();
 }
 
-class _RegisterUserTvState extends State<RegisterUserTv> {
+class _RegisterUserTvState extends State<RegisterUserTv>
+    with SingleTickerProviderStateMixin {
   final _username = TextEditingController();
   final _password = TextEditingController();
   final _domain = TextEditingController();
@@ -18,6 +19,10 @@ class _RegisterUserTvState extends State<RegisterUserTv> {
   final FocusNode focusNode1 = FocusNode();
   final FocusNode focusNode2 = FocusNode();
   final FocusNode _remoteFocus = FocusNode();
+
+  late AnimationController _animationController;
+  late Animation<double> _fadeAnimation;
+  late Animation<Offset> _slideAnimation;
 
   _onKey(RawKeyEvent event) {
     debugPrint("EVENT");
@@ -62,6 +67,30 @@ class _RegisterUserTvState extends State<RegisterUserTv> {
   void initState() {
     super.initState();
     focusNode0.requestFocus();
+
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1200),
+    );
+
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: Curves.easeIn,
+      ),
+    );
+
+    _slideAnimation = Tween<Offset>(
+      begin: const Offset(0, 0.3),
+      end: Offset.zero,
+    ).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: Curves.easeOutCubic,
+      ),
+    );
+
+    _animationController.forward();
   }
 
   @override
@@ -73,6 +102,7 @@ class _RegisterUserTvState extends State<RegisterUserTv> {
     focusNode1.dispose();
     focusNode2.dispose();
     _remoteFocus.dispose();
+    _animationController.dispose();
 
     super.dispose();
   }
@@ -91,180 +121,288 @@ class _RegisterUserTvState extends State<RegisterUserTv> {
 
   @override
   Widget build(BuildContext context) {
+    final width = getSize(context).width;
+    final bool isPhone = width < 600;
+    final bool isTablet = width >= 600 && width < 950;
+
     return RawKeyboardListener(
       focusNode: _remoteFocus,
       onKey: _onKey,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        body: BlocBuilder<SettingsCubit, SettingsState>(
-          builder: (context, state) {
-            return AzulEnvatoChecker(
-              uniqueKey: state.setting,
-              successPage: Stack(
-                children: [
-                  ///Background
-                  const Opacity(
-                    opacity: .1,
-                    child: IntroImageAnimated(isTv: true),
-                  ),
+        body: Container(
+          width: getSize(context).width,
+          height: getSize(context).height,
+          decoration: kDecorBackground,
+          child: BlocConsumer<AuthBloc, AuthState>(
+            listener: (context, state) {
+              if (state is AuthSuccess) {
+                // Navigate to data loader screen which will load all categories
+                Get.offAndToNamed(screenDataLoader);
+              } else if (state is AuthFailed) {
+                showWarningToast(
+                  context,
+                  'Login failed.',
+                  'Please check your IPTV credentials and try again.',
+                );
+                debugPrint(state.message);
+              }
+            },
+            builder: (context, state) {
+              final isLoading = state is AuthLoading;
 
-                  Ink(
-                    width: getSize(context).width,
-                    height: getSize(context).height,
-                    decoration: kDecorBackground,
-                    child: BlocConsumer<AuthBloc, AuthState>(
-                      listener: (context, state) {
-                        if (state is AuthSuccess) {
-                          context.read<LiveCatyBloc>().add(GetLiveCategories());
-                          context
-                              .read<MovieCatyBloc>()
-                              .add(GetMovieCategories());
-                          context
-                              .read<SeriesCatyBloc>()
-                              .add(GetSeriesCategories());
+              return SafeArea(
+                child: Center(
+                  child: SingleChildScrollView(
+                    child: FadeTransition(
+                      opacity: _fadeAnimation,
+                      child: SlideTransition(
+                        position: _slideAnimation,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            // Logo
+                            EvoFlixLogo(
+                              size: isPhone ? 20.w : (isTablet ? 12.w : 10.w),
+                              showGlow: true,
+                            ),
+                            SizedBox(height: 1.h),
 
-                          Get.offAndToNamed(screenWelcome);
-                        } else if (state is AuthFailed) {
-                          showWarningToast(
-                            context,
-                            'Login failed.',
-                            'Please check your IPTV credentials and try again.',
-                          );
-                          debugPrint(state.message);
-                        }
-                      },
-                      builder: (context, state) {
-                        if (state is AuthLoading) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
-
-                        return Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image(
-                                width: getSize(context).height * .22,
-                                height: getSize(context).height * .22,
-                                image: const AssetImage(kIconSplash),
+                            // Title
+                            Text(
+                              kAppName,
+                              style: Get.textTheme.headlineSmall!.copyWith(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: isPhone
+                                    ? 18.sp
+                                    : (isTablet ? 16.sp : 15.sp),
+                                letterSpacing: 2,
                               ),
-                              Center(
-                                child: Ink(
-                                  width: getSize(context).width * .9,
-                                  decoration: BoxDecoration(
-                                      gradient: kDecorBackground.gradient,
-                                      borderRadius: BorderRadius.circular(10),
-                                      boxShadow: const [
-                                        BoxShadow(
-                                          color: Colors.black38,
-                                          blurRadius: 5,
-                                        )
-                                      ]),
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                    vertical: 20,
-                                  ),
-                                  child: SingleChildScrollView(
-                                    child: Column(
-                                      children: [
-                                        const SizedBox(height: 15),
-                                        CardInputTv(
-                                          label: "username",
-                                          controller: _username,
-                                          icon: FontAwesomeIcons.solidUser,
-                                          focusNode: focusNode0,
-                                          isEnabled: indexTab == 0,
-                                          isFocused: indexTab == 0,
-                                          onEditingComplete: null,
-                                          onTap: () {
-                                            setState(() {
-                                              indexTab = 0;
-                                            });
-                                          },
-                                        ),
-                                        const SizedBox(height: 10),
-                                        CardInputTv(
-                                          label: "password",
-                                          controller: _password,
-                                          icon: FontAwesomeIcons.lock,
-                                          focusNode: focusNode1,
-                                          isEnabled: indexTab == 1,
-                                          isFocused: indexTab == 1,
-                                          onTap: () {
-                                            setState(() {
-                                              indexTab = 1;
-                                            });
-                                          },
-                                        ),
-                                        const SizedBox(height: 15),
-                                        CardInputTv(
-                                          label: "http://example.ex:8080",
-                                          controller: _domain,
-                                          icon: FontAwesomeIcons.lock,
-                                          focusNode: focusNode2,
-                                          isEnabled: indexTab == 2,
-                                          isFocused: indexTab == 2,
-                                          onTap: () {
-                                            setState(() {
-                                              indexTab = 2;
-                                            });
-                                          },
-                                        ),
-                                        const SizedBox(height: 15),
-                                        SizedBox(
-                                          width: getSize(context).width,
-                                          height: 50,
-                                          child: CardButtonWatchMovie(
-                                            isFocused: indexTab == 3,
-                                            onFocusChanged: (value) {},
-                                            onTap: () {
-                                              _login();
-                                            },
-                                            title: 'Login',
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                            ),
+                            SizedBox(height: 1.h),
+
+                            Text(
+                              'Sign in to your account',
+                              style: Get.textTheme.bodyMedium!.copyWith(
+                                color: Colors.white70,
+                                fontSize: isPhone
+                                    ? 12.sp
+                                    : (isTablet ? 11.sp : 10.sp),
+                              ),
+                            ),
+                            SizedBox(height: 3.h),
+
+                            // Login Form Container
+                            Container(
+                              width: isPhone
+                                  ? getSize(context).width * 0.85
+                                  : (isTablet
+                                      ? getSize(context).width * 0.6
+                                      : getSize(context).width * 0.45),
+                              padding: EdgeInsets.all(
+                                  isPhone ? 6.w : (isTablet ? 4.w : 3.w)),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF1A0933).withAlpha(220),
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(
+                                  color: Colors.white.withAlpha(51),
+                                  width: 1,
                                 ),
-                              ),
-                              /*  SizedBox(height: 4.h),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "You don't have account? ",
-                                    style: Get.textTheme.subtitle2!.copyWith(
-                                      color: kColorCardDark,
-                                    ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withAlpha(102),
+                                    blurRadius: 20,
+                                    offset: const Offset(0, 10),
                                   ),
-                                  InkWell(
-                                    onTap: () async {
-                                      await launchUrlString(kContact,
-                                          mode:
-                                              LaunchMode.externalApplication);
+                                ],
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  // Username Field
+                                  _buildInputField(
+                                    label: 'Username',
+                                    controller: _username,
+                                    icon: FontAwesomeIcons.solidUser,
+                                    focusNode: focusNode0,
+                                    isFocused: indexTab == 0,
+                                    isPhone: isPhone,
+                                    isTablet: isTablet,
+                                  ),
+                                  SizedBox(height: 2.h),
+
+                                  // Password Field
+                                  _buildInputField(
+                                    label: 'Password',
+                                    controller: _password,
+                                    icon: FontAwesomeIcons.lock,
+                                    focusNode: focusNode1,
+                                    isFocused: indexTab == 1,
+                                    isPhone: isPhone,
+                                    isTablet: isTablet,
+                                    obscureText: true,
+                                  ),
+                                  SizedBox(height: 2.h),
+
+                                  // Domain/URL Field
+                                  _buildInputField(
+                                    label:
+                                        'Server URL (http://example.com:8080)',
+                                    controller: _domain,
+                                    icon: FontAwesomeIcons.server,
+                                    focusNode: focusNode2,
+                                    isFocused: indexTab == 2,
+                                    isPhone: isPhone,
+                                    isTablet: isTablet,
+                                  ),
+                                  SizedBox(height: 3.h),
+
+                                  // Login Button
+                                  Focus(
+                                    onFocusChange: (hasFocus) {
+                                      if (hasFocus) {
+                                        setState(() => indexTab = 3);
+                                      }
                                     },
-                                    child: Text(
-                                      'contact us',
-                                      style:
-                                          Get.textTheme.headline5!.copyWith(
-                                        color: kColorPrimary,
+                                    child: ElevatedButton(
+                                      onPressed: isLoading ? null : _login,
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: indexTab == 3
+                                            ? const Color(0xFF6B2F8E)
+                                            : const Color(0xFF8E44AD),
+                                        foregroundColor: Colors.white,
+                                        padding: EdgeInsets.symmetric(
+                                          vertical: isPhone ? 2.h : 1.8.h,
+                                        ),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                        ),
+                                        elevation: indexTab == 3 ? 8 : 4,
                                       ),
+                                      child: isLoading
+                                          ? SizedBox(
+                                              height: 20,
+                                              width: 20,
+                                              child: CircularProgressIndicator(
+                                                strokeWidth: 2,
+                                                valueColor:
+                                                    AlwaysStoppedAnimation<
+                                                        Color>(
+                                                  Colors.white,
+                                                ),
+                                              ),
+                                            )
+                                          : Text(
+                                              'LOGIN',
+                                              style: TextStyle(
+                                                fontSize: isPhone
+                                                    ? 14.sp
+                                                    : (isTablet
+                                                        ? 12.sp
+                                                        : 11.sp),
+                                                fontWeight: FontWeight.bold,
+                                                letterSpacing: 1.5,
+                                              ),
+                                            ),
                                     ),
                                   ),
                                 ],
-                              ),*/
-                            ],
-                          ),
-                        );
-                      },
+                              ),
+                            ),
+                            SizedBox(height: 2.h),
+
+                            // Back button
+                            TextButton.icon(
+                              onPressed: () => Get.offAllNamed(screenMenu),
+                              icon: Icon(
+                                FontAwesomeIcons.arrowLeft,
+                                color: Colors.white70,
+                                size: isPhone ? 14.sp : 12.sp,
+                              ),
+                              label: Text(
+                                'Back to Menu',
+                                style: TextStyle(
+                                  color: Colors.white70,
+                                  fontSize: isPhone ? 12.sp : 10.sp,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
-                ],
-              ),
-            );
-          },
+                ),
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInputField({
+    required String label,
+    required TextEditingController controller,
+    required IconData icon,
+    required FocusNode focusNode,
+    required bool isFocused,
+    required bool isPhone,
+    required bool isTablet,
+    bool obscureText = false,
+  }) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: isFocused ? const Color(0xFF6B2F8E) : Colors.transparent,
+          width: 2,
+        ),
+        boxShadow: [
+          if (isFocused)
+            BoxShadow(
+              color: const Color(0xFF6B2F8E).withAlpha(77),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+        ],
+      ),
+      child: TextField(
+        controller: controller,
+        focusNode: focusNode,
+        obscureText: obscureText,
+        onTap: () {
+          final index = focusNode == focusNode0
+              ? 0
+              : focusNode == focusNode1
+                  ? 1
+                  : 2;
+          setState(() => indexTab = index);
+        },
+        style: TextStyle(
+          color: Colors.black87,
+          fontSize: isPhone ? 13.sp : (isTablet ? 11.sp : 10.sp),
+          fontWeight: FontWeight.w500,
+        ),
+        decoration: InputDecoration(
+          labelText: label,
+          labelStyle: TextStyle(
+            color: Colors.grey.shade600,
+            fontSize: isPhone ? 11.sp : (isTablet ? 10.sp : 9.sp),
+          ),
+          prefixIcon: Icon(
+            icon,
+            color: const Color(0xFF6B2F8E),
+            size: isPhone ? 18.sp : (isTablet ? 16.sp : 14.sp),
+          ),
+          border: InputBorder.none,
+          contentPadding: EdgeInsets.symmetric(
+            horizontal: 3.w,
+            vertical: isPhone ? 2.h : 1.5.h,
+          ),
         ),
       ),
     );

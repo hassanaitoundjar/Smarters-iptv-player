@@ -9,7 +9,9 @@ class LiveChannelsScreen extends StatefulWidget {
 }
 
 class _ListChannelsScreen extends State<LiveChannelsScreen> {
-  VlcPlayerController? _videoPlayerController;
+  // MediaKit Player (cross-platform)
+  Player? _player;
+  video.VideoController? _videoController;
 
   int? selectedVideo;
   String? selectedStreamId;
@@ -17,44 +19,35 @@ class _ListChannelsScreen extends State<LiveChannelsScreen> {
   double lastPosition = 0.0;
   String keySearch = "";
   final FocusNode _remoteFocus = FocusNode();
+  bool isLoadingVideo = false;
 
   _initialVideo(String streamId) async {
+    setState(() => isLoadingVideo = true);
+    
     UserModel? user = await LocaleApi.getUser();
 
-    if (_videoPlayerController != null &&
-        _videoPlayerController!.value.isInitialized) {
-      _videoPlayerController!.pause();
-      _videoPlayerController!.stop();
-      _videoPlayerController = null;
-      await Future.delayed(const Duration(milliseconds: 300));
-    } else {
-      _videoPlayerController = null;
-      setState(() {});
-      await Future.delayed(const Duration(milliseconds: 300));
-    }
+    // Dispose of existing player
+    await _player?.dispose();
+    _player = null;
+    await Future.delayed(const Duration(milliseconds: 300));
 
     var videoUrl =
         "${user!.serverInfo!.serverUrl}/${user.userInfo!.username}/${user.userInfo!.password}/$streamId";
 
-    debugPrint("Load Video: $videoUrl");
-    _videoPlayerController = VlcPlayerController.network(
-      videoUrl,
-      hwAcc: HwAcc.full,
-      autoPlay: true,
-      options: VlcPlayerOptions(
-        advanced: VlcAdvancedOptions([
-          VlcAdvancedOptions.networkCaching(2000),
-          VlcAdvancedOptions.liveCaching(2000),
-        ]),
-        http: VlcHttpOptions([
-          VlcHttpOptions.httpReconnect(true),
-        ]),
-        rtp: VlcRtpOptions([
-          VlcRtpOptions.rtpOverRtsp(true),
-        ]),
-      ),
-    );
-    setState(() {});
+    debugPrint("Load Video: $videoUrl (using MediaKit)");
+    
+    try {
+      // Initialize MediaKit player
+      _player = Player();
+      _videoController = video.VideoController(_player!);
+      
+      await _player!.open(Media(videoUrl), play: true);
+      
+      setState(() => isLoadingVideo = false);
+    } catch (e) {
+      debugPrint("MediaKit Player Error: $e");
+      setState(() => isLoadingVideo = false);
+    }
   }
 
   @override
@@ -67,13 +60,10 @@ class _ListChannelsScreen extends State<LiveChannelsScreen> {
   }
 
   @override
-  void dispose() async {
+  void dispose() {
+    _player?.dispose();
     _remoteFocus.dispose();
     super.dispose();
-    if (_videoPlayerController != null) {
-      await _videoPlayerController!.stopRendererScanning();
-      await _videoPlayerController!.dispose();
-    }
   }
 
   @override
@@ -236,7 +226,7 @@ class _ListChannelsScreen extends State<LiveChannelsScreen> {
                                                       try {
                                                         if (selectedVideo ==
                                                                 i &&
-                                                            _videoPlayerController !=
+                                                            _videoController !=
                                                                 null) {
                                                           // OPEN FULL SCREEN
                                                           debugPrint(
@@ -271,8 +261,7 @@ class _ListChannelsScreen extends State<LiveChannelsScreen> {
                                                         //  context.read<VideoCubit>().changeUrlVideo(false);
 
                                                         // selectedVideo = null;
-                                                        _videoPlayerController =
-                                                            null;
+                                                        _player?.pause();
                                                         setState(() {
                                                           channelLive = model;
                                                           selectedStreamId =
@@ -300,9 +289,24 @@ class _ListChannelsScreen extends State<LiveChannelsScreen> {
                                         children: [
                                           Expanded(
                                             flex: 1,
-                                            child: StreamPlayerPage(
-                                              controller:
-                                                  _videoPlayerController,
+                                            child: Container(
+                                              color: Colors.black,
+                                              child: isLoadingVideo
+                                                  ? const Center(
+                                                      child: CircularProgressIndicator(),
+                                                    )
+                                                  : _videoController != null
+                                                      ? video.Video(
+                                                          controller: _videoController!,
+                                                          controls: video.AdaptiveVideoControls,
+                                                        )
+                                                      : const Center(
+                                                          child: Icon(
+                                                            Icons.tv,
+                                                            size: 80,
+                                                            color: Colors.white30,
+                                                          ),
+                                                        ),
                                             ),
                                           ),
                                           Builder(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mbark_iptv/helpers/helpers.dart';
-import 'package:mbark_iptv/repository/models/channel_movie.dart';
+import 'package:evoflix/helpers/helpers.dart';
+import 'package:evoflix/repository/models/channel_movie.dart';
 
 import '../../../../repository/api/api.dart';
 import '../../../../repository/models/channel_live.dart';
