@@ -11,6 +11,8 @@ class _MenuScreenState extends State<MenuScreen> with SingleTickerProviderStateM
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   late Animation<double> _scaleAnimation;
+  final FocusNode _remoteFocus = FocusNode();
+  int _selectedOption = 0; // 0=M3U, 1=Xtream, 2=TV Code
 
   @override
   void initState() {
@@ -35,12 +37,65 @@ class _MenuScreenState extends State<MenuScreen> with SingleTickerProviderStateM
     );
 
     _animationController.forward();
+    _remoteFocus.requestFocus();
   }
 
   @override
   void dispose() {
     _animationController.dispose();
+    _remoteFocus.dispose();
     super.dispose();
+  }
+  
+  void _handleRemoteKey(KeyEvent event) {
+    final action = RemoteControlHandler.handleKeyEvent(event);
+    
+    if (action == null) return;
+    
+    switch (action) {
+      case RemoteAction.navigateUp:
+        setState(() {
+          if (_selectedOption > 0) _selectedOption--;
+        });
+        break;
+        
+      case RemoteAction.navigateDown:
+        setState(() {
+          if (_selectedOption < 2) _selectedOption++;
+        });
+        break;
+        
+      case RemoteAction.select:
+        _navigateToSelectedOption();
+        break;
+        
+      case RemoteAction.back:
+        // Show exit dialog
+        _showExitDialog();
+        break;
+        
+      default:
+        break;
+    }
+  }
+  
+  void _navigateToSelectedOption() {
+    switch (_selectedOption) {
+      case 0:
+        Get.toNamed(screenM3uLogin);
+        break;
+      case 1:
+        Get.toNamed(screenRegisterTv);
+        break;
+      case 2:
+        // TV Code login
+        Get.toNamed(screenRegisterTv);
+        break;
+    }
+  }
+  
+  void _showExitDialog() {
+    // Show exit confirmation dialog
   }
 
   @override
@@ -53,8 +108,11 @@ class _MenuScreenState extends State<MenuScreen> with SingleTickerProviderStateM
     final bool isTablet = width >= 600 && width < 950;
     final bool isLaptop = width >= 950;
     
-    return Scaffold(
-      body: Container(
+    return KeyboardListener(
+      focusNode: _remoteFocus,
+      onKeyEvent: _handleRemoteKey,
+      child: Scaffold(
+        body: Container(
         width: getSize(context).width,
         height: getSize(context).height,
         decoration: kDecorBackground,
@@ -311,6 +369,7 @@ class _MenuScreenState extends State<MenuScreen> with SingleTickerProviderStateM
             ],
           ),
         ),
+        ),
       ),
     );
   }
@@ -402,6 +461,7 @@ class _MenuButtonState extends State<MenuButton> {
         ),
       ),
     );
+    
   }
 }
 

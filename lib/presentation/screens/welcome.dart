@@ -9,6 +9,9 @@ class WelcomeScreen extends StatefulWidget {
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
   late InterstitialAd _interstitialAd;
+  final FocusNode _remoteFocus = FocusNode();
+  int _selectedIndex = 0; // 0=Live, 1=Movies, 2=Series
+  
   _loadIntel() async {
     if (!showAds) {
       return false;
@@ -29,6 +32,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
   @override
   void initState() {
+    super.initState();
     context.read<FavoritesCubit>().initialData();
     context.read<WatchingCubit>().initialData();
     _loadIntel();
@@ -36,7 +40,76 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     // Preload all movies and series once
     _preloadContent();
     
-    super.initState();
+    _remoteFocus.requestFocus();
+  }
+  
+  @override
+  void dispose() {
+    _remoteFocus.dispose();
+    super.dispose();
+  }
+  
+  void _handleRemoteKey(KeyEvent event) {
+    final action = RemoteControlHandler.handleKeyEvent(event);
+    
+    if (action == null) return;
+    
+    switch (action) {
+      case RemoteAction.navigateLeft:
+        setState(() {
+          if (_selectedIndex > 0) _selectedIndex--;
+        });
+        break;
+        
+      case RemoteAction.navigateRight:
+        setState(() {
+          if (_selectedIndex < 2) _selectedIndex++;
+        });
+        break;
+        
+      case RemoteAction.select:
+        _navigateToScreen(_selectedIndex);
+        break;
+        
+      case RemoteAction.back:
+        // Show exit dialog or go to menu
+        Get.offAllNamed(screenMenu);
+        break;
+        
+      case RemoteAction.home:
+        Get.offAllNamed(screenMenu);
+        break;
+        
+      case RemoteAction.colorRed:
+        // Red button = Favorites
+        break;
+        
+      case RemoteAction.colorGreen:
+        // Green button = Search
+        break;
+        
+      case RemoteAction.colorYellow:
+        // Yellow button = Settings
+        Get.toNamed(screenSettings);
+        break;
+        
+      default:
+        break;
+    }
+  }
+  
+  void _navigateToScreen(int index) {
+    switch (index) {
+      case 0:
+        Get.toNamed(screenLive);
+        break;
+      case 1:
+        Get.toNamed(screenMovies);
+        break;
+      case 2:
+        Get.toNamed(screenSeries);
+        break;
+    }
   }
   
   // Preload all movies and series to cache them
@@ -60,8 +133,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     final isPhone = width < 600;
     final isTablet = width >= 600 && width < 950;
 
-    return Scaffold(
-      body: Container(
+    return KeyboardListener(
+      focusNode: _remoteFocus,
+      onKeyEvent: _handleRemoteKey,
+      child: Scaffold(
+        body: Container(
         width: 100.w,
         height: 100.h,
         decoration: kDecorBackground,
@@ -202,6 +278,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             ],
           ),
         ),
+      ),
       ),
     );
   }

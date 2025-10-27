@@ -170,7 +170,7 @@ class _FavMoviesPage extends StatelessWidget {
                     title: movies[i].name ?? "",
                     image: movies[i].streamIcon,
                     onTap: () {
-                      Get.to(() => MovieContent(
+                      Get.to(() => MovieContentModern(
                               channelMovie: movies[i],
                               videoId: movies[i].streamId ?? ''))!
                           .then((value) async {
@@ -217,7 +217,7 @@ class _FavSeriesPage extends StatelessWidget {
                     title: series[i].name ?? "",
                     image: series[i].cover,
                     onTap: () {
-                      Get.to(() => SerieContent(
+                      Get.to(() => SerieContentModern(
                               channelSerie: series[i],
                               videoId: series[i].seriesId ?? ''))!
                           .then((value) async {

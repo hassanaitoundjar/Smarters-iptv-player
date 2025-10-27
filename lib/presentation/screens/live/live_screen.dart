@@ -22,6 +22,8 @@ class _LiveScreenState extends State<LiveScreen> {
   bool _isSearching = false;
   final TextEditingController _searchController = TextEditingController();
   final TextEditingController _categorySearchController = TextEditingController();
+  final FocusNode _remoteFocus = FocusNode();
+  String _channelNumberBuffer = '';
 
   @override
   void initState() {
@@ -32,7 +34,133 @@ class _LiveScreenState extends State<LiveScreen> {
     // Auto-load channels for "All Channels" category
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _loadAllChannels();
+      _remoteFocus.requestFocus();
     });
+  }
+  
+  @override
+  void dispose() {
+    _searchController.dispose();
+    _categorySearchController.dispose();
+    _remoteFocus.dispose();
+    _player?.dispose();
+    super.dispose();
+  }
+  
+  void _handleRemoteKey(KeyEvent event) {
+    final action = RemoteControlHandler.handleKeyEvent(event);
+    
+    if (action == null) return;
+    
+    switch (action) {
+      case RemoteAction.navigateUp:
+        _navigateChannel(-1);
+        break;
+        
+      case RemoteAction.navigateDown:
+        _navigateChannel(1);
+        break;
+        
+      case RemoteAction.select:
+        if (selectedChannelIndex != null) {
+          _playSelectedChannel();
+        }
+        break;
+        
+      case RemoteAction.channelUp:
+        _navigateChannel(1);
+        break;
+        
+      case RemoteAction.channelDown:
+        _navigateChannel(-1);
+        break;
+        
+      case RemoteAction.numberInput:
+        final number = RemoteControlHandler.getNumberFromKeyEvent(event);
+        if (number != null) {
+          _handleNumberInput(number);
+        }
+        break;
+        
+      case RemoteAction.back:
+        Get.back();
+        break;
+        
+      case RemoteAction.colorRed:
+        // Toggle favorite
+        _toggleFavorite();
+        break;
+        
+      case RemoteAction.colorGreen:
+        // Toggle search
+        setState(() {
+          _isSearching = !_isSearching;
+        });
+        break;
+        
+      default:
+        break;
+    }
+  }
+  
+  void _navigateChannel(int direction) {
+    final channelsState = context.read<ChannelsBloc>().state;
+    if (channelsState is ChannelsLiveSuccess) {
+      final channels = channelsState.channels;
+      if (channels.isEmpty) return;
+      
+      setState(() {
+        if (selectedChannelIndex == null) {
+          selectedChannelIndex = 0;
+        } else {
+          selectedChannelIndex = (selectedChannelIndex! + direction).clamp(0, channels.length - 1);
+        }
+        selectedChannel = channels[selectedChannelIndex!];
+      });
+    }
+  }
+  
+  void _handleNumberInput(int number) {
+    _channelNumberBuffer += number.toString();
+    
+    // Wait 2 seconds for more input
+    Future.delayed(const Duration(seconds: 2), () {
+      if (_channelNumberBuffer.isNotEmpty) {
+        final channelNum = int.tryParse(_channelNumberBuffer);
+        if (channelNum != null) {
+          _selectChannelByNumber(channelNum);
+        }
+        _channelNumberBuffer = '';
+      }
+    });
+  }
+  
+  void _selectChannelByNumber(int channelNumber) {
+    final channelsState = context.read<ChannelsBloc>().state;
+    if (channelsState is ChannelsLiveSuccess) {
+      final channels = channelsState.channels;
+      if (channelNumber > 0 && channelNumber <= channels.length) {
+        setState(() {
+          selectedChannelIndex = channelNumber - 1;
+          selectedChannel = channels[selectedChannelIndex!];
+        });
+        _playSelectedChannel();
+      }
+    }
+  }
+  
+  void _playSelectedChannel() {
+    if (selectedChannel != null) {
+      _selectChannel(selectedChannel!, selectedChannelIndex!);
+    }
+  }
+  
+  void _toggleFavorite() {
+    if (selectedChannel != null) {
+      final favState = context.read<FavoritesCubit>().state;
+      final isFavorite = favState.lives.any((fav) => fav.streamId == selectedChannel!.streamId);
+      context.read<FavoritesCubit>().addLive(selectedChannel!, isAdd: !isFavorite);
+    }
   }
   
   void _loadAllChannels() async {
@@ -49,14 +177,6 @@ class _LiveScreenState extends State<LiveScreen> {
         ));
       }
     }
-  }
-
-  @override
-  void dispose() {
-    _player?.dispose();
-    _searchController.dispose();
-    _categorySearchController.dispose();
-    super.dispose();
   }
 
   Future<void> _initializeVideo(String streamId) async {
@@ -129,8 +249,11 @@ class _LiveScreenState extends State<LiveScreen> {
     final bool isPhone = width < 600;
     final bool isTablet = width >= 600 && width < 950;
     
-    return Scaffold(
-      body: Container(
+    return KeyboardListener(
+      focusNode: _remoteFocus,
+      onKeyEvent: _handleRemoteKey,
+      child: Scaffold(
+        body: Container(
         width: getSize(context).width,
         height: getSize(context).height,
         decoration: kDecorBackground,
@@ -159,6 +282,7 @@ class _LiveScreenState extends State<LiveScreen> {
             ],
           ),
         ),
+      ),
       ),
     );
   }

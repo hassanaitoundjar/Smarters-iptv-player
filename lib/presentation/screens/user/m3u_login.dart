@@ -9,6 +9,8 @@ class M3uLoginScreen extends StatefulWidget {
 
 class _M3uLoginScreenState extends State<M3uLoginScreen> with SingleTickerProviderStateMixin {
   final _m3uUrlController = TextEditingController();
+  final FocusNode _remoteFocus = FocusNode();
+  final FocusNode _urlFieldFocus = FocusNode();
   
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
@@ -41,13 +43,36 @@ class _M3uLoginScreenState extends State<M3uLoginScreen> with SingleTickerProvid
     );
 
     _animationController.forward();
+    _remoteFocus.requestFocus();
   }
 
   @override
   void dispose() {
     _m3uUrlController.dispose();
     _animationController.dispose();
+    _remoteFocus.dispose();
+    _urlFieldFocus.dispose();
     super.dispose();
+  }
+  
+  void _handleRemoteKey(KeyEvent event) {
+    final action = RemoteControlHandler.handleKeyEvent(event);
+    
+    if (action == null) return;
+    
+    switch (action) {
+      case RemoteAction.navigateDown:
+      case RemoteAction.select:
+        _urlFieldFocus.requestFocus();
+        break;
+        
+      case RemoteAction.back:
+        Get.back();
+        break;
+        
+      default:
+        break;
+    }
   }
 
   void _parseAndLogin() {
@@ -100,9 +125,12 @@ class _M3uLoginScreenState extends State<M3uLoginScreen> with SingleTickerProvid
     final bool isPhone = width < 600;
     final bool isTablet = width >= 600 && width < 950;
 
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Container(
+    return KeyboardListener(
+      focusNode: _remoteFocus,
+      onKeyEvent: _handleRemoteKey,
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: Container(
         width: getSize(context).width,
         height: getSize(context).height,
         decoration: kDecorBackground,
@@ -396,6 +424,7 @@ class _M3uLoginScreenState extends State<M3uLoginScreen> with SingleTickerProvid
               ),
             );
           },
+        ),
         ),
       ),
     );

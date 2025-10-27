@@ -24,43 +24,60 @@ class _RegisterUserTvState extends State<RegisterUserTv>
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
 
-  _onKey(RawKeyEvent event) {
-    debugPrint("EVENT");
-    if (event.isKeyPressed(LogicalKeyboardKey.arrowDown)) {
-      debugPrint('downd');
-
-      if (indexTab == 0) {
-        indexTab = 1;
-      } else if (indexTab == 1) {
-        indexTab = 2;
-      } else if (indexTab == 2) {
-        indexTab = 3;
-      }
-    } else if (event.isKeyPressed(LogicalKeyboardKey.arrowUp)) {
-      debugPrint('up');
-      if (indexTab == 0) {
-      } else if (indexTab == 1) {
-        indexTab = 0;
-      } else if (indexTab == 2) {
-        indexTab = 1;
-      } else if (indexTab == 3) {
-        indexTab = 2;
-      }
-    } else if (event.isKeyPressed(LogicalKeyboardKey.select)) {
-      debugPrint("enter");
-
-      if (indexTab == 0) {
-        focusNode0.requestFocus();
-      } else if (indexTab == 1) {
-        focusNode1.requestFocus();
-      } else if (indexTab == 2) {
-        focusNode2.requestFocus();
-      } else if (indexTab == 3) {
-        debugPrint("Login");
-        _login();
-      }
+  void _onKey(KeyEvent event) {
+    final action = RemoteControlHandler.handleKeyEvent(event);
+    
+    if (action == null) return;
+    
+    debugPrint("Remote Action: $action");
+    
+    switch (action) {
+      case RemoteAction.navigateDown:
+        debugPrint('Navigate Down');
+        if (indexTab == 0) {
+          indexTab = 1;
+        } else if (indexTab == 1) {
+          indexTab = 2;
+        } else if (indexTab == 2) {
+          indexTab = 3;
+        }
+        setState(() {});
+        break;
+        
+      case RemoteAction.navigateUp:
+        debugPrint('Navigate Up');
+        if (indexTab == 1) {
+          indexTab = 0;
+        } else if (indexTab == 2) {
+          indexTab = 1;
+        } else if (indexTab == 3) {
+          indexTab = 2;
+        }
+        setState(() {});
+        break;
+        
+      case RemoteAction.select:
+        debugPrint("Select/Enter");
+        if (indexTab == 0) {
+          focusNode0.requestFocus();
+        } else if (indexTab == 1) {
+          focusNode1.requestFocus();
+        } else if (indexTab == 2) {
+          focusNode2.requestFocus();
+        } else if (indexTab == 3) {
+          debugPrint("Login");
+          _login();
+        }
+        break;
+        
+      case RemoteAction.back:
+        // Go back to menu
+        Get.back();
+        break;
+        
+      default:
+        break;
     }
-    setState(() {});
   }
 
   @override
@@ -125,9 +142,9 @@ class _RegisterUserTvState extends State<RegisterUserTv>
     final bool isPhone = width < 600;
     final bool isTablet = width >= 600 && width < 950;
 
-    return RawKeyboardListener(
+    return KeyboardListener(
       focusNode: _remoteFocus,
-      onKey: _onKey,
+      onKeyEvent: _onKey,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: Container(

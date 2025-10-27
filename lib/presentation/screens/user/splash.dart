@@ -46,8 +46,23 @@ class _SplashScreenState extends State<SplashScreen> {
         return BlocListener<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state is AuthSuccess) {
-              // Navigate to data loader screen which will load all categories
-              goScreen(screenDataLoader);
+              // Check if categories are already loaded
+              final liveCatyState = context.read<LiveCatyBloc>().state;
+              final movieCatyState = context.read<MovieCatyBloc>().state;
+              final seriesCatyState = context.read<SeriesCatyBloc>().state;
+              
+              final categoriesLoaded = 
+                  liveCatyState is LiveCatySuccess &&
+                  movieCatyState is MovieCatySuccess &&
+                  seriesCatyState is SeriesCatySuccess;
+              
+              if (categoriesLoaded) {
+                // Categories already loaded, go directly to welcome screen
+                goScreen(screenWelcome);
+              } else {
+                // First time login, load all data
+                goScreen(screenDataLoader);
+              }
             } else if (state is AuthFailed) {
               if (isTv(context)) {
                 goScreen(screenRegisterTv);

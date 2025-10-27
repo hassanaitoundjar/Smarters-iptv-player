@@ -16,7 +16,9 @@ class _MovieScreenState extends State<MovieScreen> {
   final TextEditingController _searchController = TextEditingController();
   final TextEditingController _categorySearchController =
       TextEditingController();
+  final FocusNode _remoteFocus = FocusNode();
   int _cachedTotalMoviesCount = 0;
+  int _selectedMovieIndex = 0;
 
   @override
   void initState() {
@@ -46,7 +48,91 @@ class _MovieScreenState extends State<MovieScreen> {
   void dispose() {
     _searchController.dispose();
     _categorySearchController.dispose();
+    _remoteFocus.dispose();
     super.dispose();
+  }
+  
+  void _handleRemoteKey(KeyEvent event) {
+    final action = RemoteControlHandler.handleKeyEvent(event);
+    
+    if (action == null) return;
+    
+    switch (action) {
+      case RemoteAction.navigateUp:
+        _navigateMovie(-4); // Move up one row (assuming 4 columns)
+        break;
+        
+      case RemoteAction.navigateDown:
+        _navigateMovie(4); // Move down one row
+        break;
+        
+      case RemoteAction.navigateLeft:
+        _navigateMovie(-1);
+        break;
+        
+      case RemoteAction.navigateRight:
+        _navigateMovie(1);
+        break;
+        
+      case RemoteAction.select:
+        _playSelectedMovie();
+        break;
+        
+      case RemoteAction.back:
+        Get.back();
+        break;
+        
+      case RemoteAction.colorRed:
+        // Toggle favorite
+        _toggleFavorite();
+        break;
+        
+      case RemoteAction.colorGreen:
+        // Toggle search
+        setState(() {
+          _isSearching = !_isSearching;
+        });
+        break;
+        
+      default:
+        break;
+    }
+  }
+  
+  void _navigateMovie(int direction) {
+    final channelsState = context.read<ChannelsBloc>().state;
+    if (channelsState is ChannelsMovieSuccess) {
+      final movies = channelsState.channels;
+      if (movies.isEmpty) return;
+      
+      setState(() {
+        _selectedMovieIndex = (_selectedMovieIndex + direction).clamp(0, movies.length - 1);
+      });
+    }
+  }
+  
+  void _playSelectedMovie() {
+    final channelsState = context.read<ChannelsBloc>().state;
+    if (channelsState is ChannelsMovieSuccess) {
+      final movies = channelsState.channels;
+      if (_selectedMovieIndex < movies.length) {
+        final movie = movies[_selectedMovieIndex];
+        Get.toNamed(screenMovieScreen, arguments: movie);
+      }
+    }
+  }
+  
+  void _toggleFavorite() {
+    final channelsState = context.read<ChannelsBloc>().state;
+    if (channelsState is ChannelsMovieSuccess) {
+      final movies = channelsState.channels;
+      if (_selectedMovieIndex < movies.length) {
+        final movie = movies[_selectedMovieIndex];
+        final favState = context.read<FavoritesCubit>().state;
+        final isFavorite = favState.movies.any((fav) => fav.streamId == movie.streamId);
+        context.read<FavoritesCubit>().addMovie(movie, isAdd: !isFavorite);
+      }
+    }
   }
 
   void _loadFirstCategory() async {
@@ -98,8 +184,11 @@ class _MovieScreenState extends State<MovieScreen> {
     final bool isPhone = width < 600;
     final bool isTablet = width >= 600 && width < 950;
 
-    return Scaffold(
-      body: Container(
+    return KeyboardListener(
+      focusNode: _remoteFocus,
+      onKeyEvent: _handleRemoteKey,
+      child: Scaffold(
+        body: Container(
         width: getSize(context).width,
         height: getSize(context).height,
         decoration: kDecorBackground,
@@ -123,6 +212,7 @@ class _MovieScreenState extends State<MovieScreen> {
               ),
             ],
           ),
+        ),
         ),
       ),
     );
@@ -973,7 +1063,7 @@ class _MovieScreenState extends State<MovieScreen> {
     return GestureDetector(
       onTap: () {
         // Navigate to movie detail screen first
-        Get.to(() => MovieContent(
+        Get.to(() => MovieContentModern(
               videoId: movie.streamId ?? "",
               channelMovie: movie,
             ));

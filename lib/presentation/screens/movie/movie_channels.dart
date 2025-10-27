@@ -147,7 +147,7 @@ class _MovieChannelsState extends State<MovieChannels> {
                           title: model.name,
                           image: model.streamIcon,
                           onTap: () {
-                            Get.to(() => MovieContent(
+                            Get.to(() => MovieContentModern(
                                     channelMovie: model,
                                     videoId: model.streamId ?? ''))!
                                 .then((value) async {

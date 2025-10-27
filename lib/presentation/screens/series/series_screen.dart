@@ -19,6 +19,8 @@ class _SeriesScreenState extends State<SeriesScreen> {
   final TextEditingController _categorySearchController =
       TextEditingController();
   final ScrollController _scrollController = ScrollController();
+  final FocusNode _remoteFocus = FocusNode();
+  int _selectedSeriesIndex = 0;
 
   @override
   void initState() {
@@ -41,7 +43,89 @@ class _SeriesScreenState extends State<SeriesScreen> {
     _searchController.dispose();
     _categorySearchController.dispose();
     _scrollController.dispose();
+    _remoteFocus.dispose();
     super.dispose();
+  }
+  
+  void _handleRemoteKey(KeyEvent event) {
+    final action = RemoteControlHandler.handleKeyEvent(event);
+    
+    if (action == null) return;
+    
+    switch (action) {
+      case RemoteAction.navigateUp:
+        _navigateSeries(-4);
+        break;
+        
+      case RemoteAction.navigateDown:
+        _navigateSeries(4);
+        break;
+        
+      case RemoteAction.navigateLeft:
+        _navigateSeries(-1);
+        break;
+        
+      case RemoteAction.navigateRight:
+        _navigateSeries(1);
+        break;
+        
+      case RemoteAction.select:
+        _openSelectedSeries();
+        break;
+        
+      case RemoteAction.back:
+        Get.back();
+        break;
+        
+      case RemoteAction.colorRed:
+        _toggleFavorite();
+        break;
+        
+      case RemoteAction.colorGreen:
+        setState(() {
+          _isSearching = !_isSearching;
+        });
+        break;
+        
+      default:
+        break;
+    }
+  }
+  
+  void _navigateSeries(int direction) {
+    final channelsState = context.read<ChannelsBloc>().state;
+    if (channelsState is ChannelsSeriesSuccess) {
+      final series = channelsState.channels;
+      if (series.isEmpty) return;
+      
+      setState(() {
+        _selectedSeriesIndex = (_selectedSeriesIndex + direction).clamp(0, series.length - 1);
+      });
+    }
+  }
+  
+  void _openSelectedSeries() {
+    final channelsState = context.read<ChannelsBloc>().state;
+    if (channelsState is ChannelsSeriesSuccess) {
+      final series = channelsState.channels;
+      if (_selectedSeriesIndex < series.length) {
+        final selectedSeries = series[_selectedSeriesIndex];
+        Get.toNamed(screenSeriesScreen, arguments: selectedSeries);
+      }
+    }
+  }
+  
+  void _toggleFavorite() {
+    final channelsState = context.read<ChannelsBloc>().state;
+    if (channelsState is ChannelsSeriesSuccess) {
+      final series = channelsState.channels;
+      if (_selectedSeriesIndex < series.length) {
+        final selectedSeries = series[_selectedSeriesIndex];
+        final favState = context.read<FavoritesCubit>().state;
+        final isFavorite = favState.series.any((fav) => fav.seriesId == selectedSeries.seriesId);
+        context.read<FavoritesCubit>().addSerie(selectedSeries, isAdd: !isFavorite);
+      }
+    }
   }
 
   void _loadFirstCategory() {
@@ -94,8 +178,11 @@ class _SeriesScreenState extends State<SeriesScreen> {
     final bool isPhone = width < 600;
     final bool isTablet = width >= 600 && width < 950;
 
-    return Scaffold(
-      body: Container(
+    return KeyboardListener(
+      focusNode: _remoteFocus,
+      onKeyEvent: _handleRemoteKey,
+      child: Scaffold(
+        body: Container(
         width: 100.w,
         height: 100.h,
         decoration: kDecorBackground,
@@ -113,6 +200,7 @@ class _SeriesScreenState extends State<SeriesScreen> {
               ),
             ),
           ],
+        ),
         ),
       ),
     );
@@ -659,7 +747,7 @@ class _SeriesScreenState extends State<SeriesScreen> {
   Widget _buildSerieCard(ChannelSerie serie, bool isPhone, bool isTablet) {
     return GestureDetector(
       onTap: () {
-        Get.to(() => SerieContent(
+        Get.to(() => SerieContentModern(
               channelSerie: serie,
               videoId: serie.seriesId ?? '',
             ));

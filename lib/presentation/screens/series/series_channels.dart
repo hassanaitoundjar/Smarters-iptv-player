@@ -149,7 +149,7 @@ class SeriesChannelsState extends State<SeriesChannels> {
                           title: model.name,
                           image: model.cover,
                           onTap: () {
-                            Get.to(() => SerieContent(
+                            Get.to(() => SerieContentModern(
                                     channelSerie: model,
                                     videoId: model.seriesId ?? ''))!
                                 .then((value) async {
